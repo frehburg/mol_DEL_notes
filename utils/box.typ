@@ -79,7 +79,11 @@
 
 #let box(title: "", style: "standard", ignore-prefix: false, content) = {
   let style_dict = styles.at(style)
-  block(
+  figure(
+    kind: style + "-box",
+    supplement: style + " Box",
+    
+  [#block(
     // The outer block creates the border and the rounded corners
     stroke: 1pt + style_dict.color,
     radius: 0.5em,
@@ -94,7 +98,7 @@
         width: 100%,
         fill: style_dict.color,
         inset: 10pt,
-      )[
+      )[#align(left)[
         #if style_dict.keys().contains("icon"){
             style_dict.icon
             h(0.7em)
@@ -110,7 +114,7 @@
         } else {
           text(fill: style_dict.neg-color, weight: "bold", title)
         }
-      ],
+      ]],
       
       // Content: White text on black background
       block(
@@ -120,7 +124,7 @@
         text(fill: black, content)
       )
     )
-  )
+  )])
 }
 
 

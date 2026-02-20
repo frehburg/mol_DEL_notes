@@ -43,7 +43,9 @@
 
 #set list(marker: ([$circle.filled.tiny$], [], []))
 #show heading.where(level: 1): it => {
-  pagebreak(weak: true)
+  if it.body != [List of Definitions] and it.body != [List of Theorems] {
+    pagebreak(weak: true)
+  }
   it
 }
 #show heading.where(level: 2): it => {
@@ -692,8 +694,13 @@ Group dynamics often deviate from ideal individualized epistemic logic due to th
 
 == (Lecture): #lectures.l8-3.name <lecture8-3>
 
-#pagebreak()
+#heading(numbering: "A")[Glossary: Definitions and Theorems]
 #outline(
   title: "List of Definitions",
   target: figure.where(kind: "definition")
+)
+
+#outline(
+  title: "List of Theorems",
+  target: figure.where(kind: "theorem-box")
 )
