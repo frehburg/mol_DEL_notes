@@ -67,6 +67,14 @@
     // "title-color": rgb("#000000"),
     "icon": octique-inline("info", color: rgb("#ffffff"), width: 1em, height: 1em, baseline: 25%)
   ),
+  "note": (
+    "color": rgb("#00c3205f"),
+    "neg-color": rgb("#FFFFFF"),
+    "text-color": rgb("#000000"),
+    // "title-color": rgb("#000000"),
+    "icon": octique-inline("pencil", color: rgb("#ffffff"), width: 1em, height: 1em, baseline: 25%),
+    "prefix": "Note:"
+  ),
 )
 
 #let box(title: "", style: "standard", ignore-prefix: false, content) = {
