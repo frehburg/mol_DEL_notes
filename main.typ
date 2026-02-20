@@ -3,7 +3,8 @@
 #import "examples/themes/filips-math-paper/template.typ": paper
 #import "@preview/curryst:0.5.1": rule, prooftree
 #import "utils/box.typ": box
-#import "utils/def.typ": def
+#import "utils/def.typ": def, def-group
+#import "@preview/diagraph:0.3.6": *
 
 #let date = datetime.today().display("[month repr:long] [day], [year]")
 
@@ -83,7 +84,7 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
 )
 
 #let lectures = (
-  "l1-1": ("status": STATUS.NOT_STARTED, "name": "Introduction: Motivation, Main Themes, Epistemic Puzzles", "ref": ref(<lecture1-1>)),
+  "l1-1": ("status": STATUS.NOT_STARTED, "name": "Introduction: Motivation, Main Themes, Puzzles", "ref": ref(<lecture1-1>)),
   "l1-2": ("status": STATUS.NOT_STARTED, "name": "Main Themes, Puzzles, and Paradoxes Continued", "ref": ref(<lecture1-2>)),
   "l1-3": ("status": STATUS.NOT_STARTED, "name": "Single-Agent Epistemic-Doxastic Logics: Kripke Models", "ref": ref(<lecture1-3>)),
   "l2-1": ("status": STATUS.NOT_STARTED, "name": "Multi-agent Models and Public Announcement Logic (PAL)", "ref": ref(<lecture2-1>)),
@@ -160,7 +161,7 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
 )
 #pagebreak()
 
-= Prompt
+
 #box(title: "Prompt for generating summaries")[
   Create a summary of the attached slides including the most important intuition, all mathematical formulas, relevant examples, and theorems, but no proofs. Pay special attention to the provided examples, their continuations and modifications. 
   
@@ -177,12 +178,15 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
   + I have defined custom functions to represent definitions, theorems ("theorem"), proofs ("proof"), examples ("example"), intuitions ("intuition"), warnings to watch out ("attention"), questions ("question") and calls to remember ("remember"). 
     - To define a new concept, call \`\#def("Name of Concept")\[Definition body\]\` 
     - For all others call \`\#box(title: "Title", style: "style-name")\[Box body\]
-    - Each box generates a tag \@def-concept-name-hyphenated. Refer to any concept you reference back to always \<def-concept-name-hyphenated\>
+    - Each box generates a tag \#label("def-concept-name-hyphenated"). Refer to any concept you reference back to always \@def-concept-name-hyphenated
 ]
 
 = Week 1
 
 == (Lecture): #lectures.l1-1.name <lecture1-1>
+
+=== Core Intuitions and Definitions
+
 #box(title: "Multi-Agent Systems", style: "example")[
   + *Computation*: a network of communicating computers (e.g., the internet)
   + *Games*: players in a game (e.g., chess or poker)
@@ -191,52 +195,311 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
   + *Economics*: transactions in a market
   + *Society*: social activities
   + *Politics*: diplomacy, war
-  + *Science*: a community of scientists, engaged in creating theories about nature, making observations and performing experiments to test their theories
+  + *Science*: a community of scientists, engaged in creating theories, making observations and performing experiments to test their theories
 ]
 
 #def("Properties of Multi-Agent Systems")[
   - _dynamic_: Agents perform _actions_ which change the system (via interaction)
   - _informational_: Agents acquire, store, process, and exchange _information_ about each other and the environment
 ]
-- _Evolving knowledge_: The knowledge an agent has may _change_ in time, due to their or other players' actions
-- Certain actions increase information
+
+- _Evolving knowledge_: The knowledge an agent has may _change_ in time, due to their or other players' actions.
+- Certain actions increase information.
 - _General rule_: players try to minimize their uncertainty and increase their knowledge.
-
-#def("Knowledge")[Truthful information.]
-#def("Justified Belief")[Information that is plausible, well-justified, probable, but still possibly false.]
-
-#def("Belief Revision")[A sustained, dynamic, self-correcting, truth-taking action. True knowledge can only be recovered by effort.]
+#def-group(
+  def("Knowledge")[Truthful information.],
+  def("Justified Belief")[Information that is plausible, well-justified, probable, but possibly false.],
+  def("Belief Revision")[A sustained, dynamic, self-correcting, truth-tracking action. True knowledge can only be recovered by effort.]
+)
 
 #box(title: "Motto of Dynamic Epistemic Logic")[
-  _"The wise sees action and knowledge as one. They see truly."_
-  #align(right)[(Bhagavad Gita, part of the epic poem Mahabharata)]
+ _"The wise sees action and knowledge as one. They see truly."_ - Bhagavad Gita
 ]
 
-#def("Uncertainty")[_Uncertainty_ is a corollary of Knowledge (@def-knowledge) or "imperfect information".]
+#def-group(
+  def("Uncertainty")[A corollary of imperfect knowledge or "imperfect information".],
+  def("Game of imperfect information")[A game where some moves are hidden, preventing players from knowing everything that is going on; they only have a partial view of the situation.]
+)
 
-#def("Game of imperfect information")[A _game of imperfect information_ conceals some information about other agents and or the environment from the agent: they only have a partial view of the situation.]
-- An agent may be _uncertain_ (@def-uncertainty) about the real situation at a given time: they cannot _distinguish_ between possible outcomes
+- An agent may be _uncertain_ (<def-uncertainty>) about the real situation at a given time: they cannot _distinguish_ between possible outcomes.
 
 _Wrong Beliefs_: Agents...
-- ... may acquire false "certainty" 
-- ... causing them to "know" things that are not true
-- Wrong beliefs are indistinguishable from true beliefs for an agent once they have become "certain" of it
+- ... may be induced (even with malicious intent e.g., cheating) to acquire false "certainty" in their drive for more knowledge.
+- ... causing them to "know" things that are not true (e.g., due to bluffing in poker).
+- Wrong beliefs are indistinguishable from true beliefs for an agent once they have become "certainty" (they really think they "know").
+
+=== Distributed, Nested, and Common Knowledge
 
 #def("Distributed Knowledge")[
-
+  Knowledge that is not necessarily held by any individual agent prior to communication, but is known when multiple agents pool their distinct information.
 ]
 
-#box(title: "Test theorem", style: "theorem")[
-  If conditions $a, b, c$ hold, then $d$.
+#box(title: "Distributed Knowledge: Business dealings", style: "example")[
+  - $A$ knows $B$ made a  deal with either $C$ or $E$ (exclusively).
+  - $B$ actually made a deal with $E$, so $C$ knows $B$ did *not* go make a deal with them.
+  - Neither $A$ nor $C$ individually know $B$ made a deal with $E$ before communicating.
+  - If $A$ and $C$ communicate (pool their knowledge), they deduce the truth. The fact is _distributed knowledge_ among them.
 ]
+#def-group(
+  def("Nested Knowledge")[
+    Knowledge about the knowledge of others, leading to potential infinite regress or deep epistemic reasoning (e.g., "how can you know that I do not know?").
+  ],
 
-#box(title: "Test theorem", style: "proof")[
-  Assume $a,b,c$. If you take an arbitrary $e$, it is clear that from $a, c, e$ it follows that $f$. Taken together, $b,f$ let us conclude $d$. $square$ 
+  def("Introspection")[
+    An agent's capability (or lack thereof) to reason about their own epistemic state. 
+    - *Known knowns*: things we know we know.
+    - *Known unknowns*: things we know we do not know.
+    - *Unknown unknowns*: things we do not know that we do not know.
+  ],
+
+  def("Common Knowledge")[
+    A condition where an entire group knows a fact, everybody knows that everybody knows it, and everybody knows that everybody knows that everybody knows it, ad infinitum.
+  ]
+)
+
+
+#box(title: "Common Knowledge vs. 'Everybody Knows'", style: "example")[
+  - Suppose everybody knows the road rules (e.g., red means "stop") and respects them.
+  - *Question*: Is this enough to drive safely? *No*.
+  - *Reasoning*: Merely knowing the rule is insufficient if you lack the certainty that *others* know the rules and will abide by them.
+  - *Resolution*: Safe driving requires the rules to be _Common Knowledge_ (@def-common-knowledge).
 ]
-
-
-
 == (Lecture): #lectures.l1-2.name <lecture1-2>
+=== Epistemic Puzzles and Paradoxes
+
+#box(title: "Puzzle 0: The Coordinated Attack", style: "example")[
+  Two army divisions (A and B) must attack simultaneously to win. They communicate via messengers over a channel where messages might be captured.
+  - A sends "attack at dawn" and B receives it.
+  - B must acknowledge receipt, but A does not know if the acknowledgment will arrive.
+  - A must acknowledge the acknowledgment, ad infinitum.
+  *Result*: No finite sequence of successful message deliveries can achieve coordination.
+]
+
+#box(title: "Coordinated Attack Intuition", style: "intuition")[
+  Achieving _Common Knowledge_ (@def-common-knowledge) over an unreliable communication channel is logically impossible in a finite number of steps. Unbounded nested knowledge (@def-nested-knowledge) does not equate to true common knowledge.
+]
+
+#box(title: "Puzzle 1: To Learn is to Falsify", style: "example")[
+  $A$ sends an email to her lover $C$: "$B$ doesn't know about us." 
+  
+  $B$ secretly intercepts and reads it.
+
+  *Result*: The proposition was true right before reading, but the act of learning the message immediately falsifies it (a dynamic variant of Moore's Paradox).
+]
+
+#box(title: "Non-standard Belief Revision", style: "attention")[
+  Standard belief-revision postulates (e.g., AGM) fail for complex learning actions where the informational payload refers directly to the epistemic state of the receiver.
+]
+
+#box(title: "Puzzle 2 & 3: Self-Fulfilling and Self-Enabling Falsehoods", style: "example")[
+  - *Self-Fulfilling*: $A$ falsely believes $B$ knows about her affair and sends a warning message. $B$ intercepts it and thereby learns of the affair. Communicating a false belief makes it true.
+
+  #align(center)["$B$ doesn't know about us."]
+
+  - *Self-Enabling*: $C$ (wanting to seduce faithful $A$) forges a message to himself from $A$ saying $B$ knows they are having an affair. $B$ reads it and divorces $A$. $A$, on the rebound, starts an affair with $C$. The transmission of a falsehood causally enables its own validation.
+]
+
+=== The Muddy Children and Epistemic Updates
+
+#box(title: "Puzzle 4: Muddy Children", style: "example")[
+  $4$ perfect logicians (children), exactly $3$ have dirty faces. They see others but not themselves.
+  - Father publicly announces: "At least one of you is dirty."
+  - Father iteratively asks: "Do you know if you are dirty or not?"
+  - Children answer publicly and simultaneously based strictly on their knowledge without guessing.
+  *Result*: For $2$ rounds, they answer in the negative. In the 3rd round, all $3$ dirty children confidently state they are dirty. In the 4th round, the clean child deduces they are clean.
+]
+
+#box(title: "Socratic Questioning", style: "info")[
+  Discovering answers by asking questions of students. (#link("https://en.wikipedia.org/wiki/Socratic_questioning")[Wikipedia])
+]
+
+#box(title: "Muddy Children", style: "intuition")[
+  1. _What's the point of the father's first announcement ("At least one of you is dirty")?_
+
+  The initial announcement transforms distributed implicit knowledge into public _Common Knowledge_ (@def-common-knowledge). 
+  
+  2. _What's the point of the father's repeated questions?_
+
+  The iterated Socratic questioning acts as sequential epistemic updates: public statements of ignorance incrementally eliminate possible worlds in the Kripke model until the true state is uniquely isolated.
+]
+
+#box(title: "Modifications of Muddy Children", style: "example")[
+  - *The Amazon Island*: Isomorphic to Muddy Children. A law mandates wifes to execute their cheating husbands at noon once discovered. Queen announces at least one cheater exists and if somebody's husband is cheating, all other wives know it. With $17$ cheaters, for $16$ days nothing happens, and all $17$ are shot on day $17$.
+  - *The Dangers of Mercy*: Wives of the $17$ cheaters secretly decide to spare them, while others believe strict obedience to the law is common knowledge. No shots are fired on day $17$. On day $18$, all faithful husbands are erroneously shot by their wives, who logically deduce (from flawed public premises) that their husbands must be cheating.
+]
+
+#box(title: "Puzzle 5: Sneaky Children", style: "example")[
+  Children are incentivized for speed and punished for errors. After round 1, two dirty children cheat by secretly confirming to each other they are dirty, thus answering "I know" prematurely in round 2.
+  - *Honest Children Always Suffer*: The 3rd dirty child logically deduces it must be clean, answers incorrectly in round 3, and is punished.
+  - *Clean Children Always Go Crazy*: The 4th (clean) child faces a strict contradiction. If it blindly applies monotonic updates via classical logic, it undergoes logical explosion (believing everything).
+]
+
+=== Paradoxes of Induction and Probability
+
+#box(title: "Puzzle 6: Surprised Children (Unexpected Hanging)", style: "example")[
+  Teacher announces an exam next week, but the date will be a surprise (students won't even know the night before).
+  - *Paradoxical Argumentation*: Students apply backward induction. It cannot be Friday (they'd know Thursday night). By elimination, it cannot be any day. They deduce the announcement is false.
+  - *Result*: They dismiss the announcement. The exam occurs (e.g., Tuesday) and is indeed a complete surprise.
+]
+
+#box(title: "Puzzle 7: The Lottery Paradox", style: "example")[
+  A fair lottery with $"1,000,000"$ tickets. 
+  - Probability of ticket $x$ winning is $0.000001$.
+  - It is rational to hold the belief that ticket $x$ will lose.
+  - This reasoning applies symmetrically to all tickets.
+  - Yet, the agent knows one ticket will win.
+  *Result*: The conjunction of highly probable rational beliefs yields a strict logical *inconsistency*.
+]
+
+#box(title: "Puzzle 7 Modification: The Infinite Lottery", style: "example")[
+  An infinite lottery over arbitrary natural numbers. The probability of any given ticket winning is exactly $0$. The agent is mathematically correct to believe a specific ticket will not win, yet one must win. Any finite subset of beliefs is consistent, but the infinite global set is inconsistent.
+]
+#pagebreak()
+=== Backward Induction and Social Epistemology
+
+
+#box(title: "Puzzle 8: The Centipede Game", style: "example")[
+  A sequential game with alternating moves by $a$ and $b$, deciding between stopping the game or continuing:
+
+  #align(center)[#scale(80%, reflow: true)[#figure(
+    raw-render(
+  ```dot
+  digraph Z {
+    node [shape=circle];
+
+    // Group the v nodes on the top row
+    {
+        rank = same;
+        "v_0: a"; "v_1: b"; "v_2: a";
+    }
+
+    // Group the o nodes on the second row
+    {
+        rank = same;
+        "o_1: 3,0"; "o_2: 2,3"; "o_3: 5,2"; "o_4: 4,5";
+    }
+
+    // Edges
+    "v_0: a" -> "v_1: b" -> "v_2: a";
+    "v_0: a" -> "o_1: 3,0";
+    "v_1: b" -> "o_2: 2,3";
+    "v_2: a" -> "o_3: 5,2";
+    "v_2: a" -> "o_4: 4,5";
+}
+  ```
+))]]
+In the leaves ("outcomes" $o_j$) the first number is $a$'s payoff, the second number is $b$'s payoff.
+  
+  - $v_0: a$ stops for $o_1(3,0)$ or continues to $v_1$
+  - $v_1: b$ stops for $o_2(2,3)$ or continues to $v_2$
+  - $v_2: a$ stops for $o_3(5,2)$ or continues to $o_4(4,5)$
+]
+
+*The Backwards Induction (BI) Method*
+- Iteratively eliminate the _obviously_ "bad" moves
+- Proceeding backwards from the leaves
+
+#grid(
+  columns: (30%, 30%, 30%),
+  column-gutter: 3%,
+  [*Elimination Step 1*
+    
+    #align(center)[#scale(70%, reflow: true)[#figure(
+    raw-render(
+  ```dot
+  digraph Z {
+    node [shape=circle];
+
+    // Group the v nodes on the top row
+    {
+        rank = same;
+        "v_0: a"; "v_1: b"; "v_2: a";
+    }
+
+    // Group the o nodes on the second row
+    {
+        rank = same;
+        "o_1: 3,0"; "o_2: 2,3"; "o_3: 5,2";
+    }
+
+    // Edges
+    "v_0: a" -> "v_1: b" -> "v_2: a";
+    "v_0: a" -> "o_1: 3,0";
+    "v_1: b" -> "o_2: 2,3";
+    "v_2: a" -> "o_3: 5,2";
+}
+  ```
+))]]],
+  [*Elimination Step 2*
+    
+    #align(center)[#scale(70%, reflow: true)[#figure(
+    raw-render(
+  ```dot
+  digraph Z {
+    node [shape=circle];
+
+    // Group the v nodes on the top row
+    {
+        rank = same;
+        "v_0: a"; "v_1: b";
+    }
+
+    // Group the o nodes on the second row
+    {
+        rank = same;
+        "o_1: 3,0"; "o_2: 2,3";
+    }
+
+    // Edges
+    "v_0: a" -> "v_1: b";
+    "v_0: a" -> "o_1: 3,0";
+    "v_1: b" -> "o_2: 2,3";
+}
+  ```
+))]]],
+  [*Elimination Step 3*
+  #align(center)[#scale(70%, reflow: true)[#figure(
+    raw-render(
+  ```dot
+  digraph Z {
+    node [shape=circle];
+
+    // Group the v nodes on the top row
+    {
+        rank = same;
+        "v_0: a";
+    }
+
+    // Group the o nodes on the second row
+    {
+        rank = same;
+        "o_1: 3,0";
+    }
+
+    // Edges
+    "v_0: a";
+    "v_0: a" -> "o_1: 3,0";
+}
+  ```
+))]]]
+)
+
+- *BI outcome*: $o_1: 3,0$
+- _Why not another outcome?_: Strikes many as irrational
+
+#box(title: "The BI Paradox and Rational Pessimism", style: "intuition")[
+  - *Aumann's Argument*: Assuming _Common Knowledge_ (@def-common-knowledge) of Rationality ($"CKR"$), backward induction dictates $A$ chooses $o_3$ at $v_2$, so $B$ chooses $o_2$ at $v_1$, so $A$ chooses $o_1$ at $v_0$. The game terminates immediately at a suboptimal Pareto outcome.
+  - *Counterargument*: If $B$ reaches $v_1$, he observes $A$ violating $"CKR"$ (she didn't stop at $v_0$). If $B$ adopts *Rational Pessimism*—assuming $A$ is irrational and will thus choose $o_4$ at $v_2$—he should continue. If $A$ anticipates this belief revision, her initial deviation becomes strictly rational. The epistemic foundation of backward induction contradicts its own counterfactuals.
+]
+
+#box(title: "Puzzle 9: Wisdom vs. Madness of the Crowds", style: "example")[
+  - *Wisdom of the Crowds*: Distributed group knowledge often empirically exceeds the most expert individual (e.g., aggregating independent estimates).
+  - *Madness of the Crowds*: Systems can fail systematically due to cascading social epistemology.
+    - *Pluralistic Ignorance*: Group members privately reject a norm but incorrectly assume others accept it (e.g., no one asking questions in a confusing lecture).
+    - *Informational Cascades*: Sequential decision-making where rational agents ignore their private signals to follow public actions (e.g., sequentially guessing urn colors based on previous skewed guesses).
+    - *The Circular Mill*: Biological equivalent where army ants follow the ant in front, creating an endless, fatal loop.
+    - *The Human Mill*: Cold War arms races driven by circular, self-fulfilling falsehoods (e.g., nations mimicking adversary research based entirely on forged intelligence).
+]
 
 == (Lecture): #lectures.l1-3.name <lecture1-3>
 

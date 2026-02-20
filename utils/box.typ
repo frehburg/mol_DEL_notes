@@ -60,6 +60,13 @@
     "icon": octique-inline("question", color: rgb("#ffffff"), width: 1em, height: 1em, baseline: 25%),
     "prefix": "Question:"
   ),
+  "info": (
+    "color": rgb("#1c8fab"),
+    "neg-color": rgb("#FFFFFF"),
+    "text-color": rgb("#000000"),
+    // "title-color": rgb("#000000"),
+    "icon": octique-inline("info", color: rgb("#ffffff"), width: 1em, height: 1em, baseline: 25%)
+  ),
 )
 
 #let box(title: "", style: "standard", ignore-prefix: false, content) = {

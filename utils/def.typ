@@ -23,3 +23,8 @@
     )#auto-tag
   ]
 }
+
+#let def-group(..defs) = stack(
+  spacing: -.0em,
+  ..defs
+)
