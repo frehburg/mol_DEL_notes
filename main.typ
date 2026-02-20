@@ -207,6 +207,10 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
 
 == (Lecture): #lectures.l1-1.name <lecture1-1>
 
+#box(title: "Motto of Dynamic Epistemic Logic")[
+ _"The wise sees action and knowledge as one. They see truly."_ - Bhagavad Gita
+]
+
 === Core Intuitions and Definitions
 
 #box(title: "Multi-Agent Systems", style: "example")[
@@ -235,10 +239,6 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
 )
 
 #box(title:"", style: "question")[Is knowledge a form of belief, or is knowledge more fundamental than belief?]
-
-#box(title: "Motto of Dynamic Epistemic Logic")[
- _"The wise sees action and knowledge as one. They see truly."_ - Bhagavad Gita
-]
 
 #def-group(
   def("Uncertainty")[A corollary of imperfect knowledge or "imperfect information".],
@@ -691,3 +691,9 @@ Group dynamics often deviate from ideal individualized epistemic logic due to th
 == (Lecture): #lectures.t8-2.name <tutorial8-2>
 
 == (Lecture): #lectures.l8-3.name <lecture8-3>
+
+#pagebreak()
+#outline(
+  title: "List of Definitions",
+  target: figure.where(kind: "definition")
+)
