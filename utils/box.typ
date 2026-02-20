@@ -69,7 +69,7 @@
     stroke: 1pt + style_dict.color,
     radius: 0.5em,
     clip: true, // Crucial: clips the inner square blocks to the rounded corners
-    width: 105%,
+    width: 100%,
     
     stack(
       dir: ttb, // Stacks the header and content top-to-bottom without gaps

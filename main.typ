@@ -2,6 +2,8 @@
 #import "@preview/clean-math-paper:0.2.4": *
 #import "examples/themes/filips-math-paper/template.typ": paper
 #import "@preview/curryst:0.5.1": rule, prooftree
+#import "utils/box.typ": box
+#import "utils/def.typ": def
 
 #let date = datetime.today().display("[month repr:long] [day], [year]")
 
@@ -42,6 +44,15 @@
 #show heading.where(level: 1): it => {
   pagebreak(weak: true)
   it
+}
+#show heading.where(level: 2): it => {
+  let nums = counter(heading).at(it.location())
+  let lvl1 = nums.at(0)
+  let lvl2 = nums.at(1)
+  
+  block[
+    Session #lvl1\-#lvl2 #it.body
+  ]
 }
 #set math.equation(numbering: "(1)")
 
@@ -151,64 +162,79 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
 
 = Week 1
 
-== Lecture 1-1: #lectures.l1-1.name <lecture1-1>
+== (Lecture): #lectures.l1-1.name <lecture1-1>
+#box(title: "Multi-Agent Systems", style: "example")[
+  + *Computation*: a network of communicating computers (e.g., the internet)
+  + *Games*: players in a game (e.g., chess or poker)
+  + *AI*: a team of robots exploring their environment and interacting with each other
+  + *Cryptographic Communication*: agents ("principals") using a cryptographic protocol to communicate in private
+  + *Economics*: transactions in a market
+  + *Society*: social activities
+  + *Politics*: diplomacy, war
+  + *Science*: a community of scientists, engaged in creating theories about nature, making observations and performing experiments to test their theories
+]
 
-== Lecture 1-2: #lectures.l1-2.name <lecture1-2>
+#def("Properties of Multi-Agent Systems")[
+  - afjakldsakjfdsakjfdas;k
+]
 
-== Lecture 1-3: #lectures.l1-3.name <lecture1-3>
+
+== (Lecture): #lectures.l1-2.name <lecture1-2>
+
+== (Lecture): #lectures.l1-3.name <lecture1-3>
 
 = Week 2
 
-== Lecture 2-1: #lectures.l2-1.name <lecture2-1>
+== (Lecture): #lectures.l2-1.name <lecture2-1>
 
-== Lecture 2-2: #lectures.l2-2.name <lecture2-2>
+== (Lecture): #lectures.l2-2.name <lecture2-2>
 
-== Lecture 2-3: #lectures.l2-3.name <lecture2-3>
+== (Lecture): #lectures.l2-3.name <lecture2-3>
 
 = Week 3
 
-== Lecture 3-1: #lectures.l3-1.name <lecture3-1>
+== (Lecture): #lectures.l3-1.name <lecture3-1>
 
-== Lecture 3-2: #lectures.t3-2.name <tutorial3-2>
+== (Lecture): #lectures.t3-2.name <tutorial3-2>
 
-== Lecture 3-3: #lectures.l3-3.name <lecture3-3>
+== (Lecture): #lectures.l3-3.name <lecture3-3>
 
 = Week 4
 
-== Lecture 4-1: #lectures.l4-1.name <lecture4-1>
+== (Lecture): #lectures.l4-1.name <lecture4-1>
 
-== Lecture 4-2: #lectures.t4-2.name <tutorial4-2>
+== (Lecture): #lectures.t4-2.name <tutorial4-2>
 
-== Lecture 4-3: #lectures.l4-3.name <lecture4-3>
+== (Lecture): #lectures.l4-3.name <lecture4-3>
 
 = Week 5
 
-== Lecture 5-1: #lectures.l5-1.name <lecture5-1>
+== (Lecture): #lectures.l5-1.name <lecture5-1>
 
-== Lecture 5-2: #lectures.t5-2.name <tutorial5-2>
+== (Lecture): #lectures.t5-2.name <tutorial5-2>
 
-== Lecture 5-3: #lectures.l5-3.name <lecture5-3>
+== (Lecture): #lectures.l5-3.name <lecture5-3>
 
 = Week 6
 
-== Lecture 6-1: #lectures.l6-1.name <lecture6-1>
+== (Lecture): #lectures.l6-1.name <lecture6-1>
 
-== Lecture 6-2: #lectures.t6-2.name <tutorial6-2>
+== (Lecture): #lectures.t6-2.name <tutorial6-2>
 
-== Lecture 6-3: #lectures.l6-3.name <lecture6-3>
+== (Lecture): #lectures.l6-3.name <lecture6-3>
 
 = Week 7
 
-== Lecture 7-1: #lectures.l7-1.name <lecture7-1>
+== (Lecture): #lectures.l7-1.name <lecture7-1>
 
-== Lecture 7-2: #lectures.t7-2.name <tutorial7-2>
+== (Lecture): #lectures.t7-2.name <tutorial7-2>
 
-== Lecture 7-3: #lectures.l7-3.name <lecture7-3>
+== (Lecture): #lectures.l7-3.name <lecture7-3>
 
 = Week 8
 
-== Lecture 8-1: #lectures.l8-1.name <lecture8-1>
+== (Lecture): #lectures.l8-1.name <lecture8-1>
 
-== Lecture 8-2: #lectures.t8-2.name <tutorial8-2>
+== (Lecture): #lectures.t8-2.name <tutorial8-2>
 
-== Lecture 8-3: #lectures.l8-3.name <lecture8-3>
+== (Lecture): #lectures.l8-3.name <lecture8-3>
