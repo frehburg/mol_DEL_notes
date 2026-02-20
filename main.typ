@@ -196,8 +196,8 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
   2. to make text bold, wrap it in singular stars and to make it italic wrap it in underscores
   3. If you are more used to different typesetting languages, typst always uses () as parentheses and only uses {} for set notation
   *Style guide:*
-  + do not include and [cite_start] or [cite: x] in your output
-  + I have defined custom functions to represent definitions, theorems ("theorem"), proofs ("proof"), examples ("example"), intuitions ("intuition"), warnings to watch out ("attention"), questions ("question") and calls to remember ("remember"). 
+  + do not include and  or [cite: x] in your output
+  + I have defined custom functions to represent definitions, theorems (“theorem”), proofs (“proof”), examples (“example”), intuitions \[only use this for informal introductions\] (“intuition”), warnings to watch out (“attention”), questions (“question”), calls to recall something learned before (“remember”), note something carefully ("note"), and an info ("info").
     - To define a new concept, call \`\#def("Name of Concept")\[Definition body\]\` 
     - For all others call \`\#box(title: "Title", style: "style-name")\[Box body\]
     - Each box generates a tag \#label("def-concept-name-hyphenated"). Refer to any concept you reference back to always \@def-concept-name-hyphenated
@@ -549,6 +549,92 @@ In the leaves ("outcomes" $o_j$) the first number is $a$'s payoff, the second nu
 ]
 
 == (Lecture): #lectures.l1-3.name <lecture1-3>
+
+=== Syntax and Core Definitions
+Single-agent epistemic-doxastic logic expands standard propositional logic to formally capture an agent's knowledge and beliefs. 
+
+$ phi ::= p | not phi | phi and phi | K phi | B phi $ 
+
+#def("Single-Agent Epistemic-Doxastic Model")[
+  A pointed epistemic-doxastic model is a tuple $S = (S, S_0, norm(.), s_*)$, consisting of:
+  - $S$: A set of "possible worlds" defining the agent's _epistemic state_ (epistemically possible states).
+  - $S_0$: A non-empty subset $S_0 subset.eq S$, called the _sphere of beliefs_ or _doxastic state_.
+  - $norm(.): Phi -> cal(P)(S)$: A valuation map assigning atomic propositions to sets of states.
+  - $s_* in S$: The designated "actual world" representing the real state of the world.
+] #label("def-single-agent-epistemic-doxastic-model")
+
+#box(title: "Semantics of Knowledge and Belief", style: "intuition")[
+  The universal quantifier over the domain of possibilities is interpreted as knowledge or belief.
+  - *Knowledge* ($K phi$): Truth in all epistemically possible worlds. 
+    $w models K phi quad "iff" quad forall t in S, t models phi$.
+  - *Belief* ($B phi$): Truth in all doxastically possible worlds within the sphere of beliefs.
+    $w models B phi quad "iff" quad forall t in S_0, t models phi$.
+] #label("intuition-semantics-knowledge-belief")
+
+=== Learning and Mistaken Updates
+Learning corresponds to world elimination. An update with a sentence $phi$ is the operation of deleting all non-$phi$ possibilities from the model.
+
+#box(title: "The Concealed Coin and Mistaken Updates", style: "example")[
+  *Base Scenario:* A coin is on the table; the agent does not know if it is Heads ($H$) or Tails ($T$).
+  *Standard Update:* The agent looks and sees $H$. The $T$ world is eliminated, and only the $H$ epistemic possibility survives.
+  *Mistaken Update:* Suppose the actual world is $T$, but the agent's sight is bad and she mistakenly believes she saw $H$. If we eliminate $T$, the actual world $s_*$ is no longer in the agent's model, making it impossible to evaluate objective truth.
+  *Resolution (Third-Person Models):* We maintain an objective perspective where the real possibility always remains in the global model $S$, even if the agent believes it to be impossible. The sphere of beliefs $S_0$ is restricted to $H$, meaning the agent believes $H$, but their belief is false because $s_* in S slash S_0$.
+] #label("example-concealed-coin")
+
+=== Kripke Semantics for Epistemic-Doxastic Logic
+Sphere models can be generalized using Kripke semantics to allow for varying strengths of knowledge and belief.
+
+#def("Epistemic-Doxastic Kripke Model")[
+  A Kripke model is a tuple $S = (S, {R_i}, norm(.), s_*)$ with accessibility relations $R_i$. For knowledge and belief, this becomes $(S, tilde, ->, norm(.), s_*)$, where $tilde$ is the epistemic relation (for $K$) and $->$ is the doxastic relation (for $B$). 
+] #label("def-epistemic-doxastic-kripke-model")
+
+#box(title: "Axioms and Relational Properties", style: "theorem")[
+  Validities for Knowledge (Equivalence relation $tilde$, giving an S5 model):
+  - *Veracity* ($K phi => phi$): $tilde$ is reflexive.
+  - *Positive Introspection* ($K phi => K K phi$): $tilde$ is transitive.
+  - *Negative Introspection* ($not K phi => K not K phi$): $tilde$ is Euclidean (and symmetric).
+
+  Validities for Belief (KD45 model properties for $->$):
+  - *Consistency* ($not B(phi and not phi)$): $->$ is serial.
+  - *Positive Introspection* ($B phi => B B phi$): $->$ is transitive.
+  - *Negative Introspection* ($not B phi => B not B phi$): $->$ is Euclidean.
+
+  Interaction Properties:
+  - *Knowledge implies Belief* ($K phi => B phi$): If $s -> t$ then $s tilde t$.
+  - *Strong Positive Introspection* ($B phi => K B phi$): If $s tilde t$ and $t -> w$ then $s -> w$.
+] #label("theorem-axioms-relational-properties")
+
+#box(title: "Equivalence of Models", style: "theorem")[
+  Every epistemic-doxastic sphere model $S = (S, S_0, norm(.), s_*)$ is completely equivalent to an epistemic-doxastic Kripke model $S' = (S, tilde, ->, norm(.), s_*)$ that satisfies the same sentences at $s_*$. Furthermore, given a doxastic Kripke model, the doxastic relation $->$ uniquely determines the epistemic relation $tilde$.
+] #label("theorem-equivalence-of-models")
+
+#box(title: "Logical Omniscience", style: "attention")[
+  Any Kripke modality validates axiom K ($K(phi => psi) => (K phi => K psi)$) and the Necessitation rule (if $phi$ is valid, $K phi$ is valid). Consequently, Kripke semantics models "ideal reasoners" with unlimited inference powers who know/believe all logical entailments, failing to capture bounded rationality.
+] #label("attention-logical-omniscience")
+
+=== Social Epistemology and Information Cascades
+Group dynamics often deviate from ideal individualized epistemic logic due to the recursive nature of social evidence.
+
+#def("Pluralistic Ignorance")[
+  A situation where the group collectively knows or acts upon less information than the individuals possess privately. Often observed in totalitarian regimes where public behavior contradicts private beliefs.
+] #label("def-pluralistic-ignorance")
+
+#box(title: "Information Cascades", style: "intuition")[
+  An information cascade occurs when agents base their decisions on the observable behavior of prior agents rather than their own private evidence, leading to a breakdown of _epistemic democracy_ (the wisdom of crowds).
+] #label("intuition-information-cascades")
+
+#box(title: "The Black and White Urn Problem", style: "example")[
+  *Setup:* One urn is in a room. It is either Urn B (2/3 black marbles) or Urn W (2/3 white marbles). Agents enter one by one, draw a marble, replace it, and publicly record their guess of the urn on a blackboard.
+  *The Cascade:* 1. Voter 1 draws Black and guesses Urn B.
+  2. Voter 2 draws Black and guesses Urn B.
+  3. Voter 3 draws White. However, the public evidence (two B votes) combined with their private evidence (one W draw) yields an aggregate evidence of (B, B, W). The rational epistemic choice is still to guess Urn B.
+  *Result:* From Voter 3 onwards, everyone will vote Urn B regardless of their private draw. If the first two voters happened to draw the minority color (probability $1/9$), the entire crowd of $n$ voters will lock into the wrong conclusion.
+] #label("example-urn-problem")
+
+#box(title: "Biological and Geopolitical Cascades", style: "example")[
+  - *Army Ant Circular Mill:* If an army ant loses the pheromone trail, it is biologically programmed to follow the ant directly in front of it. This simple rule works locally but can result in a massive recursive loop (a death spiral up to 400m in diameter) where the ants walk in a circle until they die.
+  - *The Men Who Stare at Goats (Cold War):* A French newspaper published a fabricated story about US military research into psychic weapons. Soviet intelligence read this, assumed it was a cover-up, and initiated their own psychic research program. US intelligence discovered the Soviet program and, assuming the Soviets were onto a real threat, started their own actual research program, sparking a 30-year arms race built on an initial cascade of false information.
+] #label("example-biological-geopolitical-cascades")
 
 = Week 2
 
