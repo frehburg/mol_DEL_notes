@@ -1,32 +1,54 @@
 #import "utils/progress_bar.typ": *
 #import "@preview/clean-math-paper:0.2.4": *
+#import "examples/themes/filips-math-paper/template.typ": paper
 #import "@preview/curryst:0.5.1": rule, prooftree
 
 #let date = datetime.today().display("[month repr:long] [day], [year]")
 
-// Modify some arguments, which can be overwritten in the template call
-#page-args.insert("numbering", "1/1")
-#text-args-title.insert("size", 2em)
-#text-args-title.insert("fill", black)
-#text-args-authors.insert("size", 12pt)
+#show: doc => paper(
+  // Metadata
+  journal: "Dynamic Epistemic Logic",
+  title: "Study Notes",
+  subtitle: [],
+  // date: datetime(year: 2024, month: 10, day: 24), // Or remove to use today's date
+  font: "New Computer Modern",
 
-#show: template.with(
-  title: "ML Homework Assignment 5",
+  // Author Data
   authors: (
-    (name: "Filip Rehburg", affiliation-id: 1, orcid: "0009-0007-0457-5724"),
+    (
+      name: "Filip Rehburg", 
+      email: "filip.rehburg@student.uva.nl", 
+      affiliations: (1,) 
+    ),
   ),
-  affiliations: (
-    (id: 1, name: "Institute of Logic, Language, and Computation, \nUniversity of Amsterdam"),
+
+  // Institution Data
+  institutions: (
+    (
+      name: "University of Amsterdam", 
+      address: "Amsterdam, The Netherlands"
+    ),
   ),
-  date: date,
-  heading-color: rgb("#000000"),
-  link-color: rgb("#008002"),
+  
+  // The actual document content follows
+  doc
 )
 
+#set par(justify: true)
+#set enum(numbering: "1.")
+#set heading(numbering: "1.")
+
 #set list(marker: ([$circle.filled.tiny$], [], []))
+#show heading.where(level: 1): it => {
+  pagebreak(weak: true)
+  it
+}
 #set math.equation(numbering: "(1)")
 
 #let bar(x) = $macron(#x)$ //gr MACRON
+
+Instructor: Alexandru Baltag (#link("mailto:TheAlexandruBaltag@gmail.com")) \ TA: Giuseppe Manes 
+(#link("giuseppe.manes@student.uva.nl"))
 
 Do not distribute, please send this link: #link("https://github.com/frehburg/mol_DEL_notes")
 
@@ -50,15 +72,34 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
 )
 
 #let lectures = (
-  "l1-1": ("status": STATUS.NOT_STARTED, "name": "Introduction", "ref": ref(<lecture1>)),
-  "l1-2": ("status": STATUS.NOT_STARTED, "name": ""),
-  "l1-3": ("status": STATUS.NOT_STARTED, "name": ""),
-  "l2-1": ("status": STATUS.NOT_STARTED, "name": ""),
-  "l2-2": ("status": STATUS.NOT_STARTED, "name": ""),
+  "l1-1": ("status": STATUS.NOT_STARTED, "name": "Introduction: Motivation, Main Themes, Epistemic Puzzles", "ref": ref(<lecture1-1>)),
+  "l1-2": ("status": STATUS.NOT_STARTED, "name": "Main Themes and Puzzles Continued", "ref": ref(<lecture1-2>)),
+  "l1-3": ("status": STATUS.NOT_STARTED, "name": "Single-Agent Epistemic-Doxastic Logics: Kripke Models", "ref": ref(<lecture1-3>)),
+  "l2-1": ("status": STATUS.NOT_STARTED, "name": "Multi-agent Models and Public Announcement Logic (PAL)", "ref": ref(<lecture2-1>)),
+  "l2-2": ("status": STATUS.NOT_STARTED, "name": "PAL Continued", "ref": ref(<lecture2-2>)),
+  "l2-3": ("status": STATUS.NOT_STARTED, "name": "Does this one even exist??", "ref": ref(<lecture2-3>)),
+  "l3-1": ("status": STATUS.NOT_STARTED, "name": "\"Learnability\" and \"Knowability\"", "ref": ref(<lecture3-1>)),
+  "t3-2": ("status": STATUS.NOT_STARTED, "name": "Tutorial 1", "ref": ref(<tutorial3-2>)),
+  "l3-3": ("status": STATUS.NOT_STARTED, "name": "The problem of belief revision", "ref": ref(<lecture3-3>)),
+  "l4-1": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture3-3>)),
+"t4-2": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture4-1>)),
+"l4-3": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<tutorial4-2>)),
 
-  "l3-2": ("status": STATUS.NOT_STARTED, "name": ""),
-  "l3-3": ("status": STATUS.NOT_STARTED, "name": ""),
-  "l3-1": ("status": STATUS.NOT_STARTED, "name": ""),
+"l5-1": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture4-3>)),
+"t5-2": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture5-1>)),
+"l5-3": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<tutorial5-2>)),
+
+"l6-1": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture5-3>)),
+"t6-2": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture6-1>)),
+"l6-3": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<tutorial6-2>)),
+
+"l7-1": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture6-3>)),
+"t7-2": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture7-1>)),
+"l7-3": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<tutorial7-2>)),
+
+"l8-1": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture7-3>)),
+"t8-2": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture8-1>)),
+"l8-3": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<tutorial8-2>)),
 )
 
 #let lecture-overview(data) = {
@@ -108,4 +149,66 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
 )
 #pagebreak()
 
-= Lecture 1-1 <lecture1>
+= Week 1
+
+== Lecture 1-1: #lectures.l1-1.name <lecture1-1>
+
+== Lecture 1-2: #lectures.l1-2.name <lecture1-2>
+
+== Lecture 1-3: #lectures.l1-3.name <lecture1-3>
+
+= Week 2
+
+== Lecture 2-1: #lectures.l2-1.name <lecture2-1>
+
+== Lecture 2-2: #lectures.l2-2.name <lecture2-2>
+
+== Lecture 2-3: #lectures.l2-3.name <lecture2-3>
+
+= Week 3
+
+== Lecture 3-1: #lectures.l3-1.name <lecture3-1>
+
+== Lecture 3-2: #lectures.t3-2.name <tutorial3-2>
+
+== Lecture 3-3: #lectures.l3-3.name <lecture3-3>
+
+= Week 4
+
+== Lecture 4-1: #lectures.l4-1.name <lecture4-1>
+
+== Lecture 4-2: #lectures.t4-2.name <tutorial4-2>
+
+== Lecture 4-3: #lectures.l4-3.name <lecture4-3>
+
+= Week 5
+
+== Lecture 5-1: #lectures.l5-1.name <lecture5-1>
+
+== Lecture 5-2: #lectures.t5-2.name <tutorial5-2>
+
+== Lecture 5-3: #lectures.l5-3.name <lecture5-3>
+
+= Week 6
+
+== Lecture 6-1: #lectures.l6-1.name <lecture6-1>
+
+== Lecture 6-2: #lectures.t6-2.name <tutorial6-2>
+
+== Lecture 6-3: #lectures.l6-3.name <lecture6-3>
+
+= Week 7
+
+== Lecture 7-1: #lectures.l7-1.name <lecture7-1>
+
+== Lecture 7-2: #lectures.t7-2.name <tutorial7-2>
+
+== Lecture 7-3: #lectures.l7-3.name <lecture7-3>
+
+= Week 8
+
+== Lecture 8-1: #lectures.l8-1.name <lecture8-1>
+
+== Lecture 8-2: #lectures.t8-2.name <tutorial8-2>
+
+== Lecture 8-3: #lectures.l8-3.name <lecture8-3>
