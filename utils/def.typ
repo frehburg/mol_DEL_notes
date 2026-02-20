@@ -10,9 +10,7 @@
       width: 100%,
       stroke: rgb("#d0d7de")
     )[#align(left + top)[
-        *#it.supplement #it.counter.display(it.numbering)* (#emph(it.caption.body)):
-        #v(-0.5em) 
-        #it.body
+        *#it.supplement #it.counter.display(it.numbering)* (#emph(it.caption.body)): #it.body
       ]
     ]
     

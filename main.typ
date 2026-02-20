@@ -84,7 +84,7 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
 
 #let lectures = (
   "l1-1": ("status": STATUS.NOT_STARTED, "name": "Introduction: Motivation, Main Themes, Epistemic Puzzles", "ref": ref(<lecture1-1>)),
-  "l1-2": ("status": STATUS.NOT_STARTED, "name": "Main Themes and Puzzles Continued", "ref": ref(<lecture1-2>)),
+  "l1-2": ("status": STATUS.NOT_STARTED, "name": "Main Themes, Puzzles, and Paradoxes Continued", "ref": ref(<lecture1-2>)),
   "l1-3": ("status": STATUS.NOT_STARTED, "name": "Single-Agent Epistemic-Doxastic Logics: Kripke Models", "ref": ref(<lecture1-3>)),
   "l2-1": ("status": STATUS.NOT_STARTED, "name": "Multi-agent Models and Public Announcement Logic (PAL)", "ref": ref(<lecture2-1>)),
   "l2-2": ("status": STATUS.NOT_STARTED, "name": "PAL Continued", "ref": ref(<lecture2-2>)),
@@ -160,6 +160,26 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
 )
 #pagebreak()
 
+= Prompt
+#box(title: "Prompt for generating summaries")[
+  Create a summary of the attached slides including the most important intuition, all mathematical formulas, relevant examples, and theorems, but no proofs. Pay special attention to the provided examples, their continuations and modifications. 
+  
+  Be concise and technical using expert vocabulary. Explain in a suitable manner for a master of Logic student familiar with the relevant background but unfamiliar with the discussed material as of yet. Write the summary in typst. The slides are attached. Only focus on content and leave out organizational information about the course. I am pasting all of this into my typst document where each lecture is a level two heading e.g. == Lecture 1, so subchapters have to be at the correct level, at least three e.g. === Core Intuitions and Definitions.
+
+  Important: Wrap the generated typst syntax summary in \`\`\`\`\`\` to make it copyable
+
+  *Notable features of typst syntax:*
+  1. if there is more than one letter in a name in typst math block then it needs to be wrapped in “”.
+  2. to make text bold, wrap it in singular stars and to make it italic wrap it in underscores
+  3. If you are more used to different typesetting languages, typst always uses () as parentheses and only uses {} for set notation
+  *Style guide:*
+  + do not include and [cite_start] or [cite: x] in your output
+  + I have defined custom functions to represent definitions, theorems ("theorem"), proofs ("proof"), examples ("example"), intuitions ("intuition"), warnings to watch out ("attention"), questions ("question") and calls to remember ("remember"). 
+    - To define a new concept, call \`\#def("Name of Concept")\[Definition body\]\` 
+    - For all others call \`\#box(title: "Title", style: "style-name")\[Box body\]
+    - Each box generates a tag \@def-concept-name-hyphenated. Refer to any concept you reference back to always \<def-concept-name-hyphenated\>
+]
+
 = Week 1
 
 == (Lecture): #lectures.l1-1.name <lecture1-1>
@@ -175,8 +195,45 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
 ]
 
 #def("Properties of Multi-Agent Systems")[
-  - afjakldsakjfdsakjfdas;k
+  - _dynamic_: Agents perform _actions_ which change the system (via interaction)
+  - _informational_: Agents acquire, store, process, and exchange _information_ about each other and the environment
 ]
+- _Evolving knowledge_: The knowledge an agent has may _change_ in time, due to their or other players' actions
+- Certain actions increase information
+- _General rule_: players try to minimize their uncertainty and increase their knowledge.
+
+#def("Knowledge")[Truthful information.]
+#def("Justified Belief")[Information that is plausible, well-justified, probable, but still possibly false.]
+
+#def("Belief Revision")[A sustained, dynamic, self-correcting, truth-taking action. True knowledge can only be recovered by effort.]
+
+#box(title: "Motto of Dynamic Epistemic Logic")[
+  _"The wise sees action and knowledge as one. They see truly."_
+  #align(right)[(Bhagavad Gita, part of the epic poem Mahabharata)]
+]
+
+#def("Uncertainty")[_Uncertainty_ is a corollary of Knowledge (@def-knowledge) or "imperfect information".]
+
+#def("Game of imperfect information")[A _game of imperfect information_ conceals some information about other agents and or the environment from the agent: they only have a partial view of the situation.]
+- An agent may be _uncertain_ (@def-uncertainty) about the real situation at a given time: they cannot _distinguish_ between possible outcomes
+
+_Wrong Beliefs_: Agents...
+- ... may acquire false "certainty" 
+- ... causing them to "know" things that are not true
+- Wrong beliefs are indistinguishable from true beliefs for an agent once they have become "certain" of it
+
+#def("Distributed Knowledge")[
+
+]
+
+#box(title: "Test theorem", style: "theorem")[
+  If conditions $a, b, c$ hold, then $d$.
+]
+
+#box(title: "Test theorem", style: "proof")[
+  Assume $a,b,c$. If you take an arbitrary $e$, it is clear that from $a, c, e$ it follows that $f$. Taken together, $b,f$ let us conclude $d$. $square$ 
+]
+
 
 
 == (Lecture): #lectures.l1-2.name <lecture1-2>
