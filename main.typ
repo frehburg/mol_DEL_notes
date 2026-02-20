@@ -59,6 +59,9 @@
 
 #let bar(x) = $macron(#x)$ //gr MACRON
 
+// DEL symbols
+#let common-knowledge = $C square$
+
 Instructor: Alexandru Baltag (#link("mailto:TheAlexandruBaltag@gmail.com")) \ TA: Giuseppe Manes 
 (#link("giuseppe.manes@student.uva.nl"))
 
@@ -84,15 +87,33 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
 )
 
 #let lectures = (
-  "l1-1": ("status": STATUS.NOT_STARTED, "name": "Introduction: Motivation, Main Themes, Puzzles", "ref": ref(<lecture1-1>)),
-  "l1-2": ("status": STATUS.NOT_STARTED, "name": "Main Themes, Puzzles, and Paradoxes Continued", "ref": ref(<lecture1-2>)),
-  "l1-3": ("status": STATUS.NOT_STARTED, "name": "Single-Agent Epistemic-Doxastic Logics: Kripke Models", "ref": ref(<lecture1-3>)),
-  "l2-1": ("status": STATUS.NOT_STARTED, "name": "Multi-agent Models and Public Announcement Logic (PAL)", "ref": ref(<lecture2-1>)),
-  "l2-2": ("status": STATUS.NOT_STARTED, "name": "PAL Continued", "ref": ref(<lecture2-2>)),
-  "l2-3": ("status": STATUS.NOT_STARTED, "name": "Does this one even exist??", "ref": ref(<lecture2-3>)),
-  "l3-1": ("status": STATUS.NOT_STARTED, "name": "\"Learnability\" and \"Knowability\"", "ref": ref(<lecture3-1>)),
-  "t3-2": ("status": STATUS.NOT_STARTED, "name": "Tutorial 1", "ref": ref(<tutorial3-2>)),
-  "l3-3": ("status": STATUS.NOT_STARTED, "name": "The problem of belief revision", "ref": ref(<lecture3-3>)),
+  "l1-1": (
+    "status": STATUS.DONE, "name": "Introduction: Motivation, Main Themes, Puzzles", "ref": ref(<lecture1-1>)
+    ),
+  "l1-2": (
+    "status": STATUS.DONE, "name": "Main Themes, Puzzles, and Paradoxes Continued", "ref": ref(<lecture1-2>)
+    ),
+  "l1-3": (
+    "status": STATUS.WORK_IN_PROGRESS, "name": "Single-Agent Epistemic-Doxastic Logics: Kripke Models", "ref": ref(<lecture1-3>)
+    ),
+  "l2-1": (
+    "status": STATUS.NOT_STARTED, "name": "Multi-agent Models and Public Announcement Logic (PAL)", "ref": ref(<lecture2-1>)
+    ),
+  "l2-2": (
+    "status": STATUS.NOT_STARTED, "name": "PAL Continued", "ref": ref(<lecture2-2>)
+    ),
+  "l2-3": (
+    "status": STATUS.NOT_STARTED, "name": "Does this one even exist??", "ref": ref(<lecture2-3>)
+    ),
+  "l3-1": (
+    "status": STATUS.NOT_STARTED, "name": "\"Learnability\" and \"Knowability\"", "ref": ref(<lecture3-1>)
+    ),
+  "t3-2": (
+    "status": STATUS.NOT_STARTED, "name": "Tutorial 1", "ref": ref(<tutorial3-2>)
+    ),
+  "l3-3": (
+    "status": STATUS.NOT_STARTED, "name": "The problem of belief revision", "ref": ref(<lecture3-3>)
+    ),
   "l4-1": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture3-3>)),
 "t4-2": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture4-1>)),
 "l4-3": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<tutorial4-2>)),
@@ -147,18 +168,19 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
 #lecture-overview(lectures)
 
 
-#let progress_status = 1//lectures.values().sum()
+#let progress_status = lectures.values().map(item => item.status).sum()
 #let max_progress_status = lectures.len()*STATUS.DONE
 
 #progress-bar(
   width: 93%,
   height: 15pt, 
-  current: progress_status + 0.1,
+  current: progress_status,
   min: 0,
   max: max_progress_status, 
   fill: gradient.linear(red, orange),
   radius: 2pt
 )
+#align(center)[#progress_status / #max_progress_status]
 #pagebreak()
 
 
@@ -209,8 +231,10 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
 #def-group(
   def("Knowledge")[Truthful information.],
   def("Justified Belief")[Information that is plausible, well-justified, probable, but possibly false.],
-  def("Belief Revision")[A sustained, dynamic, self-correcting, truth-tracking action. True knowledge can only be recovered by effort.]
+  def("Belief Revision")[A sustained, dynamic, self-correcting, truth-tracking action. Non-monotonic. True knowledge can only be recovered by effort. Made more difficult by deceit.],
 )
+
+#box(title:"", style: "question")[Is knowledge a form of belief, or is knowledge more fundamental than belief?]
 
 #box(title: "Motto of Dynamic Epistemic Logic")[
  _"The wise sees action and knowledge as one. They see truly."_ - Bhagavad Gita
@@ -228,9 +252,13 @@ _Wrong Beliefs_: Agents...
 - ... causing them to "know" things that are not true (e.g., due to bluffing in poker).
 - Wrong beliefs are indistinguishable from true beliefs for an agent once they have become "certainty" (they really think they "know").
 
+#def("Strategic Ignorance")[It can be advantageous not to know (or pretend not to).]
+
 === Distributed, Nested, and Common Knowledge
 
 #def("Distributed Knowledge")[
+  Potential/virtual knowledge that is not reducible to one individual.
+
   Knowledge that is not necessarily held by any individual agent prior to communication, but is known when multiple agents pool their distinct information.
 ]
 
@@ -240,6 +268,7 @@ _Wrong Beliefs_: Agents...
   - Neither $A$ nor $C$ individually know $B$ made a deal with $E$ before communicating.
   - If $A$ and $C$ communicate (pool their knowledge), they deduce the truth. The fact is _distributed knowledge_ among them.
 ]
+
 #def-group(
   def("Nested Knowledge")[
     Knowledge about the knowledge of others, leading to potential infinite regress or deep epistemic reasoning (e.g., "how can you know that I do not know?").
@@ -275,6 +304,15 @@ _Wrong Beliefs_: Agents...
   *Result*: No finite sequence of successful message deliveries can achieve coordination.
 ]
 
+#box(title: "Fixpoints and Byzantine Generals", style: "remember")[
+  #def("Fixpoint")[$x$ is a fixpoint iff $f:X arrow X; x=f(x)$.]
+
+  In the case of Puzzle 0:
+  $ #common-knowledge phi equiv K_A #common-knowledge phi and K_B #common-knowledge phi $
+
+  Where $K_X$ is the knowledge operator of agent $X$, #common-knowledge is common knowledge, $phi$ is the message about the attack time.
+]
+
 #box(title: "Coordinated Attack Intuition", style: "intuition")[
   Achieving _Common Knowledge_ (@def-common-knowledge) over an unreliable communication channel is logically impossible in a finite number of steps. Unbounded nested knowledge (@def-nested-knowledge) does not equate to true common knowledge.
 ]
@@ -285,7 +323,16 @@ _Wrong Beliefs_: Agents...
   $B$ secretly intercepts and reads it.
 
   *Result*: The proposition was true right before reading, but the act of learning the message immediately falsifies it (a dynamic variant of Moore's Paradox).
+
+  #box(title: "Instantaneous truth value change", style: "note")[
+    *Paradox*: usually learning $phi$ means believing phi $square phi$, but here reading $phi$ leads to not believing $phi$: $square not phi$.
+
+    *Less paradoxical with dynamic thinking*: The truth value of the statement changes instantaneously when $B$ reads and accepts it.
+
+
+  ]
 ]
+
 
 #box(title: "Non-standard Belief Revision", style: "attention")[
   Standard belief-revision postulates (e.g., AGM) fail for complex learning actions where the informational payload refers directly to the epistemic state of the receiver.
@@ -308,7 +355,7 @@ _Wrong Beliefs_: Agents...
   - Children answer publicly and simultaneously based strictly on their knowledge without guessing.
   *Result*: For $2$ rounds, they answer in the negative. In the 3rd round, all $3$ dirty children confidently state they are dirty. In the 4th round, the clean child deduces they are clean.
 ]
-
+#pagebreak()
 #box(title: "Socratic Questioning", style: "info")[
   Discovering answers by asking questions of students. (#link("https://en.wikipedia.org/wiki/Socratic_questioning")[Wikipedia])
 ]
@@ -333,7 +380,7 @@ _Wrong Beliefs_: Agents...
   - *Honest Children Always Suffer*: The 3rd dirty child logically deduces it must be clean, answers incorrectly in round 3, and is punished.
   - *Clean Children Always Go Crazy*: The 4th (clean) child faces a strict contradiction. If it blindly applies monotonic updates via classical logic, it undergoes logical explosion (believing everything).
 ]
-
+#pagebreak()
 === Paradoxes of Induction and Probability
 
 #box(title: "Puzzle 6: Surprised Children (Unexpected Hanging)", style: "example")[
@@ -354,8 +401,8 @@ _Wrong Beliefs_: Agents...
 #box(title: "Puzzle 7 Modification: The Infinite Lottery", style: "example")[
   An infinite lottery over arbitrary natural numbers. The probability of any given ticket winning is exactly $0$. The agent is mathematically correct to believe a specific ticket will not win, yet one must win. Any finite subset of beliefs is consistent, but the infinite global set is inconsistent.
 ]
-#pagebreak()
-=== Backward Induction and Social Epistemology
+
+=== Backward Induction and Social Epistemology 
 
 
 #box(title: "Puzzle 8: The Centipede Game", style: "example")[
