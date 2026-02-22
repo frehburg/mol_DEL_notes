@@ -62,7 +62,21 @@
 #let bar(x) = $macron(#x)$ //gr MACRON
 
 // DEL symbols
-#let common-knowledge = $C square$
+#let epistemic_op(base: "K", formula: $phi$, sup: none, inf: none) = {
+  if sup == none {
+    sup = ""
+  }
+
+  if inf == none {
+    inf = ""
+  }
+  
+  $base^sup_inf #h(0pt) formula$
+}
+
+#let knowledge(formula, sup: none, inf: none) = epistemic_op(base: "K", formula: formula, sup: sup, inf: inf)
+#let belief(formula, sup: none, inf: none) = epistemic_op(base: "B", formula: formula, sup: sup, inf: inf)
+#let common-knowledge(formula, sup: none, inf: none) = epistemic_op(base: $C square$, formula: formula, sup: sup, inf: inf)
 
 Instructor: Alexandru Baltag (#link("mailto:TheAlexandruBaltag@gmail.com")) \ TA: Giuseppe Manes 
 (#link("giuseppe.manes@student.uva.nl"))
@@ -310,9 +324,9 @@ _Wrong Beliefs_: Agents...
   #def("Fixpoint")[$x$ is a fixpoint iff $f:X arrow X; x=f(x)$.]
 
   In the case of Puzzle 0:
-  $ #common-knowledge phi equiv K_A #common-knowledge phi and K_B #common-knowledge phi $
+  $ #common-knowledge($phi$) equiv K_A #common-knowledge($phi$) and K_B #common-knowledge($phi$) $
 
-  Where $K_X$ is the knowledge operator of agent $X$, #common-knowledge is common knowledge, $phi$ is the message about the attack time.
+  Where $K_X$ is the knowledge operator of agent $X$, #common-knowledge($$) is the common knowledge operator, $phi$ is the message about the attack time.
 ]
 
 #box(title: "Coordinated Attack Intuition", style: "intuition")[
@@ -403,9 +417,7 @@ _Wrong Beliefs_: Agents...
 #box(title: "Puzzle 7 Modification: The Infinite Lottery", style: "example")[
   An infinite lottery over arbitrary natural numbers. The probability of any given ticket winning is exactly $0$. The agent is mathematically correct to believe a specific ticket will not win, yet one must win. Any finite subset of beliefs is consistent, but the infinite global set is inconsistent.
 ]
-
 === Backward Induction and Social Epistemology 
-
 
 #box(title: "Puzzle 8: The Centipede Game", style: "example")[
   A sequential game with alternating moves by $a$ and $b$, deciding between stopping the game or continuing:
@@ -555,7 +567,7 @@ In the leaves ("outcomes" $o_j$) the first number is $a$'s payoff, the second nu
 === Syntax and Core Definitions
 Single-agent epistemic-doxastic logic expands standard propositional logic to formally capture an agent's knowledge and beliefs. 
 
-$ phi ::= p | not phi | phi and phi | K phi | B phi $ 
+$ phi ::= p | not phi | phi and phi | #knowledge($phi$) | #belief($phi$) $ 
 
 #def("Single-Agent Epistemic-Doxastic Model")[
   A pointed epistemic-doxastic model is a tuple $S = (S, S_0, norm(.), s_*)$, consisting of:
