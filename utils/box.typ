@@ -77,6 +77,9 @@
   let style_dict = styles.at(style)
   let fig-kind = style + "-box"
   
+  // Hide the default caption below the figure, but keep it for the outline
+  show figure.caption: none
+  
   figure(
     kind: fig-kind,
     supplement: capitalize_first_letter(style),
