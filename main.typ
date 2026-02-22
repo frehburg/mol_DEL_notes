@@ -5,6 +5,7 @@
 #import "utils/box.typ": box
 #import "utils/def.typ": def, def-group
 #import "@preview/diagraph:0.3.6": *
+#import "utils/splitgrid.typ": splitgrid
 
 #let date = datetime.today().display("[month repr:long] [day], [year]")
 
@@ -59,7 +60,9 @@
 }
 #set math.equation(numbering: "(1)")
 
+// general math symbols
 #let bar(x) = $macron(#x)$ //gr MACRON
+#let powerset(set_) = $cal(P)(#set_)$
 
 // DEL symbols
 #let epistemic_op(base: "K", formula: $phi$, sup: none, inf: none) = {
@@ -73,17 +76,21 @@
   
   $base^sup_inf #h(0pt) formula$
 }
+#let Prop = $"Prop"$
 
 #let knowledge(formula, sup: none, inf: none) = epistemic_op(base: "K", formula: formula, sup: sup, inf: inf)
 #let belief(formula, sup: none, inf: none) = epistemic_op(base: "B", formula: formula, sup: sup, inf: inf)
 #let common-knowledge(formula, sup: none, inf: none) = epistemic_op(base: $C square$, formula: formula, sup: sup, inf: inf)
+#let interpretation(formula) = $norm(#formula)$
+#let box-kripke(formula) = $[formula]$
+#let diamond-kripke(formula) = $angle.l formula angle.r$
 
 Instructor: Alexandru Baltag (#link("mailto:TheAlexandruBaltag@gmail.com")) \ TA: Giuseppe Manes 
 (#link("giuseppe.manes@student.uva.nl"))
 
 Do not distribute, please send this link: #link("https://github.com/frehburg/mol_DEL_notes")
 
-#outline()
+#outline(depth:2)
 #pagebreak()
 
 
@@ -217,7 +224,12 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
     - To define a new concept, call \`\#def("Name of Concept")\[Definition body\]\` 
     - For all others call \`\#box(title: "Title", style: "style-name")\[Box body\]
     - Each box generates a tag \#label("def-concept-name-hyphenated"). Refer to any concept you reference back to always \@def-concept-name-hyphenated
+    - use my custom definitions for common operators such as the set of propositional letters or epistemic operators:
 ]
+
+*TODO:* For some reason bullet point markers after 1 have no symbols
+
+*TODO:* fix that def title cannot be a `[content block]`
 
 = Week 1
 
@@ -399,11 +411,11 @@ _Wrong Beliefs_: Agents...
 #pagebreak()
 === Paradoxes of Induction and Probability
 
-#box(title: "Puzzle 6: Surprised Children (Unexpected Hanging)", style: "example")[
+#box(title: "Puzzle 6: Surprised Children", style: "example")[
   Teacher announces an exam next week, but the date will be a surprise (students won't even know the night before).
   - *Paradoxical Argumentation*: Students apply backward induction. It cannot be Friday (they'd know Thursday night). By elimination, it cannot be any day. They deduce the announcement is false.
   - *Result*: They dismiss the announcement. The exam occurs (e.g., Tuesday) and is indeed a complete surprise.
-]
+] #label("example-10-puzzle-6")
 
 #box(title: "Puzzle 7: The Lottery Paradox", style: "example")[
   A fair lottery with $"1,000,000"$ tickets. 
@@ -565,65 +577,252 @@ In the leaves ("outcomes" $o_j$) the first number is $a$'s payoff, the second nu
 == (Lecture): #lectures.l1-3.name <lecture1-3>
 
 === Syntax and Core Definitions
-Single-agent epistemic-doxastic logic expands standard propositional logic to formally capture an agent's knowledge and beliefs. 
+Single-agent epistemic-doxastic logic expands standard propositional logic to formally capture an agent's knowledge and beliefs.
 
-$ phi ::= p | not phi | phi and phi | #knowledge($phi$) | #belief($phi$) $ 
+$ phi ::= p | not phi | phi and phi | #knowledge($phi$) | #belief($phi$) $ where $p in Prop$.
 
-#def("Single-Agent Epistemic-Doxastic Model")[
-  A pointed epistemic-doxastic model is a tuple $S = (S, S_0, norm(.), s_*)$, consisting of:
-  - $S$: A set of "possible worlds" defining the agent's _epistemic state_ (epistemically possible states).
-  - $S_0$: A non-empty subset $S_0 subset.eq S$, called the _sphere of beliefs_ or _doxastic state_.
-  - $norm(.): Phi -> cal(P)(S)$: A valuation map assigning atomic propositions to sets of states.
-  - $s_* in S$: The designated "actual world" representing the real state of the world.
+#def("Single-Agent, pointed Epistemic-Doxastic Model")[
+  Is a tuple $S = (S, S_0, #interpretation($dot$), s_star)$, where
+  - $S$: A set of _ontic_ states defining the agent's _epistemic state_ (epistemically possible).
+  - $S_0$: A non-empty subset $S_0 subset.eq S$, called the _sphere of beliefs_ or the agent's _doxastic state_.
+  - $#interpretation($dot$): Prop -> #powerset($S$)$: A _valuation_ map assigning atomic propositions to sets of states.
+  - $s_star in S$: The designated "actual world" representing the real state of the world.
 ] #label("def-single-agent-epistemic-doxastic-model")
 
-#box(title: "Semantics of Knowledge and Belief", style: "intuition")[
+=== Semantics
+#box(title: "Interpretation", style: "intuition")[
+  - *Epistemic state*: state of the agent's knowledge: they belief $s_star$ is among $S$, but cannot distinguish between $s_i, s_j in S; i!=j$.
+  - *Doxastic state*: the agent beliefs $s_star in S_0$
+]
+
+#box(title: "Truth", style: "notation")[We write the following if $phi$ is _true_ in world $w$. When the model $bold("S")$ is fixed, we skip the subscript.
+
+$ w models_bold("S") phi $
+]
+
+#box(title: "Atomic logical connectives", style: "note")[
+  We interpret negation $not$ and conjunction $and$ as atomic logical connectives, but disjunction $or$, the conditional $arrow$, and the biconditional $arrow.r.l$ as compound connectives.
+]
+
+#def-group(
+  def("Truth in an Interpretation")[
+    A sentence $phi$ is true in a model $bold("S")$ under the valuation map $#interpretation($dot$)_bold("S")$ if
+    #enum(numbering: "i.")[$phi = p; p in Prop$: $w models p "iff" w in #interpretation($p$)$,][$phi = not psi$: $w models not psi "iff" w cancel(models) psi$,][$phi = psi and chi$: $w models psi and chi "iff" w models psi "and" w models chi$,][$phi = #knowledge($phi$)$: $w models #knowledge($phi$) "iff" forall s in S, s models phi$,][$phi = #belief($phi$)$: $w models #knowledge($phi$) "iff" forall s in S_0, s models phi$.]
+  ],
+  def("Validity")[A sentence $phi$ is *valid* in a model $bold("S")$ if it is true at every state $w in bold("S")$.],
+  def("Satisfiability")[A sentence $phi$ is *satisfiable* in a model $bold("S")$ if it is true at some state $w in bold("S")$.]
+)
+
+#box(title: "Semantics of Knowledge and Belief", style: "note")[
   The universal quantifier over the domain of possibilities is interpreted as knowledge or belief.
-  - *Knowledge* ($K phi$): Truth in all epistemically possible worlds. 
-    $w models K phi quad "iff" quad forall t in S, t models phi$.
-  - *Belief* ($B phi$): Truth in all doxastically possible worlds within the sphere of beliefs.
-    $w models B phi quad "iff" quad forall t in S_0, t models phi$.
+  - *Knowledge* ($#knowledge($phi$)$): Truth in all epistemically possible worlds. 
+  - *Belief* ($#belief($phi$)$): Truth in all doxastically possible worlds within the sphere of beliefs.
 ] #label("intuition-semantics-knowledge-belief")
 
+#pagebreak()
 === Learning and Mistaken Updates
 Learning corresponds to world elimination. An update with a sentence $phi$ is the operation of deleting all non-$phi$ possibilities from the model.
 
 #box(title: "The Concealed Coin and Mistaken Updates", style: "example")[
-  *Base Scenario:* A coin is on the table; the agent does not know if it is Heads ($H$) or Tails ($T$).
-  *Standard Update:* The agent looks and sees $H$. The $T$ world is eliminated, and only the $H$ epistemic possibility survives.
-  *Mistaken Update:* Suppose the actual world is $T$, but the agent's sight is bad and she mistakenly believes she saw $H$. If we eliminate $T$, the actual world $s_*$ is no longer in the agent's model, making it impossible to evaluate objective truth.
-  *Resolution (Third-Person Models):* We maintain an objective perspective where the real possibility always remains in the global model $S$, even if the agent believes it to be impossible. The sphere of beliefs $S_0$ is restricted to $H$, meaning the agent believes $H$, but their belief is false because $s_* in S slash S_0$.
+  #grid(columns: (85%, auto), column-gutter: 1em,
+  [*Base Scenario:* A coin is on the table; the agent does not know if it is Heads ($H$) or Tails ($T$).],
+  [#v(-.6em)
+    #figure(
+    align(center)[#scale(65%, reflow: true)[#figure(
+    raw-render(
+  ```dot
+  digraph Z {
+    node [shape=square, style=rounded];
+
+    // Group the v nodes on the top row
+    {
+        rank = same;
+        H;T;
+    }
+}
+  ```
+))]]
+  )])
+
+  #grid(columns: (85%, auto), column-gutter: 1em,
+  [*Standard Update:* The agent looks and sees $H$. The $T$ world is eliminated, and only the $H$ epistemic possibility survives.],
+  [#v(-.6em)
+    #figure(
+    align(center)[#scale(65%, reflow: true)[#figure(
+    raw-render(
+  ```dot
+  digraph Z {
+  H [shape=square, style=rounded];
+    Node1 [
+        shape=square,
+        style="rounded, dashed, filled", 
+        fillcolor="grey95", 
+        color="grey50",       // Border color
+        fontcolor="grey50",   // Text color
+        label="T"
+    ];
+}
+  ```
+))]]
+  )])
+
+  #box(title: "Update as World Elimination", style: "note")[
+    In general, updating corresponds to world elimination: an update with a sentence $phi$ is simply the operation of deleting all the non-$phi$ possibilities.
+  ]
+  #splitgrid(
+    (85%,auto)
+  )[*Mistaken Update:* Suppose the actual world is $T$, but the agent's sight is bad and she mistakenly believes she saw $H$. If we eliminate $T$, the actual world $s_star$ is no longer in the agent's model, making it impossible to evaluate objective truth.][#v(-.6em)
+    #figure(
+    align(center)[#scale(65%, reflow: true)[#figure(
+    raw-render(
+  ```dot
+  digraph Z {
+    Node1 [
+        shape=square,
+        style="rounded, dashed, filled", 
+        fillcolor="grey95", 
+        color="grey50",       // Border color
+        fontcolor="red",   // Text color
+        label="H*"
+    ];
+    
+  "T" [shape=square, style=rounded];
+}
+  ```
+))]])]
+
+  #splitgrid((85%,auto))[*Resolution (Third-Person Models):* We maintain an objective perspective where the real possibility always remains in the global model $S$, even if the agent believes it to be impossible. The sphere of beliefs $S_0$ ($square.stroked.rounded$ #h(-0.75em) $dot$ ) is restricted to $T$, meaning the agent believes $T$, but their belief is false because $s_star in S slash S_0$.][#v(-.6em)
+    #figure(
+    align(center)[#scale(65%, reflow: true)[#figure(
+    raw-render(
+  ```dot
+  digraph Z {
+    subgraph cluster_0 {
+        label = "";
+        style = rounded;
+        color = black;
+        Node1 [
+            shape=square,
+            style="rounded, dashed, filled", 
+            fillcolor="grey95", 
+            color="grey50",       // Border color
+            fontcolor="red",   // Text color
+            label="H*"
+        ];
+    }
+    
+  "T" [shape=square, style=rounded];
+}
+  ```
+))]])]
 ] #label("example-concealed-coin")
 
+#box(title: [Continuation of #link(<example-10-puzzle-6>)[Puzzle 6: Surprised Children]], style: "example")[
+Situation before the teacher's announcement (we don't know $s_star$: no star in the figure):
+  
+  #figure(
+    align(center)[#scale(55%, reflow: true)[#figure(
+    raw-render(
+  ```dot
+  graph G {
+    rankdir=LR;
+    node [shape=square, style=rounded];
+
+    subgraph cluster_0 {
+        label = "";
+        style = rounded;
+        color = black;
+        1; 2; 3; 4; 5;
+    }
+
+    
+
+    // Optional edges to ensure they stay in a row
+    1 -- 2 -- 3 -- 4 -- 5 [style=invis];
+}```
+))]])
+
+A student beliefs (for some reason) the exam will be on Monday or Tuesday, but it is on Thursday:
+  
+  #figure(
+    align(center)[#scale(55%, reflow: true)[#figure(
+    raw-render(
+  ```dot
+  graph G {
+    rankdir=LR;
+    node [shape=square, style=rounded];
+
+    subgraph cluster_0 {
+        label = "";
+        style = rounded;
+        color = black;
+        1; 2; 
+    }
+    3; "4*" [fontcolor="red"]; 5;
+    
+
+    // Optional edges to ensure they stay in a row
+    1 -- 2 -- 3 -- "4*" -- 5 [style=invis];
+}```
+))]])
+
+]
+
+#pagebreak()
 === Kripke Semantics for Epistemic-Doxastic Logic
 Sphere models can be generalized using Kripke semantics to allow for varying strengths of knowledge and belief.
 
 #def("Epistemic-Doxastic Kripke Model")[
-  A Kripke model is a tuple $S = (S, {R_i}, norm(.), s_*)$ with accessibility relations $R_i$. For knowledge and belief, this becomes $(S, tilde, ->, norm(.), s_*)$, where $tilde$ is the epistemic relation (for $K$) and $->$ is the doxastic relation (for $B$). 
+  A Kripke model is a tuple $S = (S, {R_i}_(i in I), norm(.), s_star)$ with accessibility relations $R_i$. For knowledge and belief, this becomes $(S, tilde, ->, norm(.), s_star)$, where $tilde$ is the epistemic relation (for #knowledge("")) and $->$ is the doxastic relation (for $#belief("")$). 
 ] #label("def-epistemic-doxastic-kripke-model")
+
+For atomic sentences and for Boolean connectives, we use the same semantics (and notations) as on epistemic-doxastic models.
+
+#def("Kripke modalities")[For every sentence $phi$, we can define a new sentence using the _universal Kripke modality_ $#box-kripke($R_i$)$ by universally quantifying over $R_i$ accessible worlds. The dual _existential Kripke modality_ $#diamond-kripke($R_i$)$ is given by
+$ #diamond-kripke($R_i$) phi := not #box-kripke($R_i$) not phi. $
+]
+#box(title: "Kripke modalities: subscript", style: "notation")[
+  If $R$ is unique, we abbreviate $#box-kripke($R_i$) phi$ as $square phi$, and  $#diamond-kripke($R_i$) phi$ as $diamond phi$.
+]
+
+#def("Truth in an interpretation continued: Kripke modalities")[
+  We continue @def-truth-in-an-interpretation by adding
+  #enum(numbering: "i.", start: 6)[$phi = #box-kripke($R_i$) phi$: $w models #box-kripke($R_i$) phi "iff" v models phi forall v: w R_i v$.]
+]
 
 #box(title: "Axioms and Relational Properties", style: "theorem")[
   Validities for Knowledge (Equivalence relation $tilde$, giving an S5 model):
-  - *Veracity* ($K phi => phi$): $tilde$ is reflexive.
-  - *Positive Introspection* ($K phi => K K phi$): $tilde$ is transitive.
-  - *Negative Introspection* ($not K phi => K not K phi$): $tilde$ is Euclidean (and symmetric).
+  #enum(numbering: "i.", start: 1)[*Veracity* ($#knowledge($phi$) => phi$): $tilde$ is reflexive.][*Positive Introspection* ($#knowledge($phi$) => K #knowledge($phi$)$): $tilde$ is transitive.][*Negative Introspection* ($not #knowledge($phi$) => K not #knowledge($phi$)$): $tilde$ is Euclidean (and symmetric).]
 
   Validities for Belief (KD45 model properties for $->$):
-  - *Consistency* ($not B(phi and not phi)$): $->$ is serial.
-  - *Positive Introspection* ($B phi => B B phi$): $->$ is transitive.
-  - *Negative Introspection* ($not B phi => B not B phi$): $->$ is Euclidean.
+  #enum(numbering: "i.", start: 4)[*Consistency* ($not B(phi and not phi)$): $->$ is serial.][*Positive Introspection* ($#belief($phi$) => #belief(belief($phi$))$): $->$ is transitive.][*Negative Introspection* ($not #belief($phi$) => "B" not #belief($phi$)$): $->$ is Euclidean.]
 
   Interaction Properties:
-  - *Knowledge implies Belief* ($K phi => B phi$): If $s -> t$ then $s tilde t$.
-  - *Strong Positive Introspection* ($B phi => K B phi$): If $s tilde t$ and $t -> w$ then $s -> w$.
+  #enum(numbering: "i.", start: 7)[*Knowledge implies Belief* ($#knowledge($phi$) => #belief($phi$)$): If $s -> t$ then $s tilde t$.][*Strong Positive Introspection* ($#belief($phi$) => K #belief($phi$)$): If $s tilde t$ and $t -> w$ then $s -> w$.][*Strong Negative Introspection* ($not #belief($phi$) => #knowledge($not #belief($phi$)$)$): If $s tilde t$ and $t -> w$ then $s -> w$.]
 ] #label("theorem-axioms-relational-properties")
 
+*Sound and Complete Proof System for single agent epistemic-doxastic logic*:
+- Axioms: 
+  - From above: i. - iv., vii. - ix.
+  - All propositional tautologies
+  - Modus Ponens: from $phi$ and $(phi arrow psi)$ infer $psi$
+  - Necessitation: from $phi$ infer $#knowledge($phi$)$ and $#belief($phi$)$
+  - Kripke's axioms for #knowledge("") and #belief(""):
+    - $#knowledge($phi arrow psi$) arrow #knowledge($phi$) arrow #knowledge($psi$)$ 
+    - $#belief($phi arrow psi$) arrow #belief($phi$) arrow #belief($psi$)$ 
+
+*Generalization*
+- Introspection is not universally accepted
+- It is convenient to have a more general semantics where the above do not hold
+- There might be "crazy" agents with inconsistent beliefs
+- People may believe they know things they don't actually know
+
 #box(title: "Equivalence of Models", style: "theorem")[
-  Every epistemic-doxastic sphere model $S = (S, S_0, norm(.), s_*)$ is completely equivalent to an epistemic-doxastic Kripke model $S' = (S, tilde, ->, norm(.), s_*)$ that satisfies the same sentences at $s_*$. Furthermore, given a doxastic Kripke model, the doxastic relation $->$ uniquely determines the epistemic relation $tilde$.
+  Every epistemic-doxastic sphere model $S = (S, S_0, norm(.), s_star)$ is completely equivalent to an epistemic-doxastic Kripke model $S' = (S, tilde, ->, norm(.), s_star)$ that satisfies the same sentences at $s_star$. Furthermore, given a doxastic Kripke model, the doxastic relation $->$ uniquely determines the epistemic relation $tilde$.
 ] #label("theorem-equivalence-of-models")
 
 #box(title: "Logical Omniscience", style: "attention")[
-  Any Kripke modality validates axiom K ($K(phi => psi) => (K phi => K psi)$) and the Necessitation rule (if $phi$ is valid, $K phi$ is valid). Consequently, Kripke semantics models "ideal reasoners" with unlimited inference powers who know/believe all logical entailments, failing to capture bounded rationality.
+  Any Kripke modality validates axiom K ($K(phi => psi) => (#knowledge($phi$) => K psi)$) and the Necessitation rule (if $phi$ is valid, $#knowledge($phi$)$ is valid). Consequently, Kripke semantics models "ideal reasoners" with unlimited inference powers who know/believe all logical entailments, failing to capture bounded rationality.
 ] #label("attention-logical-omniscience")
 
 === Social Epistemology and Information Cascades
@@ -649,6 +848,8 @@ Group dynamics often deviate from ideal individualized epistemic logic due to th
   - *Army Ant Circular Mill:* If an army ant loses the pheromone trail, it is biologically programmed to follow the ant directly in front of it. This simple rule works locally but can result in a massive recursive loop (a death spiral up to 400m in diameter) where the ants walk in a circle until they die.
   - *The Men Who Stare at Goats (Cold War):* A French newspaper published a fabricated story about US military research into psychic weapons. Soviet intelligence read this, assumed it was a cover-up, and initiated their own psychic research program. US intelligence discovered the Soviet program and, assuming the Soviets were onto a real threat, started their own actual research program, sparking a 30-year arms race built on an initial cascade of false information.
 ] #label("example-biological-geopolitical-cascades")
+
+*Continue* on slide 30: example 3 continued
 
 = Week 2
 
