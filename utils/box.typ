@@ -121,7 +121,13 @@
         width: 100%,
         fill: style_dict.neg-color,
         inset: 10pt,
-        text(fill: black, content)
+        align(left)[
+          #let text-color = black;
+          #if style_dict.keys().contains("text-color") {
+            text-color = style_dict.text-color;
+          }
+          #text(fill: text-color, content)
+        ]
       )
     )
   )])
