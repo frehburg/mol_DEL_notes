@@ -105,7 +105,7 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
 #let STATUS_SYMBOL = (
   str(STATUS.NOT_SEEN): $emptyset$,
   str(STATUS.NOT_STARTED): $crossmark$,
-  str(STATUS.WORK_IN_PROGRESS): $Theta$,
+  str(STATUS.WORK_IN_PROGRESS): $"WIP"$,
   str(STATUS.DONE): $checkmark$
 )
 
@@ -120,7 +120,7 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
     "status": STATUS.DONE, "name": "Single-Agent Epistemic-Doxastic Logics: Kripke Models", "ref": ref(<lecture1-3>)
     ),
   "l2-1": (
-    "status": STATUS.NOT_STARTED, "name": "Multi-agent Models and Public Announcement Logic (PAL)", "ref": ref(<lecture2-1>)
+    "status": STATUS.WORK_IN_PROGRESS, "name": "Multi-agent Models and Public Announcement Logic (PAL)", "ref": ref(<lecture2-1>)
     ),
   "l2-2": (
     "status": STATUS.NOT_STARTED, "name": "PAL Continued", "ref": ref(<lecture2-2>)
@@ -137,25 +137,25 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
   "l3-3": (
     "status": STATUS.NOT_STARTED, "name": "The problem of belief revision", "ref": ref(<lecture3-3>)
     ),
-  "l4-1": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture3-3>)),
-"t4-2": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture4-1>)),
-"l4-3": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<tutorial4-2>)),
+  "l4-1": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture3-3>)),
+"t4-2": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture4-1>)),
+"l4-3": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<tutorial4-2>)),
 
-"l5-1": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture4-3>)),
-"t5-2": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture5-1>)),
-"l5-3": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<tutorial5-2>)),
+"l5-1": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture4-3>)),
+"t5-2": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture5-1>)),
+"l5-3": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<tutorial5-2>)),
 
-"l6-1": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture5-3>)),
-"t6-2": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture6-1>)),
-"l6-3": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<tutorial6-2>)),
+"l6-1": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture5-3>)),
+"t6-2": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture6-1>)),
+"l6-3": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<tutorial6-2>)),
 
-"l7-1": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture6-3>)),
-"t7-2": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture7-1>)),
-"l7-3": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<tutorial7-2>)),
+"l7-1": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture6-3>)),
+"t7-2": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture7-1>)),
+"l7-3": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<tutorial7-2>)),
 
-"l8-1": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture7-3>)),
-"t8-2": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<lecture8-1>)),
-"l8-3": ("status": STATUS.NOT_STARTED, "name": "", "ref": ref(<tutorial8-2>)),
+"l8-1": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture7-3>)),
+"t8-2": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture8-1>)),
+"l8-3": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<tutorial8-2>)),
 )
 
 #let lecture-overview(data) = {
@@ -191,8 +191,8 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
 #lecture-overview(lectures)
 
 
-#let progress_status = lectures.values().map(item => item.status).sum()
-#let max_progress_status = lectures.len()*STATUS.DONE
+#let progress_status = lectures.values().filter(item => item.status >= 0).map(item => item.status).sum()
+#let max_progress_status = lectures.values().filter(item => item.status >= 0).len()*STATUS.DONE
 
 #progress-bar(
   width: 93%,
@@ -928,6 +928,104 @@ digraph Z {
 = Week 2
 
 == (Lecture): #lectures.l2-1.name <lecture2-1>
+
+=== Multi-Agent Kripke Models & Modalities
+
+#def("Multi-Agent Kripke Model")[
+  A multi-agent Kripke model is a tuple $ S = (S, {->_a}_(a in cal(A)), #interpretation($dot$)) $ where $cal(A)$ is a set of labels representing the names of epistemic agents.
+]
+
+#def("Epistemic Modalities")[
+  For every sentence $phi$, we define $square_a phi$ by universally quantifying over $->_a$-accessible worlds:
+  $s models_S square_a phi <=> t models_S phi$ for all $t$ such that $s ->_a t$.
+  This is interpreted as knowledge, denoted $#knowledge($phi$, inf: "a")$, or belief, denoted $#belief($phi$, inf: "a")$. Its existential dual $diamond_a phi := not square_a not phi$ denotes epistemic possibility.
+]
+
+
+#example(title: "The Concealed Coin")[
+  Two players $a$, $b$, along with a referee $c$ play a game. The referee covers a fair coin so nobody knows the outcome. Using concatenated arrows, we can express iterated knowledge. For instance, $b$ knows that $a$ does not know the outcome but knows it is Heads ($H$) or Tails ($T$):
+  $w models square_b (not square_a H and not square_a T) and square_b square_a (H or T)$.
+]
+
+=== Common Knowledge
+
+#def("Common Knowledge (Group)")[
+  Common knowledge within a group $G subset.eq cal(A)$, denoted $#common-knowledge($phi$, inf: "G")$, is evaluated by quantifying over all worlds accessible by any finite concatenation of arrows within $G$:
+  $s models_S #common-knowledge($phi$, inf: "G") <=> t models_S phi$ for every $t$ plus every finite chain $s = s_0 ->_(a_1) s_1 ->_(a_2) dots ->_(a_n) s_n = t$ with $a_1, dots, a_n in G$.
+  It is equivalent to the Kripke modality for the reflexive-transitive closure of the union of all epistemic relations: $[(union_(a in G) ->_a)^*]$.
+]
+
+#box(title: "Common Knowledge as Infinite Conjunction", style: "intuition")[
+  Let $E_G phi := and_(a in G) square_a phi$ ("everybody in $G$ knows $phi$"). @def-common-knowledge-group is semantically equivalent to the infinite conjunction:
+  $phi and E_G phi and E_G E_G phi and dots$
+]
+
+#box(title: "Validities for Common Modalities", style: "theorem")[
+  - *Fixed-Point Axiom* (Mix): $#common-knowledge($phi$, inf: "G") => (phi and E_G #common-knowledge($phi$, inf: "G"))$
+  - *Induction Axiom*: $#common-knowledge($phi => E_G phi$, inf: "G") => (phi => #common-knowledge($phi$, inf: "G"))$
+]
+
+=== Distributed Knowledge
+
+#def("Distributed Knowledge (Group)")[
+  Distributed knowledge within a group $G$, denoted $D square_G phi$ or $D k_G phi$, is obtained by quantifying over worlds simultaneously accessible by all arrows for agents in $G$ (i.e., the intersection of epistemic relations $inter_(a in G) ->_a$):
+  $s models_S D square_G phi <=> t models_S phi$ for every $t$ such that $s ->_a t$ holds for all $a in G$.
+]
+
+#box(title: "Epistemic Potential", style: "intuition")[
+  @def-distributed-knowledge-group captures the implicit knowledge of the group: what the agents in $G$ could come to know if they pooled all their private knowledge.
+]
+
+#example(title: "Two Muddy Children")[
+  Two children (1 & 2) have dirty foreheads ($d_1$, $d_2$). Each sees the other but not themselves. In the real world $w = (d_1, d_2)$, neither knows both are dirty, but it is distributed knowledge:
+  $w models not #knowledge($d_1 and d_2$, inf: "1") and not #knowledge($d_1 and d_2$, inf: "2") and D k (d_1 and d_2)$.
+]
+
+
+#box(title: "Validities for Distributed Knowledge", style: "theorem")[
+  - $#knowledge($phi$, inf: "a") => D k phi$
+  - $(#knowledge($phi$, inf: "a") and #knowledge($psi$, inf: "b")) => D k (phi and psi)$
+]
+
+=== Dynamics & Public Announcements
+
+#def("Public Announcement Logic")[
+  A public announcement $!phi$ is a joint update that deletes all non-$phi$ worlds from a model. The model transformer maps $S$ to $S^(!phi) = (S_phi, ->_phi, #interpretation($dot$)_phi)$, where $S_phi = #interpretation($phi$)_S$, while the relations as well as valuations are restricted to $S_phi$. The dynamic modality is evaluated as:
+  $s models_S #box-kripke($!phi$) psi <=> t models_(S^(!phi)) psi$ for all $t in S^(!phi)$ such that $s ->_(S)^(!phi) t$.
+]
+
+
+#box(title: "PAL Reduction Axioms", style: "theorem")[
+  PAL (@def-public-announcement-logic) allows translating dynamic formulas to basic modal logic via reduction axioms:
+  - *Atomic Permanence*: $#box-kripke($!phi$) p <=> (phi => p)$
+  - *Announcement-Negation*: $#box-kripke($!phi$) not psi <=> (phi => not #box-kripke($!phi$) psi)$
+  - *Announcement-Conjunction*: $#box-kripke($!phi$) (psi_1 and psi_2) <=> (#box-kripke($!phi$) psi_1 and #box-kripke($!phi$) psi_2)$
+  - *Announcement-Knowledge*: $#box-kripke($!phi$) square_a psi <=> (phi => square_a #box-kripke($!phi$) psi)$
+]
+
+#box(title: "Expressivity & Succinctness", style: "info")[
+  PAL has the exact same expressivity as basic modal logic because dynamic modalities can be eliminated using the reduction axioms. However, PAL is exponentially more succinct.
+]
+
+=== Moore Sentences & Paradoxes
+
+#def("Moore Sentences")[
+  Sentences that become false after being truthfully announced. For a Moore sentence $phi$, we have $#box-kripke($!phi$) not phi$. Therefore, they become known to be false after being announced: $#box-kripke($!phi$) #knowledge($not phi$, inf: "a")$.
+]
+
+#box(title: "Moore Sentences in Muddy Children", style: "example")[
+  "You are dirty but you do not know it" is a Moore sentence for child 1: $d_1 and not #knowledge($d_1$, inf: "1")$.
+  This is initially true in the muddy children model. However, after it is publicly announced, child 1 learns they are dirty. The second conjunct becomes false, making the entire sentence false.
+  
+  _Continuation_: In the grand finale of the muddy children puzzle, children repeatedly announce their ignorance: $!(and_i (not #knowledge($d_i$, inf: "i") and not #knowledge($not d_i$, inf: "i")))$. Each round deletes worlds where a child would have known their state, converting distributed knowledge into common knowledge until the dirty children deduce they are dirty.
+]
+
+#box(title: "Closure under Composition", style: "theorem")[
+  Performing two successive public announcements is equivalent to a single, more complex announcement:
+  $#box-kripke($!phi$) #box-kripke($!psi$) theta <=> #box-kripke($!(phi and #box-kripke($!phi$) psi)$) theta$.
+]
+
+*TODO*: read and improve
 
 == (Lecture): #lectures.l2-2.name <lecture2-2>
 
