@@ -155,3 +155,23 @@
 
 // Second test to show the counter incrementing
 #box(title: "Another Example", style: "example", "This example should be numbered 2.")
+
+#let style-funcs = (:)
+
+#for s-name in styles.keys() {
+  style-funcs.insert(
+    s-name, 
+    (title, body) => box(style: s-name, title: title, body)
+  )
+}
+
+#let intuition = style-funcs.intuition
+#let example = style-funcs.example
+#let theorem = style-funcs.theorem
+#let proof = style-funcs.proof
+#let attention = style-funcs.attention
+#let remember = style-funcs.remember
+#let question = style-funcs.question
+#let info = style-funcs.info
+#let note = style-funcs.note
+#let notation = style-funcs.notation

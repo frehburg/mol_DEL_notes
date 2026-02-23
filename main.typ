@@ -2,7 +2,7 @@
 #import "@preview/clean-math-paper:0.2.4": *
 #import "examples/themes/filips-math-paper/template.typ": paper
 #import "@preview/curryst:0.5.1": rule, prooftree
-#import "utils/box.typ": box
+#import "utils/box.typ": box, intuition, example, theorem, proof, attention, remember, question, info, note, notation,
 #import "utils/def.typ": def, def-group
 #import "@preview/diagraph:0.3.6": *
 #import "utils/splitgrid.typ": splitgrid
