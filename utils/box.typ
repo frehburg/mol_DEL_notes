@@ -106,7 +106,7 @@
       block(
         width: 100%,
         fill: style_dict.color,
-        inset: 10pt,
+        inset: 5pt,
       )[#align(left)[
         #let title-color = style_dict.at("title-color", default: style_dict.neg-color)
         

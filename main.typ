@@ -85,7 +85,7 @@
 #let box-kripke(formula) = $[formula]$
 #let diamond-kripke(formula) = $angle.l formula angle.r$
 
-Instructor: Alexandru Baltag (#link("mailto:TheAlexandruBaltag@gmail.com")) \ TA: Giuseppe Manes 
+*Instructor*: Alexandru Baltag (#link("mailto:TheAlexandruBaltag@gmail.com")) \ *TA*: Giuseppe Manes 
 (#link("giuseppe.manes@student.uva.nl"))
 
 Do not distribute, please send this link: #link("https://github.com/frehburg/mol_DEL_notes")
@@ -117,7 +117,7 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
     "status": STATUS.DONE, "name": "Main Themes, Puzzles, and Paradoxes Continued", "ref": ref(<lecture1-2>)
     ),
   "l1-3": (
-    "status": STATUS.WORK_IN_PROGRESS, "name": "Single-Agent Epistemic-Doxastic Logics: Kripke Models", "ref": ref(<lecture1-3>)
+    "status": STATUS.DONE, "name": "Single-Agent Epistemic-Doxastic Logics: Kripke Models", "ref": ref(<lecture1-3>)
     ),
   "l2-1": (
     "status": STATUS.NOT_STARTED, "name": "Multi-agent Models and Public Announcement Logic (PAL)", "ref": ref(<lecture2-1>)
@@ -477,7 +477,7 @@ In the leaves ("outcomes" $o_j$) the first number is $a$'s payoff, the second nu
   column-gutter: 3%,
   [*Elimination Step 1*
     
-    #align(center)[#scale(70%, reflow: true)[#figure(
+    #align(center)[#scale(60%, reflow: true)[#figure(
     raw-render(
   ```dot
   digraph Z {
@@ -505,7 +505,7 @@ In the leaves ("outcomes" $o_j$) the first number is $a$'s payoff, the second nu
 ))]]],
   [*Elimination Step 2*
     
-    #align(center)[#scale(70%, reflow: true)[#figure(
+    #align(center)[#scale(60%, reflow: true)[#figure(
     raw-render(
   ```dot
   digraph Z {
@@ -531,7 +531,7 @@ In the leaves ("outcomes" $o_j$) the first number is $a$'s payoff, the second nu
   ```
 ))]]],
   [*Elimination Step 3*
-  #align(center)[#scale(70%, reflow: true)[#figure(
+  #align(center)[#scale(60%, reflow: true)[#figure(
     raw-render(
   ```dot
   digraph Z {
@@ -565,14 +565,34 @@ In the leaves ("outcomes" $o_j$) the first number is $a$'s payoff, the second nu
   - *Counterargument*: If $B$ reaches $v_1$, he observes $A$ violating $"CKR"$ (she didn't stop at $v_0$). If $B$ adopts *Rational Pessimism*—assuming $A$ is irrational and will thus choose $o_4$ at $v_2$—he should continue. If $A$ anticipates this belief revision, her initial deviation becomes strictly rational. The epistemic foundation of backward induction contradicts its own counterfactuals.
 ]
 
+=== Social Epistemology
+Group dynamics often deviate from ideal individualized epistemic logic due to the recursive nature of social evidence.
+
+#def("Pluralistic Ignorance")[
+  A situation where the group collectively knows or acts upon less information than the individuals possess privately. Often observed in totalitarian regimes where public behavior contradicts private beliefs.
+]
+
 #box(title: "Puzzle 9: Wisdom vs. Madness of the Crowds", style: "example")[
   - *Wisdom of the Crowds*: Distributed group knowledge often empirically exceeds the most expert individual (e.g., aggregating independent estimates).
   - *Madness of the Crowds*: Systems can fail systematically due to cascading social epistemology.
-    - *Pluralistic Ignorance*: Group members privately reject a norm but incorrectly assume others accept it (e.g., no one asking questions in a confusing lecture).
-    - *Informational Cascades*: Sequential decision-making where rational agents ignore their private signals to follow public actions (e.g., sequentially guessing urn colors based on previous skewed guesses).
-    - *The Circular Mill*: Biological equivalent where army ants follow the ant in front, creating an endless, fatal loop.
-    - *The Human Mill*: Cold War arms races driven by circular, self-fulfilling falsehoods (e.g., nations mimicking adversary research based entirely on forged intelligence).
 ]
+
+#box(title: "Information Cascades", style: "intuition")[
+  An information cascade occurs when agents base their decisions on the observable behavior of prior agents rather than their own private evidence, leading to a breakdown of _epistemic democracy_ (the wisdom of crowds).
+] #label("intuition-information-cascades")
+
+#box(title: "The Black and White Urn Problem", style: "example")[
+  *Setup:* One urn is in a room. It is either Urn B (2/3 black marbles) or Urn W (2/3 white marbles). Agents enter one by one, draw a marble, replace it, and publicly record their guess of the urn on a blackboard.
+  *The Cascade:* 1. Voter 1 draws Black and guesses Urn B.
+  2. Voter 2 draws Black and guesses Urn B.
+  3. Voter 3 draws White. However, the public evidence (two B votes) combined with their private evidence (one W draw) yields an aggregate evidence of (B, B, W). The rational epistemic choice is still to guess Urn B.
+  *Result:* From Voter 3 onwards, everyone will vote Urn B regardless of their private draw. If the first two voters happened to draw the minority color (probability $1/9$), the entire crowd of $n$ voters will lock into the wrong conclusion.
+] #label("example-urn-problem")
+
+#box(title: "Biological and Geopolitical Cascades", style: "example")[
+  - *Army Ant Circular Mill:* If an army ant loses the pheromone trail, it is biologically programmed to follow the ant directly in front of it. This simple rule works locally but can result in a massive recursive loop (a death spiral up to 400m in diameter) where the ants walk in a circle until they die.
+  - *The Men Who Stare at Goats (Cold War):* A French newspaper published a fabricated story about US military research into psychic weapons. Soviet intelligence read this, assumed it was a cover-up, and initiated their own psychic research program. US intelligence discovered the Soviet program and, assuming the Soviets were onto a real threat, started their own actual research program, sparking a 30-year arms race built on an initial cascade of false information.
+] #label("example-biological-geopolitical-cascades")
 
 == (Lecture): #lectures.l1-3.name <lecture1-3>
 
@@ -587,7 +607,8 @@ $ phi ::= p | not phi | phi and phi | #knowledge($phi$) | #belief($phi$) $ where
   - $S_0$: A non-empty subset $S_0 subset.eq S$, called the _sphere of beliefs_ or the agent's _doxastic state_.
   - $#interpretation($dot$): Prop -> #powerset($S$)$: A _valuation_ map assigning atomic propositions to sets of states.
   - $s_star in S$: The designated "actual world" representing the real state of the world.
-] #label("def-single-agent-epistemic-doxastic-model")
+]
+_Sphere-based_: represents beliefs as nested layers of possible worlds, ranking worlds by their plausibility
 
 === Semantics
 #box(title: "Interpretation", style: "intuition")[
@@ -619,7 +640,7 @@ $ w models_bold("S") phi $
   - *Belief* ($#belief($phi$)$): Truth in all doxastically possible worlds within the sphere of beliefs.
 ] #label("intuition-semantics-knowledge-belief")
 
-#pagebreak()
+
 === Learning and Mistaken Updates
 Learning corresponds to world elimination. An update with a sentence $phi$ is the operation of deleting all non-$phi$ possibilities from the model.
 
@@ -671,32 +692,36 @@ Learning corresponds to world elimination. An update with a sentence $phi$ is th
   ]
   #splitgrid(
     (85%,auto)
-  )[*Mistaken Update:* Suppose the actual world is $T$, but the agent's sight is bad and she mistakenly believes she saw $H$. If we eliminate $T$, the actual world $s_star$ is no longer in the agent's model, making it impossible to evaluate objective truth.][#v(-.6em)
+  )[*Mistaken Update:* The agent mistakenly believes they saw $H$. If we eliminate $T$, the actual world $s_star$ is no longer in the agent's model, making it impossible to evaluate objective truth.][#v(-.6em)
     #figure(
     align(center)[#scale(65%, reflow: true)[#figure(
     raw-render(
   ```dot
   digraph Z {
-    Node1 [
+        Node1 [
         shape=square,
         style="rounded, dashed, filled", 
         fillcolor="grey95", 
         color="grey50",       // Border color
         fontcolor="red",   // Text color
-        label="H*"
+        label="T*"
     ];
     
-  "T" [shape=square, style=rounded];
+  "H" [shape=square, style=rounded];
+  { rank=same; H; Node1; }
+  H -> Node1 [style=invis]
 }
   ```
 ))]])]
 
-  #splitgrid((85%,auto))[*Resolution (Third-Person Models):* We maintain an objective perspective where the real possibility always remains in the global model $S$, even if the agent believes it to be impossible. The sphere of beliefs $S_0$ ($square.stroked.rounded$ #h(-0.75em) $dot$ ) is restricted to $T$, meaning the agent believes $T$, but their belief is false because $s_star in S slash S_0$.][#v(-.6em)
+  #splitgrid((85%,auto))[*Resolution (Third-Person Models):* We maintain an objective perspective where the real possibility always remains in the global model $S$, even if the agent believes it to be impossible. The sphere of beliefs $S_0$ ($square.stroked.rounded$ #h(-0.75em) $dot$ ) is restricted to $T$, meaning the agent believes $H$, but their belief is false because $s_star in S slash S_0$.][#v(-.6em)
     #figure(
     align(center)[#scale(65%, reflow: true)[#figure(
     raw-render(
   ```dot
   digraph Z {
+    rankdir=LR;
+    ranksep=0.25;
     subgraph cluster_0 {
         label = "";
         style = rounded;
@@ -707,11 +732,12 @@ Learning corresponds to world elimination. An update with a sentence $phi$ is th
             fillcolor="grey95", 
             color="grey50",       // Border color
             fontcolor="red",   // Text color
-            label="H*"
+            label="T*"
         ];
     }
     
-  "T" [shape=square, style=rounded];
+  H [shape=square, style=rounded];
+  H -> Node1 [style=invis]
 }
   ```
 ))]])]
@@ -772,8 +798,10 @@ A student beliefs (for some reason) the exam will be on Monday or Tuesday, but i
 === Kripke Semantics for Epistemic-Doxastic Logic
 Sphere models can be generalized using Kripke semantics to allow for varying strengths of knowledge and belief.
 
+#box(title: "Kripke Model", style: "remember")[#def("Kripke Model")[A Kripke model is a tuple $S = (S, {R_i}_(i in I), norm(.), s_star)$ with set of states $S$, accessibility relations $R_i$, valuation $#interpretation($dot$)$, and actual state $s_star$.]]
+
 #def("Epistemic-Doxastic Kripke Model")[
-  A Kripke model is a tuple $S = (S, {R_i}_(i in I), norm(.), s_star)$ with accessibility relations $R_i$. For knowledge and belief, this becomes $(S, tilde, ->, norm(.), s_star)$, where $tilde$ is the epistemic relation (for #knowledge("")) and $->$ is the doxastic relation (for $#belief("")$). 
+  To model knowledge $#knowledge("")$ and belief $#belief("")$, this becomes $(S, tilde, ->, norm(.), s_star)$, where $tilde$ is the epistemic relation (for #knowledge("")) and $->$ is the doxastic relation (for $#belief("")$). 
 ] #label("def-epistemic-doxastic-kripke-model")
 
 For atomic sentences and for Boolean connectives, we use the same semantics (and notations) as on epistemic-doxastic models.
@@ -790,16 +818,88 @@ $ #diamond-kripke($R_i$) phi := not #box-kripke($R_i$) not phi. $
   #enum(numbering: "i.", start: 6)[$phi = #box-kripke($R_i$) phi$: $w models #box-kripke($R_i$) phi "iff" v models phi forall v: w R_i v$.]
 ]
 
+#box(title: [#link(<example-concealed-coin>)[Example 17 contd.: Coins and Knowledge]], style: "example")[
+  The agent's knowledge in the concealed coin scenario can be represented as:
+  #v(-.6em)
+    #figure(
+    align(center)[#scale(65%, reflow: true)[#figure(
+    raw-render(
+  ```dot
+  digraph Z {
+    node [shape=square, style=rounded];
+
+    // Group the v nodes on the top row
+    {
+        rank = same;
+        H;T;
+    }
+    H -> H [arrowhead=rvee, tailport=w]; T -> T [arrowhead=lvee, tailport=e]; H -> T [dir=both, arrowhead=vee, arrowtail=vee, penwidth=0.5, minlen=2];
+}
+  ```
+))]]
+  )
+  - The arrows represent the *epistemic relation* $tilde$, capturing the agent's uncertainty about the state of the world.
+  - An arrow from state $s$ to state $t$ means that if $s_star = s$, the agent could not distinguish between $s$ and $t$.
+]
+
+#box(title: [#link(<example-concealed-coin>)[Example 17 contd.: Coins and Belief]], style: "example")[
+  The agent's belief after the mistaken update can be represented as:
+  #v(-.6em)
+    #figure(
+    align(center)[#scale(65%, reflow: true)[#figure(
+    raw-render(
+  ```dot
+digraph Z {
+    node [shape=square, style=rounded];
+
+
+    {
+        rank = same;
+        H -> T [style=invis];
+    }
+
+    H -> H [arrowhead=rvee, tailport=w];
+    // Note: Your T edge was missing a destination, fixed below
+    T -> H [arrowhead=vee, arrowtail=vee, penwidth=0.5, minlen=2, tailport=w];
+}
+  ```
+))]]
+  )
+  - The arrows represent the *epistemic relation* $tilde$, capturing the agent's uncertainty about the state of the world.
+  - An arrow from state $s$ to state $t$ means that if $s_star = s$, the agent could not distinguish between $s$ and $t$.
+]
+
+
+#box(title: "Named axioms in Modal Logic", style: "remember")[Certain axioms have set names in Modal Logic:
+- $(bold("K"))$ Basic Modal Logic
+- $(bold("T"))$ Reflexivity $square phi arrow phi$
+- $(bold(4))$ Transitivity $square phi arrow square square phi$
+- $(bold(5))$ Euclideaness $diamond phi arrow square diamond phi$
+- $(bold("D"))$ Seriality $square phi arrow diamond phi$
+- _Weak Epistemic Model_ $(bold("S4")) = (bold("K")) + (bold("T")) + (bold(4))$: No negatice introspection (only relfex. & trans.)
+- _Epistemic Model_: $(bold("S5")) = (bold("K")) + (bold("T")) + (bold(5))$
+  - Note: An $(bold("S5"))$-model is one where the accessibility relations are equivalence relations: \ reflexive, transitive, symmetric (with the other two properties, Symmetry $equiv$ Euclidean)
+- _Doxastic Model_: $(bold("KD45")) = (bold("K")) + (bold("D")) + (bold(4)) + (bold(5))$
+  - Note: Doxastic Models are not symmetric, but serial ($forall s: exists t: s arrow t$), transitive, Euclidean
+
+]
+
 #box(title: "Axioms and Relational Properties", style: "theorem")[
+  A Kripke model satisfying all the below conditions on the relations $tilde$ and $arrow$ is called an *epistemic-doxastic Kripke model*.
+
   Validities for Knowledge (Equivalence relation $tilde$, giving an S5 model):
-  #enum(numbering: "i.", start: 1)[*Veracity* ($#knowledge($phi$) => phi$): $tilde$ is reflexive.][*Positive Introspection* ($#knowledge($phi$) => K #knowledge($phi$)$): $tilde$ is transitive.][*Negative Introspection* ($not #knowledge($phi$) => K not #knowledge($phi$)$): $tilde$ is Euclidean (and symmetric).]
+  #enum(numbering: "i.", start: 1)[*Veracity* ($#knowledge($phi$) => phi$): $tilde$ is reflexive.][*Positive Introspection* ($#knowledge($phi$) => #knowledge(knowledge($phi$))$): $tilde$ is transitive ($bold(4)$).][*Negative Introspection* ($not #knowledge($phi$) => #knowledge($not #knowledge($phi$)$)$): $tilde$ is Euclidean (and symmetric) ($bold(5)$).]
 
   Validities for Belief (KD45 model properties for $->$):
   #enum(numbering: "i.", start: 4)[*Consistency* ($not B(phi and not phi)$): $->$ is serial.][*Positive Introspection* ($#belief($phi$) => #belief(belief($phi$))$): $->$ is transitive.][*Negative Introspection* ($not #belief($phi$) => "B" not #belief($phi$)$): $->$ is Euclidean.]
 
-  Interaction Properties:
-  #enum(numbering: "i.", start: 7)[*Knowledge implies Belief* ($#knowledge($phi$) => #belief($phi$)$): If $s -> t$ then $s tilde t$.][*Strong Positive Introspection* ($#belief($phi$) => K #belief($phi$)$): If $s tilde t$ and $t -> w$ then $s -> w$.][*Strong Negative Introspection* ($not #belief($phi$) => #knowledge($not #belief($phi$)$)$): If $s tilde t$ and $t -> w$ then $s -> w$.]
+  $#knowledge($belief("")$)$ Interaction Properties:
+  #enum(numbering: "i.", start: 7)[*Knowledge implies Belief* ($#knowledge($phi$) => #belief($phi$)$): If $s -> t$ then $s tilde t$.][*Strong Positive Introspection* ($#belief($phi$) => #knowledge(belief($phi$))$): If $s tilde t$ and $t -> w$ then $s -> w$.][*Strong Negative Introspection* ($not #belief($phi$) => #knowledge($not #belief($phi$)$)$): If $s tilde t$ and $t -> w$ then $s -> w$.]
 ] #label("theorem-axioms-relational-properties")
+
+*Observations*:
+1. Epistemic-doxastic Kripke models are equivalent to Simple Epistemic-Doxastic Models(@def-single-agent-pointed-epistemic-doxastic-model) 
+2. The epistemic relation is completely determined by the doxastic relation.
 
 *Sound and Complete Proof System for single agent epistemic-doxastic logic*:
 - Axioms: 
@@ -812,44 +912,18 @@ $ #diamond-kripke($R_i$) phi := not #box-kripke($R_i$) not phi. $
     - $#belief($phi arrow psi$) arrow #belief($phi$) arrow #belief($psi$)$ 
 
 *Generalization*
-- Introspection is not universally accepted
 - It is convenient to have a more general semantics where the above do not hold
-- There might be "crazy" agents with inconsistent beliefs
-- People may believe they know things they don't actually know
+  - Introspection is not universally accepted
+  - People may believe they know things they don't actually know
+  - There might be "crazy" agents with inconsistent beliefs
 
 #box(title: "Equivalence of Models", style: "theorem")[
-  Every epistemic-doxastic sphere model $S = (S, S_0, norm(.), s_star)$ is completely equivalent to an epistemic-doxastic Kripke model $S' = (S, tilde, ->, norm(.), s_star)$ that satisfies the same sentences at $s_star$. Furthermore, given a doxastic Kripke model, the doxastic relation $->$ uniquely determines the epistemic relation $tilde$.
+  Every epistemic-doxastic sphere model $S = (S, S_0, norm(.), s_star)$ is completely equivalent to an epistemic-doxastic Kripke model $S' = (S, tilde, ->, norm(.), s_star)$ that satisfies the same sentences at $s_star$.
 ] #label("theorem-equivalence-of-models")
 
 #box(title: "Logical Omniscience", style: "attention")[
   Any Kripke modality validates axiom K ($K(phi => psi) => (#knowledge($phi$) => K psi)$) and the Necessitation rule (if $phi$ is valid, $#knowledge($phi$)$ is valid). Consequently, Kripke semantics models "ideal reasoners" with unlimited inference powers who know/believe all logical entailments, failing to capture bounded rationality.
 ] #label("attention-logical-omniscience")
-
-=== Social Epistemology and Information Cascades
-Group dynamics often deviate from ideal individualized epistemic logic due to the recursive nature of social evidence.
-
-#def("Pluralistic Ignorance")[
-  A situation where the group collectively knows or acts upon less information than the individuals possess privately. Often observed in totalitarian regimes where public behavior contradicts private beliefs.
-] #label("def-pluralistic-ignorance")
-
-#box(title: "Information Cascades", style: "intuition")[
-  An information cascade occurs when agents base their decisions on the observable behavior of prior agents rather than their own private evidence, leading to a breakdown of _epistemic democracy_ (the wisdom of crowds).
-] #label("intuition-information-cascades")
-
-#box(title: "The Black and White Urn Problem", style: "example")[
-  *Setup:* One urn is in a room. It is either Urn B (2/3 black marbles) or Urn W (2/3 white marbles). Agents enter one by one, draw a marble, replace it, and publicly record their guess of the urn on a blackboard.
-  *The Cascade:* 1. Voter 1 draws Black and guesses Urn B.
-  2. Voter 2 draws Black and guesses Urn B.
-  3. Voter 3 draws White. However, the public evidence (two B votes) combined with their private evidence (one W draw) yields an aggregate evidence of (B, B, W). The rational epistemic choice is still to guess Urn B.
-  *Result:* From Voter 3 onwards, everyone will vote Urn B regardless of their private draw. If the first two voters happened to draw the minority color (probability $1/9$), the entire crowd of $n$ voters will lock into the wrong conclusion.
-] #label("example-urn-problem")
-
-#box(title: "Biological and Geopolitical Cascades", style: "example")[
-  - *Army Ant Circular Mill:* If an army ant loses the pheromone trail, it is biologically programmed to follow the ant directly in front of it. This simple rule works locally but can result in a massive recursive loop (a death spiral up to 400m in diameter) where the ants walk in a circle until they die.
-  - *The Men Who Stare at Goats (Cold War):* A French newspaper published a fabricated story about US military research into psychic weapons. Soviet intelligence read this, assumed it was a cover-up, and initiated their own psychic research program. US intelligence discovered the Soviet program and, assuming the Soviets were onto a real threat, started their own actual research program, sparking a 30-year arms race built on an initial cascade of false information.
-] #label("example-biological-geopolitical-cascades")
-
-*Continue* on slide 30: example 3 continued
 
 = Week 2
 

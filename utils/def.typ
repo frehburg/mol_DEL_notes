@@ -1,5 +1,5 @@
 #let def(concept, content) = {
-  let auto-tag = label("def-" + lower(concept.replace(" ", "-")))
+  let auto-tag = label("def-" + lower(concept.replace(" ", "-").replace(",", "")))
   
   [
     // The show rule is now locked inside the function's scope
