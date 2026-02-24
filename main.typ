@@ -2,7 +2,7 @@
 #import "@preview/clean-math-paper:0.2.4": *
 #import "examples/themes/filips-math-paper/template.typ": paper
 #import "@preview/curryst:0.5.1": rule, prooftree
-#import "utils/box.typ": box, intuition, example, theorem, proof, attention, remember, question, info, note, notation,
+#import "utils/callout.typ": callout, intuition, example, theorem, proof, attention, remember, question, info, note, notation,
 #import "utils/def.typ": def, def-group
 #import "@preview/diagraph:0.3.6": *
 #import "utils/splitgrid.typ": splitgrid
@@ -47,7 +47,7 @@
   if it.body != [List of Definitions] and it.body != [List of Theorems] {
     pagebreak(weak: true)
   }
-  it
+  block(it.body)
 }
 #show heading.where(level: 2): it => {
   let nums = counter(heading).at(it.location())
@@ -58,6 +58,11 @@
     Session #lvl1\-#lvl2 #it.body
   ]
 }
+
+#set heading(numbering: (..n) => {
+  let p = n.pos()
+  if p.len() < 3 { numbering("1.1", ..p) } else { numbering("A.1.a.i", ..p.slice(2)) }
+})
 #set math.equation(numbering: "(1)")
 
 // general math symbols
@@ -83,7 +88,8 @@
 #let common-knowledge(formula, sup: none, inf: none) = epistemic_op(base: $C square$, formula: formula, sup: sup, inf: inf)
 #let interpretation(formula) = $norm(#formula)$
 #let box-kripke(formula) = $[formula]$
-#let diamond-kripke(formula) = $angle.l formula angle.r$
+#let diamond-kripke(formula) = $chevron.l formula chevron.r$
+#let actual_state = $s_star$
 
 *Instructor*: Alexandru Baltag (#link("mailto:TheAlexandruBaltag@gmail.com")) \ *TA*: Giuseppe Manes 
 (#link("giuseppe.manes@student.uva.nl"))
@@ -200,14 +206,14 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
   current: progress_status,
   min: 0,
   max: max_progress_status, 
-  fill: gradient.linear(red, orange),
+  fill: gradient.linear(blue.darken(10%), aqua, purple.darken(60%)),
   radius: 2pt
 )
 #align(center)[#progress_status / #max_progress_status]
 #pagebreak()
 
 
-#box(title: "Prompt for generating summaries")[
+#callout(title: "Prompt for generating summaries")[
   Create a summary of the attached slides including the most important intuition, all mathematical formulas, relevant examples, and theorems, but no proofs. Pay special attention to the provided examples, their continuations and modifications. 
   
   Be concise and technical using expert vocabulary. Explain in a suitable manner for a master of Logic student familiar with the relevant background but unfamiliar with the discussed material as of yet. Write the summary in typst. The slides are attached. Only focus on content and leave out organizational information about the course. I am pasting all of this into my typst document where each lecture is a level two heading e.g. == Lecture 1, so subchapters have to be at the correct level, at least three e.g. === Core Intuitions and Definitions.
@@ -222,7 +228,7 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
   + do not include and  or [cite: x] in your output
   + I have defined custom functions to represent definitions, theorems (“theorem”), proofs (“proof”), examples (“example”), intuitions \[only use this for informal introductions\] (“intuition”), warnings to watch out (“attention”), questions (“question”), calls to recall something learned before (“remember”), note something carefully ("note"), and an info ("info").
     - To define a new concept, call \`\#def("Name of Concept")\[Definition body\]\` 
-    - For all others call \`\#box(title: "Title", style: "style-name")\[Box body\]
+    - For all others call \`\#callout(title: "Title", style: "style-name")\[Box body\]
     - Each box generates a tag \#label("def-concept-name-hyphenated"). Refer to any concept you reference back to always \@def-concept-name-hyphenated
     - use my custom definitions for common operators such as the set of propositional letters or epistemic operators:
 ]
@@ -235,13 +241,13 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
 
 == (Lecture): #lectures.l1-1.name <lecture1-1>
 
-#box(title: "Motto of Dynamic Epistemic Logic")[
+#callout(title: "Motto of Dynamic Epistemic Logic")[
  _"The wise sees action and knowledge as one. They see truly."_ - Bhagavad Gita
 ]
 
 === Core Intuitions and Definitions
 
-#box(title: "Multi-Agent Systems", style: "example")[
+#callout(title: "Multi-Agent Systems", style: "example")[
   + *Computation*: a network of communicating computers (e.g., the internet)
   + *Games*: players in a game (e.g., chess or poker)
   + *AI*: a team of robots exploring their environment and interacting with each other
@@ -266,7 +272,7 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
   def("Belief Revision")[A sustained, dynamic, self-correcting, truth-tracking action. Non-monotonic. True knowledge can only be recovered by effort. Made more difficult by deceit.],
 )
 
-#box(title:"", style: "question")[Is knowledge a form of belief, or is knowledge more fundamental than belief?]
+#callout(title:"", style: "question")[Is knowledge a form of belief, or is knowledge more fundamental than belief?]
 
 #def-group(
   def("Uncertainty")[A corollary of imperfect knowledge or "imperfect information".],
@@ -290,7 +296,7 @@ _Wrong Beliefs_: Agents...
   Knowledge that is not necessarily held by any individual agent prior to communication, but is known when multiple agents pool their distinct information.
 ]
 
-#box(title: "Distributed Knowledge: Business dealings", style: "example")[
+#callout(title: "Distributed Knowledge: Business dealings", style: "example")[
   - $A$ knows $B$ made a  deal with either $C$ or $E$ (exclusively).
   - $B$ actually made a deal with $E$, so $C$ knows $B$ did *not* go make a deal with them.
   - Neither $A$ nor $C$ individually know $B$ made a deal with $E$ before communicating.
@@ -315,7 +321,7 @@ _Wrong Beliefs_: Agents...
 )
 
 
-#box(title: "Common Knowledge vs. 'Everybody Knows'", style: "example")[
+#callout(title: "Common Knowledge vs. 'Everybody Knows'", style: "example")[
   - Suppose everybody knows the road rules (e.g., red means "stop") and respects them.
   - *Question*: Is this enough to drive safely? *No*.
   - *Reasoning*: Merely knowing the rule is insufficient if you lack the certainty that *others* know the rules and will abide by them.
@@ -324,7 +330,7 @@ _Wrong Beliefs_: Agents...
 == (Lecture): #lectures.l1-2.name <lecture1-2>
 === Epistemic Puzzles and Paradoxes
 
-#box(title: "Puzzle 0: The Coordinated Attack", style: "example")[
+#callout(title: "Puzzle 0: The Coordinated Attack", style: "example")[
   Two army divisions (A and B) must attack simultaneously to win. They communicate via messengers over a channel where messages might be captured.
   - A sends "attack at dawn" and B receives it.
   - B must acknowledge receipt, but A does not know if the acknowledgment will arrive.
@@ -332,7 +338,7 @@ _Wrong Beliefs_: Agents...
   *Result*: No finite sequence of successful message deliveries can achieve coordination.
 ]
 
-#box(title: "Fixpoints and Byzantine Generals", style: "remember")[
+#callout(title: "Fixpoints and Byzantine Generals", style: "remember")[
   #def("Fixpoint")[$x$ is a fixpoint iff $f:X arrow X; x=f(x)$.]
 
   In the case of Puzzle 0:
@@ -341,18 +347,18 @@ _Wrong Beliefs_: Agents...
   Where $K_X$ is the knowledge operator of agent $X$, #common-knowledge($$) is the common knowledge operator, $phi$ is the message about the attack time.
 ]
 
-#box(title: "Coordinated Attack Intuition", style: "intuition")[
+#callout(title: "Coordinated Attack Intuition", style: "intuition")[
   Achieving _Common Knowledge_ (@def-common-knowledge) over an unreliable communication channel is logically impossible in a finite number of steps. Unbounded nested knowledge (@def-nested-knowledge) does not equate to true common knowledge.
 ]
 
-#box(title: "Puzzle 1: To Learn is to Falsify", style: "example")[
+#callout(title: "Puzzle 1: To Learn is to Falsify", style: "example")[
   $A$ sends an email to her lover $C$: "$B$ doesn't know about us." 
   
   $B$ secretly intercepts and reads it.
 
   *Result*: The proposition was true right before reading, but the act of learning the message immediately falsifies it (a dynamic variant of Moore's Paradox).
 
-  #box(title: "Instantaneous truth value change", style: "note")[
+  #callout(title: "Instantaneous truth value change", style: "note")[
     *Paradox*: usually learning $phi$ means believing phi $square phi$, but here reading $phi$ leads to not believing $phi$: $square not phi$.
 
     *Less paradoxical with dynamic thinking*: The truth value of the statement changes instantaneously when $B$ reads and accepts it.
@@ -362,11 +368,11 @@ _Wrong Beliefs_: Agents...
 ]
 
 
-#box(title: "Non-standard Belief Revision", style: "attention")[
+#callout(title: "Non-standard Belief Revision", style: "attention")[
   Standard belief-revision postulates (e.g., AGM) fail for complex learning actions where the informational payload refers directly to the epistemic state of the receiver.
 ]
 
-#box(title: "Puzzle 2 & 3: Self-Fulfilling and Self-Enabling Falsehoods", style: "example")[
+#callout(title: "Puzzle 2 & 3: Self-Fulfilling and Self-Enabling Falsehoods", style: "example")[
   - *Self-Fulfilling*: $A$ falsely believes $B$ knows about her affair and sends a warning message. $B$ intercepts it and thereby learns of the affair. Communicating a false belief makes it true.
 
   #align(center)["$B$ doesn't know about us."]
@@ -376,7 +382,7 @@ _Wrong Beliefs_: Agents...
 
 === The Muddy Children and Epistemic Updates
 
-#box(title: "Puzzle 4: Muddy Children", style: "example")[
+#callout(title: "Puzzle 4: Muddy Children", style: "example")[
   $4$ perfect logicians (children), exactly $3$ have dirty faces. They see others but not themselves.
   - Father publicly announces: "At least one of you is dirty."
   - Father iteratively asks: "Do you know if you are dirty or not?"
@@ -384,11 +390,11 @@ _Wrong Beliefs_: Agents...
   *Result*: For $2$ rounds, they answer in the negative. In the 3rd round, all $3$ dirty children confidently state they are dirty. In the 4th round, the clean child deduces they are clean.
 ]
 #pagebreak()
-#box(title: "Socratic Questioning", style: "info")[
+#callout(title: "Socratic Questioning", style: "info")[
   Discovering answers by asking questions of students. (#link("https://en.wikipedia.org/wiki/Socratic_questioning")[Wikipedia])
 ]
 
-#box(title: "Muddy Children", style: "intuition")[
+#callout(title: "Muddy Children", style: "intuition")[
   1. _What's the point of the father's first announcement ("At least one of you is dirty")?_
 
   The initial announcement transforms distributed implicit knowledge into public _Common Knowledge_ (@def-common-knowledge). 
@@ -398,12 +404,12 @@ _Wrong Beliefs_: Agents...
   The iterated Socratic questioning acts as sequential epistemic updates: public statements of ignorance incrementally eliminate possible worlds in the Kripke model until the true state is uniquely isolated.
 ]
 
-#box(title: "Modifications of Muddy Children", style: "example")[
+#callout(title: "Modifications of Muddy Children", style: "example")[
   - *The Amazon Island*: Isomorphic to Muddy Children. A law mandates wifes to execute their cheating husbands at noon once discovered. Queen announces at least one cheater exists and if somebody's husband is cheating, all other wives know it. With $17$ cheaters, for $16$ days nothing happens, and all $17$ are shot on day $17$.
   - *The Dangers of Mercy*: Wives of the $17$ cheaters secretly decide to spare them, while others believe strict obedience to the law is common knowledge. No shots are fired on day $17$. On day $18$, all faithful husbands are erroneously shot by their wives, who logically deduce (from flawed public premises) that their husbands must be cheating.
 ]
 
-#box(title: "Puzzle 5: Sneaky Children", style: "example")[
+#callout(title: "Puzzle 5: Sneaky Children", style: "example")[
   Children are incentivized for speed and punished for errors. After round 1, two dirty children cheat by secretly confirming to each other they are dirty, thus answering "I know" prematurely in round 2.
   - *Honest Children Always Suffer*: The 3rd dirty child logically deduces it must be clean, answers incorrectly in round 3, and is punished.
   - *Clean Children Always Go Crazy*: The 4th (clean) child faces a strict contradiction. If it blindly applies monotonic updates via classical logic, it undergoes logical explosion (believing everything).
@@ -411,13 +417,13 @@ _Wrong Beliefs_: Agents...
 #pagebreak()
 === Paradoxes of Induction and Probability
 
-#box(title: "Puzzle 6: Surprised Children", style: "example")[
+#callout(title: "Puzzle 6: Surprised Children", style: "example")[
   Teacher announces an exam next week, but the date will be a surprise (students won't even know the night before).
   - *Paradoxical Argumentation*: Students apply backward induction. It cannot be Friday (they'd know Thursday night). By elimination, it cannot be any day. They deduce the announcement is false.
   - *Result*: They dismiss the announcement. The exam occurs (e.g., Tuesday) and is indeed a complete surprise.
 ] #label("example-10-puzzle-6")
 
-#box(title: "Puzzle 7: The Lottery Paradox", style: "example")[
+#callout(title: "Puzzle 7: The Lottery Paradox", style: "example")[
   A fair lottery with $"1,000,000"$ tickets. 
   - Probability of ticket $x$ winning is $0.000001$.
   - It is rational to hold the belief that ticket $x$ will lose.
@@ -426,12 +432,12 @@ _Wrong Beliefs_: Agents...
   *Result*: The conjunction of highly probable rational beliefs yields a strict logical *inconsistency*.
 ]
 
-#box(title: "Puzzle 7 Modification: The Infinite Lottery", style: "example")[
+#callout(title: "Puzzle 7 Modification: The Infinite Lottery", style: "example")[
   An infinite lottery over arbitrary natural numbers. The probability of any given ticket winning is exactly $0$. The agent is mathematically correct to believe a specific ticket will not win, yet one must win. Any finite subset of beliefs is consistent, but the infinite global set is inconsistent.
 ]
 === Backward Induction and Social Epistemology 
 
-#box(title: "Puzzle 8: The Centipede Game", style: "example")[
+#callout(title: "Puzzle 8: The Centipede Game", style: "example")[
   A sequential game with alternating moves by $a$ and $b$, deciding between stopping the game or continuing:
 
   #align(center)[#scale(80%, reflow: true)[#figure(
@@ -560,7 +566,7 @@ In the leaves ("outcomes" $o_j$) the first number is $a$'s payoff, the second nu
 - *BI outcome*: $o_1: 3,0$
 - _Why not another outcome?_: Strikes many as irrational
 
-#box(title: "The BI Paradox and Rational Pessimism", style: "intuition")[
+#callout(title: "The BI Paradox and Rational Pessimism", style: "intuition")[
   - *Aumann's Argument*: Assuming _Common Knowledge_ (@def-common-knowledge) of Rationality ($"CKR"$), backward induction dictates $A$ chooses $o_3$ at $v_2$, so $B$ chooses $o_2$ at $v_1$, so $A$ chooses $o_1$ at $v_0$. The game terminates immediately at a suboptimal Pareto outcome.
   - *Counterargument*: If $B$ reaches $v_1$, he observes $A$ violating $"CKR"$ (she didn't stop at $v_0$). If $B$ adopts *Rational Pessimism*—assuming $A$ is irrational and will thus choose $o_4$ at $v_2$—he should continue. If $A$ anticipates this belief revision, her initial deviation becomes strictly rational. The epistemic foundation of backward induction contradicts its own counterfactuals.
 ]
@@ -572,16 +578,16 @@ Group dynamics often deviate from ideal individualized epistemic logic due to th
   A situation where the group collectively knows or acts upon less information than the individuals possess privately. Often observed in totalitarian regimes where public behavior contradicts private beliefs.
 ]
 
-#box(title: "Puzzle 9: Wisdom vs. Madness of the Crowds", style: "example")[
+#callout(title: "Puzzle 9: Wisdom vs. Madness of the Crowds", style: "example")[
   - *Wisdom of the Crowds*: Distributed group knowledge often empirically exceeds the most expert individual (e.g., aggregating independent estimates).
   - *Madness of the Crowds*: Systems can fail systematically due to cascading social epistemology.
 ]
 
-#box(title: "Information Cascades", style: "intuition")[
+#callout(title: "Information Cascades", style: "intuition")[
   An information cascade occurs when agents base their decisions on the observable behavior of prior agents rather than their own private evidence, leading to a breakdown of _epistemic democracy_ (the wisdom of crowds).
 ] #label("intuition-information-cascades")
 
-#box(title: "The Black and White Urn Problem", style: "example")[
+#callout(title: "The Black and White Urn Problem", style: "example")[
   *Setup:* One urn is in a room. It is either Urn B (2/3 black marbles) or Urn W (2/3 white marbles). Agents enter one by one, draw a marble, replace it, and publicly record their guess of the urn on a blackboard.
   *The Cascade:* 1. Voter 1 draws Black and guesses Urn B.
   2. Voter 2 draws Black and guesses Urn B.
@@ -589,7 +595,7 @@ Group dynamics often deviate from ideal individualized epistemic logic due to th
   *Result:* From Voter 3 onwards, everyone will vote Urn B regardless of their private draw. If the first two voters happened to draw the minority color (probability $1/9$), the entire crowd of $n$ voters will lock into the wrong conclusion.
 ] #label("example-urn-problem")
 
-#box(title: "Biological and Geopolitical Cascades", style: "example")[
+#callout(title: "Biological and Geopolitical Cascades", style: "example")[
   - *Army Ant Circular Mill:* If an army ant loses the pheromone trail, it is biologically programmed to follow the ant directly in front of it. This simple rule works locally but can result in a massive recursive loop (a death spiral up to 400m in diameter) where the ants walk in a circle until they die.
   - *The Men Who Stare at Goats (Cold War):* A French newspaper published a fabricated story about US military research into psychic weapons. Soviet intelligence read this, assumed it was a cover-up, and initiated their own psychic research program. US intelligence discovered the Soviet program and, assuming the Soviets were onto a real threat, started their own actual research program, sparking a 30-year arms race built on an initial cascade of false information.
 ] #label("example-biological-geopolitical-cascades")
@@ -602,26 +608,26 @@ Single-agent epistemic-doxastic logic expands standard propositional logic to fo
 $ phi ::= p | not phi | phi and phi | #knowledge($phi$) | #belief($phi$) $ where $p in Prop$.
 
 #def("Single-Agent, pointed Epistemic-Doxastic Model")[
-  Is a tuple $S = (S, S_0, #interpretation($dot$), s_star)$, where
+  Is a tuple $S = (S, S_0, #interpretation($dot$), #actual_state)$, where
   - $S$: A set of _ontic_ states defining the agent's _epistemic state_ (epistemically possible).
   - $S_0$: A non-empty subset $S_0 subset.eq S$, called the _sphere of beliefs_ or the agent's _doxastic state_.
   - $#interpretation($dot$): Prop -> #powerset($S$)$: A _valuation_ map assigning atomic propositions to sets of states.
-  - $s_star in S$: The designated "actual world" representing the real state of the world.
+  - $#actual_state in S$: The designated "actual world" representing the real state of the world.
 ]
 _Sphere-based_: represents beliefs as nested layers of possible worlds, ranking worlds by their plausibility
 
 === Semantics
-#box(title: "Interpretation", style: "intuition")[
-  - *Epistemic state*: state of the agent's knowledge: they belief $s_star$ is among $S$, but cannot distinguish between $s_i, s_j in S; i!=j$.
-  - *Doxastic state*: the agent beliefs $s_star in S_0$
+#callout(title: "Interpretation", style: "intuition")[
+  - *Epistemic state*: state of the agent's knowledge: they belief $#actual_state$ is among $S$, but cannot distinguish between $s_i, s_j in S; i!=j$.
+  - *Doxastic state*: the agent beliefs $#actual_state in S_0$
 ]
 
-#box(title: "Truth", style: "notation")[We write the following if $phi$ is _true_ in world $w$. When the model $bold("S")$ is fixed, we skip the subscript.
+#callout(title: "Truth", style: "notation")[We write the following if $phi$ is _true_ in world $w$. When the model $bold("S")$ is fixed, we skip the subscript.
 
 $ w models_bold("S") phi $
 ]
 
-#box(title: "Atomic logical connectives", style: "note")[
+#callout(title: "Atomic logical connectives", style: "note")[
   We interpret negation $not$ and conjunction $and$ as atomic logical connectives, but disjunction $or$, the conditional $arrow$, and the biconditional $arrow.r.l$ as compound connectives.
 ]
 
@@ -634,7 +640,7 @@ $ w models_bold("S") phi $
   def("Satisfiability")[A sentence $phi$ is *satisfiable* in a model $bold("S")$ if it is true at some state $w in bold("S")$.]
 )
 
-#box(title: "Semantics of Knowledge and Belief", style: "note")[
+#callout(title: "Semantics of Knowledge and Belief", style: "note")[
   The universal quantifier over the domain of possibilities is interpreted as knowledge or belief.
   - *Knowledge* ($#knowledge($phi$)$): Truth in all epistemically possible worlds. 
   - *Belief* ($#belief($phi$)$): Truth in all doxastically possible worlds within the sphere of beliefs.
@@ -644,7 +650,7 @@ $ w models_bold("S") phi $
 === Learning and Mistaken Updates
 Learning corresponds to world elimination. An update with a sentence $phi$ is the operation of deleting all non-$phi$ possibilities from the model.
 
-#box(title: "The Concealed Coin and Mistaken Updates", style: "example")[
+#callout(title: "The Concealed Coin and Mistaken Updates", style: "example")[
   #grid(columns: (85%, auto), column-gutter: 1em,
   [*Base Scenario:* A coin is on the table; the agent does not know if it is Heads ($H$) or Tails ($T$).],
   [#v(-.6em)
@@ -687,12 +693,12 @@ Learning corresponds to world elimination. An update with a sentence $phi$ is th
 ))]]
   )])
 
-  #box(title: "Update as World Elimination", style: "note")[
+  #callout(title: "Update as World Elimination", style: "note")[
     In general, updating corresponds to world elimination: an update with a sentence $phi$ is simply the operation of deleting all the non-$phi$ possibilities.
   ]
   #splitgrid(
     (85%,auto)
-  )[*Mistaken Update:* The agent mistakenly believes they saw $H$. If we eliminate $T$, the actual world $s_star$ is no longer in the agent's model, making it impossible to evaluate objective truth.][#v(-.6em)
+  )[*Mistaken Update:* The agent mistakenly believes they saw $H$. If we eliminate $T$, the actual world $#actual_state$ is no longer in the agent's model, making it impossible to evaluate objective truth.][#v(-.6em)
     #figure(
     align(center)[#scale(65%, reflow: true)[#figure(
     raw-render(
@@ -714,7 +720,7 @@ Learning corresponds to world elimination. An update with a sentence $phi$ is th
   ```
 ))]])]
 
-  #splitgrid((85%,auto))[*Resolution (Third-Person Models):* We maintain an objective perspective where the real possibility always remains in the global model $S$, even if the agent believes it to be impossible. The sphere of beliefs $S_0$ ($square.stroked.rounded$ #h(-0.75em) $dot$ ) is restricted to $T$, meaning the agent believes $H$, but their belief is false because $s_star in S slash S_0$.][#v(-.6em)
+  #splitgrid((85%,auto))[*Resolution (Third-Person Models):* We maintain an objective perspective where the real possibility always remains in the global model $S$, even if the agent believes it to be impossible. The sphere of beliefs $S_0$ ($square.stroked.rounded$ #h(-0.75em) $dot$ ) is restricted to $T$, meaning the agent believes $H$, but their belief is false because $#actual_state in S slash S_0$.][#v(-.6em)
     #figure(
     align(center)[#scale(65%, reflow: true)[#figure(
     raw-render(
@@ -743,11 +749,11 @@ Learning corresponds to world elimination. An update with a sentence $phi$ is th
 ))]])]
 ] #label("example-concealed-coin")
 
-#box(title: [Continuation of #link(<example-10-puzzle-6>)[Puzzle 6: Surprised Children]], style: "example")[
-Situation before the teacher's announcement (we don't know $s_star$: no star in the figure):
+#callout(title: [Continuation of #link(<example-10-puzzle-6>)[Puzzle 6: Surprised Children]], style: "example")[
+Situation before the teacher's announcement (we don't know $#actual_state$: no star in the figure):
   
   #figure(
-    align(center)[#scale(55%, reflow: true)[#figure(
+    align(center)[#scale(75%, reflow: true)[#figure(
     raw-render(
   ```dot
   graph G {
@@ -768,10 +774,10 @@ Situation before the teacher's announcement (we don't know $s_star$: no star in 
 }```
 ))]])
 
-A student beliefs (for some reason) the exam will be on Monday or Tuesday, but it is on Thursday:
+A student beliefs (for some reason) the exam will be on Monday or Tuesday,\ but it is on Thursday ($#actual_state = 4$):
   
   #figure(
-    align(center)[#scale(55%, reflow: true)[#figure(
+    align(center)[#scale(75%, reflow: true)[#figure(
     raw-render(
   ```dot
   graph G {
@@ -798,10 +804,10 @@ A student beliefs (for some reason) the exam will be on Monday or Tuesday, but i
 === Kripke Semantics for Epistemic-Doxastic Logic
 Sphere models can be generalized using Kripke semantics to allow for varying strengths of knowledge and belief.
 
-#box(title: "Kripke Model", style: "remember")[#def("Kripke Model")[A Kripke model is a tuple $S = (S, {R_i}_(i in I), norm(.), s_star)$ with set of states $S$, accessibility relations $R_i$, valuation $#interpretation($dot$)$, and actual state $s_star$.]]
+#callout(title: "Kripke Model", style: "remember")[#def("Kripke Model")[A Kripke model is a tuple $S = (S, {R_i}_(i in I), norm(.), #actual_state)$ with set of states $S$, accessibility relations $R_i$, valuation $#interpretation($dot$)$, and actual state $#actual_state$.]]
 
 #def("Epistemic-Doxastic Kripke Model")[
-  To model knowledge $#knowledge("")$ and belief $#belief("")$, this becomes $(S, tilde, ->, norm(.), s_star)$, where $tilde$ is the epistemic relation (for #knowledge("")) and $->$ is the doxastic relation (for $#belief("")$). 
+  To model knowledge $#knowledge("")$ and belief $#belief("")$, this becomes $(S, tilde, ->, norm(.), #actual_state)$, where $tilde$ is the epistemic relation (for #knowledge("")) and $->$ is the doxastic relation (for $#belief("")$). 
 ] #label("def-epistemic-doxastic-kripke-model")
 
 For atomic sentences and for Boolean connectives, we use the same semantics (and notations) as on epistemic-doxastic models.
@@ -809,7 +815,7 @@ For atomic sentences and for Boolean connectives, we use the same semantics (and
 #def("Kripke modalities")[For every sentence $phi$, we can define a new sentence using the _universal Kripke modality_ $#box-kripke($R_i$)$ by universally quantifying over $R_i$ accessible worlds. The dual _existential Kripke modality_ $#diamond-kripke($R_i$)$ is given by
 $ #diamond-kripke($R_i$) phi := not #box-kripke($R_i$) not phi. $
 ]
-#box(title: "Kripke modalities: subscript", style: "notation")[
+#callout(title: "Kripke modalities: subscript", style: "notation")[
   If $R$ is unique, we abbreviate $#box-kripke($R_i$) phi$ as $square phi$, and  $#diamond-kripke($R_i$) phi$ as $diamond phi$.
 ]
 
@@ -818,7 +824,7 @@ $ #diamond-kripke($R_i$) phi := not #box-kripke($R_i$) not phi. $
   #enum(numbering: "i.", start: 6)[$phi = #box-kripke($R_i$) phi$: $w models #box-kripke($R_i$) phi "iff" v models phi forall v: w R_i v$.]
 ]
 
-#box(title: [#link(<example-concealed-coin>)[Example 17 contd.: Coins and Knowledge]], style: "example")[
+#callout(title: [#link(<example-concealed-coin>)[Example 17 contd.: Coins and Knowledge]], style: "example")[
   The agent's knowledge in the concealed coin scenario can be represented as:
   #v(-.6em)
     #figure(
@@ -839,10 +845,10 @@ $ #diamond-kripke($R_i$) phi := not #box-kripke($R_i$) not phi. $
 ))]]
   )
   - The arrows represent the *epistemic relation* $tilde$, capturing the agent's uncertainty about the state of the world.
-  - An arrow from state $s$ to state $t$ means that if $s_star = s$, the agent could not distinguish between $s$ and $t$.
+  - An arrow from state $s$ to state $t$ means that if $#actual_state = s$, the agent could not distinguish between $s$ and $t$.
 ]
 
-#box(title: [#link(<example-concealed-coin>)[Example 17 contd.: Coins and Belief]], style: "example")[
+#callout(title: [#link(<example-concealed-coin>)[Example 17 contd.: Coins and Belief]], style: "example")[
   The agent's belief after the mistaken update can be represented as:
   #v(-.6em)
     #figure(
@@ -866,11 +872,11 @@ digraph Z {
 ))]]
   )
   - The arrows represent the *epistemic relation* $tilde$, capturing the agent's uncertainty about the state of the world.
-  - An arrow from state $s$ to state $t$ means that if $s_star = s$, the agent could not distinguish between $s$ and $t$.
+  - An arrow from state $s$ to state $t$ means that if $#actual_state = s$, the agent could not distinguish between $s$ and $t$.
 ]
 
 
-#box(title: "Named axioms in Modal Logic", style: "remember")[Certain axioms have set names in Modal Logic:
+#callout(title: "Named axioms in Modal Logic", style: "remember")[Certain axioms have set names in Modal Logic:
 - $(bold("K"))$ Basic Modal Logic
 - $(bold("T"))$ Reflexivity $square phi arrow phi$
 - $(bold(4))$ Transitivity $square phi arrow square square phi$
@@ -884,7 +890,7 @@ digraph Z {
 
 ]
 
-#box(title: "Axioms and Relational Properties", style: "theorem")[
+#callout(title: "Axioms and Relational Properties", style: "theorem")[
   A Kripke model satisfying all the below conditions on the relations $tilde$ and $arrow$ is called an *epistemic-doxastic Kripke model*.
 
   Validities for Knowledge (Equivalence relation $tilde$, giving an S5 model):
@@ -917,11 +923,11 @@ digraph Z {
   - People may believe they know things they don't actually know
   - There might be "crazy" agents with inconsistent beliefs
 
-#box(title: "Equivalence of Models", style: "theorem")[
-  Every epistemic-doxastic sphere model $S = (S, S_0, norm(.), s_star)$ is completely equivalent to an epistemic-doxastic Kripke model $S' = (S, tilde, ->, norm(.), s_star)$ that satisfies the same sentences at $s_star$.
+#callout(title: "Equivalence of Models", style: "theorem")[
+  Every epistemic-doxastic sphere model $S = (S, S_0, norm(.), #actual_state)$ is completely equivalent to an epistemic-doxastic Kripke model $S' = (S, tilde, ->, norm(.), #actual_state)$ that satisfies the same sentences at $#actual_state$.
 ] #label("theorem-equivalence-of-models")
 
-#box(title: "Logical Omniscience", style: "attention")[
+#callout(title: "Logical Omniscience", style: "attention")[
   Any Kripke modality validates axiom K ($K(phi => psi) => (#knowledge($phi$) => K psi)$) and the Necessitation rule (if $phi$ is valid, $#knowledge($phi$)$ is valid). Consequently, Kripke semantics models "ideal reasoners" with unlimited inference powers who know/believe all logical entailments, failing to capture bounded rationality.
 ] #label("attention-logical-omniscience")
 
@@ -942,7 +948,7 @@ digraph Z {
 ]
 
 
-#example(title: "The Concealed Coin")[
+#example("The Concealed Coin")[
   Two players $a$, $b$, along with a referee $c$ play a game. The referee covers a fair coin so nobody knows the outcome. Using concatenated arrows, we can express iterated knowledge. For instance, $b$ knows that $a$ does not know the outcome but knows it is Heads ($H$) or Tails ($T$):
   $w models square_b (not square_a H and not square_a T) and square_b square_a (H or T)$.
 ]
@@ -955,12 +961,12 @@ digraph Z {
   It is equivalent to the Kripke modality for the reflexive-transitive closure of the union of all epistemic relations: $[(union_(a in G) ->_a)^*]$.
 ]
 
-#box(title: "Common Knowledge as Infinite Conjunction", style: "intuition")[
+#callout(title: "Common Knowledge as Infinite Conjunction", style: "intuition")[
   Let $E_G phi := and_(a in G) square_a phi$ ("everybody in $G$ knows $phi$"). @def-common-knowledge-group is semantically equivalent to the infinite conjunction:
   $phi and E_G phi and E_G E_G phi and dots$
 ]
 
-#box(title: "Validities for Common Modalities", style: "theorem")[
+#callout(title: "Validities for Common Modalities", style: "theorem")[
   - *Fixed-Point Axiom* (Mix): $#common-knowledge($phi$, inf: "G") => (phi and E_G #common-knowledge($phi$, inf: "G"))$
   - *Induction Axiom*: $#common-knowledge($phi => E_G phi$, inf: "G") => (phi => #common-knowledge($phi$, inf: "G"))$
 ]
@@ -972,17 +978,17 @@ digraph Z {
   $s models_S D square_G phi <=> t models_S phi$ for every $t$ such that $s ->_a t$ holds for all $a in G$.
 ]
 
-#box(title: "Epistemic Potential", style: "intuition")[
+#callout(title: "Epistemic Potential", style: "intuition")[
   @def-distributed-knowledge-group captures the implicit knowledge of the group: what the agents in $G$ could come to know if they pooled all their private knowledge.
 ]
 
-#example(title: "Two Muddy Children")[
+#example("Two Muddy Children")[
   Two children (1 & 2) have dirty foreheads ($d_1$, $d_2$). Each sees the other but not themselves. In the real world $w = (d_1, d_2)$, neither knows both are dirty, but it is distributed knowledge:
   $w models not #knowledge($d_1 and d_2$, inf: "1") and not #knowledge($d_1 and d_2$, inf: "2") and D k (d_1 and d_2)$.
 ]
 
 
-#box(title: "Validities for Distributed Knowledge", style: "theorem")[
+#callout(title: "Validities for Distributed Knowledge", style: "theorem")[
   - $#knowledge($phi$, inf: "a") => D k phi$
   - $(#knowledge($phi$, inf: "a") and #knowledge($psi$, inf: "b")) => D k (phi and psi)$
 ]
@@ -995,7 +1001,7 @@ digraph Z {
 ]
 
 
-#box(title: "PAL Reduction Axioms", style: "theorem")[
+#callout(title: "PAL Reduction Axioms", style: "theorem")[
   PAL (@def-public-announcement-logic) allows translating dynamic formulas to basic modal logic via reduction axioms:
   - *Atomic Permanence*: $#box-kripke($!phi$) p <=> (phi => p)$
   - *Announcement-Negation*: $#box-kripke($!phi$) not psi <=> (phi => not #box-kripke($!phi$) psi)$
@@ -1003,7 +1009,7 @@ digraph Z {
   - *Announcement-Knowledge*: $#box-kripke($!phi$) square_a psi <=> (phi => square_a #box-kripke($!phi$) psi)$
 ]
 
-#box(title: "Expressivity & Succinctness", style: "info")[
+#callout(title: "Expressivity & Succinctness", style: "info")[
   PAL has the exact same expressivity as basic modal logic because dynamic modalities can be eliminated using the reduction axioms. However, PAL is exponentially more succinct.
 ]
 
@@ -1013,14 +1019,14 @@ digraph Z {
   Sentences that become false after being truthfully announced. For a Moore sentence $phi$, we have $#box-kripke($!phi$) not phi$. Therefore, they become known to be false after being announced: $#box-kripke($!phi$) #knowledge($not phi$, inf: "a")$.
 ]
 
-#box(title: "Moore Sentences in Muddy Children", style: "example")[
+#callout(title: "Moore Sentences in Muddy Children", style: "example")[
   "You are dirty but you do not know it" is a Moore sentence for child 1: $d_1 and not #knowledge($d_1$, inf: "1")$.
   This is initially true in the muddy children model. However, after it is publicly announced, child 1 learns they are dirty. The second conjunct becomes false, making the entire sentence false.
   
   _Continuation_: In the grand finale of the muddy children puzzle, children repeatedly announce their ignorance: $!(and_i (not #knowledge($d_i$, inf: "i") and not #knowledge($not d_i$, inf: "i")))$. Each round deletes worlds where a child would have known their state, converting distributed knowledge into common knowledge until the dirty children deduce they are dirty.
 ]
 
-#box(title: "Closure under Composition", style: "theorem")[
+#theorem("Closure under Composition")[
   Performing two successive public announcements is equivalent to a single, more complex announcement:
   $#box-kripke($!phi$) #box-kripke($!psi$) theta <=> #box-kripke($!(phi and #box-kripke($!phi$) psi)$) theta$.
 ]

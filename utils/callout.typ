@@ -78,9 +78,16 @@
     "icon": octique-inline("book", color: rgb("#ffffff"), width: 1em, height: 1em, baseline: 25%),
     "prefix": "Notation"
   ),
+  // "code": (
+  //   "color": rgb("#2cff01e8"),
+  //   "neg-color": rgb("#2c2c2c"),
+  //   "text-color": rgb("#2cff01e8"),
+  //   "icon": octique-inline("terminal", color: rgb("#000000"), width: 1em, height: 1em, baseline: 25%),
+  //   "prefix": "Gamer Mode"
+  // ),
 )
 
-#let box(title: "", style: "standard", ignore-prefix: false, content) = {
+#let callout(title: "", style: "standard", ignore-prefix: false, content) = {
   let style_dict = styles.at(style)
   let fig-kind = style + "-box"
   
@@ -148,20 +155,16 @@
   )])
 }
 
-// Test loop showing the new numbering behavior
 #for tmp_style in styles.keys() {
-  box(title: "Sample Title", style: tmp_style, "This is some sample text.")
+  callout(title: "Sample Title", style: tmp_style, "This is some sample text.")
 }
-
-// Second test to show the counter incrementing
-#box(title: "Another Example", style: "example", "This example should be numbered 2.")
 
 #let style-funcs = (:)
 
 #for s-name in styles.keys() {
   style-funcs.insert(
     s-name, 
-    (title, body) => box(style: s-name, title: title, body)
+    (title, body) => callout(style: s-name, title: title, body)
   )
 }
 
@@ -175,3 +178,4 @@
 #let info = style-funcs.info
 #let note = style-funcs.note
 #let notation = style-funcs.notation
+// #let mountain-dew = style-funcs.notation
