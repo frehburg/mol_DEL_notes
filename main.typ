@@ -6,6 +6,7 @@
 #import "utils/def.typ": def, def-group
 #import "@preview/diagraph:0.3.6": *
 #import "utils/splitgrid.typ": splitgrid
+#import "utils/dot-graphviz.typ": graph-figure
 
 #let date = datetime.today().display("[month repr:long] [day], [year]")
 
@@ -42,7 +43,6 @@
 #set enum(numbering: "1.")
 #set heading(numbering: "1.")
 
-#set list(marker: ([$circle.filled.tiny$], [], []))
 #show heading.where(level: 1): it => {
   if it.body != [List of Definitions] and it.body != [List of Theorems] {
     pagebreak(weak: true)
@@ -65,6 +65,8 @@
 })
 #set math.equation(numbering: "(1)")
 
+#let split_equal = (47.5%,47.5%,)
+
 // general math symbols
 #let bar(x) = $macron(#x)$ //gr MACRON
 #let powerset(set_) = $cal(P)(#set_)$
@@ -86,10 +88,16 @@
 #let knowledge(formula, sup: none, inf: none) = epistemic_op(base: "K", formula: formula, sup: sup, inf: inf)
 #let belief(formula, sup: none, inf: none) = epistemic_op(base: "B", formula: formula, sup: sup, inf: inf)
 #let common-knowledge(formula, sup: none, inf: none) = epistemic_op(base: $C square$, formula: formula, sup: sup, inf: inf)
+#let common-k(formula, sup: none, inf: none) = epistemic_op(base: $C k$, formula: formula, sup: sup, inf: inf) // this one uses k to explicitly denote knowledge, differentiating from common true belief.
+#let common-belief(formula, sup: none, inf: none) = epistemic_op(base: $C b$, formula: formula, sup: sup, inf: inf)
+#let distributed-knowledge(formula, sup: none, inf: none) = epistemic_op(base: $D square$, formula: formula, sup: sup, inf: inf)
+#let distributed-k(formula, sup: none, inf: none) = epistemic_op(base: $D k$, formula: formula, sup: sup, inf: inf)
 #let interpretation(formula) = $norm(#formula)$
 #let box-kripke(formula) = $[formula]$
 #let diamond-kripke(formula) = $chevron.l formula chevron.r$
 #let actual_state = $s_star$
+
+#let iff = $arrow.r.l.double$
 
 *Instructor*: Alexandru Baltag (#link("mailto:TheAlexandruBaltag@gmail.com")) \ *TA*: Giuseppe Manes 
 (#link("giuseppe.manes@student.uva.nl"))
@@ -143,7 +151,7 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
   "l3-3": (
     "status": STATUS.NOT_STARTED, "name": "The problem of belief revision", "ref": ref(<lecture3-3>)
     ),
-  "l4-1": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture3-3>)),
+  "l4-1": ("status": STATUS.WORK_IN_PROGRESS, "name": "Cheating and the Failure of Standard DEL", "ref": ref(<lecture3-3>)),
 "t4-2": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture4-1>)),
 "l4-3": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<tutorial4-2>)),
 
@@ -417,11 +425,11 @@ _Wrong Beliefs_: Agents...
 #pagebreak()
 === Paradoxes of Induction and Probability
 
-#callout(title: "Puzzle 6: Surprised Children", style: "example")[
+#callout(title: "Puzzle 6: Surprise Exam", style: "example", label_: "10-puzzle-6")[
   Teacher announces an exam next week, but the date will be a surprise (students won't even know the night before).
   - *Paradoxical Argumentation*: Students apply backward induction. It cannot be Friday (they'd know Thursday night). By elimination, it cannot be any day. They deduce the announcement is false.
   - *Result*: They dismiss the announcement. The exam occurs (e.g., Tuesday) and is indeed a complete surprise.
-] #label("example-10-puzzle-6")
+]
 
 #callout(title: "Puzzle 7: The Lottery Paradox", style: "example")[
   A fair lottery with $"1,000,000"$ tickets. 
@@ -583,22 +591,22 @@ Group dynamics often deviate from ideal individualized epistemic logic due to th
   - *Madness of the Crowds*: Systems can fail systematically due to cascading social epistemology.
 ]
 
-#callout(title: "Information Cascades", style: "intuition")[
+#callout(title: "Information Cascades", style: "intuition", label_: "intuition-information-cascades")[
   An information cascade occurs when agents base their decisions on the observable behavior of prior agents rather than their own private evidence, leading to a breakdown of _epistemic democracy_ (the wisdom of crowds).
-] #label("intuition-information-cascades")
+]
 
-#callout(title: "The Black and White Urn Problem", style: "example")[
+#callout(title: "The Black and White Urn Problem", style: "example", label_: "urn-problem")[
   *Setup:* One urn is in a room. It is either Urn B (2/3 black marbles) or Urn W (2/3 white marbles). Agents enter one by one, draw a marble, replace it, and publicly record their guess of the urn on a blackboard.
   *The Cascade:* 1. Voter 1 draws Black and guesses Urn B.
   2. Voter 2 draws Black and guesses Urn B.
   3. Voter 3 draws White. However, the public evidence (two B votes) combined with their private evidence (one W draw) yields an aggregate evidence of (B, B, W). The rational epistemic choice is still to guess Urn B.
   *Result:* From Voter 3 onwards, everyone will vote Urn B regardless of their private draw. If the first two voters happened to draw the minority color (probability $1/9$), the entire crowd of $n$ voters will lock into the wrong conclusion.
-] #label("example-urn-problem")
+]
 
-#callout(title: "Biological and Geopolitical Cascades", style: "example")[
+#callout(title: "Biological and Geopolitical Cascades", style: "example", label_:  "example-biological-geopolitical-cascades")[
   - *Army Ant Circular Mill:* If an army ant loses the pheromone trail, it is biologically programmed to follow the ant directly in front of it. This simple rule works locally but can result in a massive recursive loop (a death spiral up to 400m in diameter) where the ants walk in a circle until they die.
   - *The Men Who Stare at Goats (Cold War):* A French newspaper published a fabricated story about US military research into psychic weapons. Soviet intelligence read this, assumed it was a cover-up, and initiated their own psychic research program. US intelligence discovered the Soviet program and, assuming the Soviets were onto a real threat, started their own actual research program, sparking a 30-year arms race built on an initial cascade of false information.
-] #label("example-biological-geopolitical-cascades")
+]
 
 == (Lecture): #lectures.l1-3.name <lecture1-3>
 
@@ -608,7 +616,7 @@ Single-agent epistemic-doxastic logic expands standard propositional logic to fo
 $ phi ::= p | not phi | phi and phi | #knowledge($phi$) | #belief($phi$) $ where $p in Prop$.
 
 #def("Single-Agent, pointed Epistemic-Doxastic Model")[
-  Is a tuple $S = (S, S_0, #interpretation($dot$), #actual_state)$, where
+  Is a tuple $bold("S") = (S, S_0, #interpretation($dot$), #actual_state)$, where
   - $S$: A set of _ontic_ states defining the agent's _epistemic state_ (epistemically possible).
   - $S_0$: A non-empty subset $S_0 subset.eq S$, called the _sphere of beliefs_ or the agent's _doxastic state_.
   - $#interpretation($dot$): Prop -> #powerset($S$)$: A _valuation_ map assigning atomic propositions to sets of states.
@@ -640,17 +648,17 @@ $ w models_bold("S") phi $
   def("Satisfiability")[A sentence $phi$ is *satisfiable* in a model $bold("S")$ if it is true at some state $w in bold("S")$.]
 )
 
-#callout(title: "Semantics of Knowledge and Belief", style: "note")[
+#callout(title: "Semantics of Knowledge and Belief", style: "note", label_:"semantics-knowledge-belief")[
   The universal quantifier over the domain of possibilities is interpreted as knowledge or belief.
   - *Knowledge* ($#knowledge($phi$)$): Truth in all epistemically possible worlds. 
   - *Belief* ($#belief($phi$)$): Truth in all doxastically possible worlds within the sphere of beliefs.
-] #label("intuition-semantics-knowledge-belief")
+]
 
 
 === Learning and Mistaken Updates
 Learning corresponds to world elimination. An update with a sentence $phi$ is the operation of deleting all non-$phi$ possibilities from the model.
 
-#callout(title: "The Concealed Coin and Mistaken Updates", style: "example")[
+#callout(title: "The Concealed Coin and Mistaken Updates", style: "example", label_: "concealed-coin")[
   #grid(columns: (85%, auto), column-gutter: 1em,
   [*Base Scenario:* A coin is on the table; the agent does not know if it is Heads ($H$) or Tails ($T$).],
   [#v(-.6em)
@@ -747,9 +755,9 @@ Learning corresponds to world elimination. An update with a sentence $phi$ is th
 }
   ```
 ))]])]
-] #label("example-concealed-coin")
+]
 
-#callout(title: [Continuation of #link(<example-10-puzzle-6>)[Puzzle 6: Surprised Children]], style: "example")[
+#callout(title: [Continuation of #link(<example-10-puzzle-6>)[Puzzle 6: Surprise Exam]], style: "example")[
 Situation before the teacher's announcement (we don't know $#actual_state$: no star in the figure):
   
   #figure(
@@ -804,11 +812,11 @@ A student beliefs (for some reason) the exam will be on Monday or Tuesday,\ but 
 === Kripke Semantics for Epistemic-Doxastic Logic
 Sphere models can be generalized using Kripke semantics to allow for varying strengths of knowledge and belief.
 
-#callout(title: "Kripke Model", style: "remember")[#def("Kripke Model")[A Kripke model is a tuple $S = (S, {R_i}_(i in I), norm(.), #actual_state)$ with set of states $S$, accessibility relations $R_i$, valuation $#interpretation($dot$)$, and actual state $#actual_state$.]]
+#callout(title: "Kripke Model", style: "remember")[#def("Kripke Model")[A Kripke model is a tuple $bold("S") = (S, {R_i}_(i in I), norm(.), #actual_state)$ with set of states $S$, accessibility relations $R_i$, valuation $#interpretation($dot$)$, and actual state $#actual_state$.]]
 
 #def("Epistemic-Doxastic Kripke Model")[
   To model knowledge $#knowledge("")$ and belief $#belief("")$, this becomes $(S, tilde, ->, norm(.), #actual_state)$, where $tilde$ is the epistemic relation (for #knowledge("")) and $->$ is the doxastic relation (for $#belief("")$). 
-] #label("def-epistemic-doxastic-kripke-model")
+]
 
 For atomic sentences and for Boolean connectives, we use the same semantics (and notations) as on epistemic-doxastic models.
 
@@ -824,7 +832,7 @@ $ #diamond-kripke($R_i$) phi := not #box-kripke($R_i$) not phi. $
   #enum(numbering: "i.", start: 6)[$phi = #box-kripke($R_i$) phi$: $w models #box-kripke($R_i$) phi "iff" v models phi forall v: w R_i v$.]
 ]
 
-#callout(title: [#link(<example-concealed-coin>)[Example 17 contd.: Coins and Knowledge]], style: "example")[
+#callout(title: [@example-concealed-coin: Concealed coin continued], style: "example")[
   The agent's knowledge in the concealed coin scenario can be represented as:
   #v(-.6em)
     #figure(
@@ -848,8 +856,8 @@ $ #diamond-kripke($R_i$) phi := not #box-kripke($R_i$) not phi. $
   - An arrow from state $s$ to state $t$ means that if $#actual_state = s$, the agent could not distinguish between $s$ and $t$.
 ]
 
-#callout(title: [#link(<example-concealed-coin>)[Example 17 contd.: Coins and Belief]], style: "example")[
-  The agent's belief after the mistaken update can be represented as:
+#callout(title: [@example-concealed-coin: Concealed coin continued], style: "example")[
+  The agent's belief after the mistaken update can be represented as: 
   #v(-.6em)
     #figure(
     align(center)[#scale(65%, reflow: true)[#figure(
@@ -890,7 +898,7 @@ digraph Z {
 
 ]
 
-#callout(title: "Axioms and Relational Properties", style: "theorem")[
+#callout(title: "Axioms and Relational Properties", style: "theorem", label_: "axioms-relational-properties")[
   A Kripke model satisfying all the below conditions on the relations $tilde$ and $arrow$ is called an *epistemic-doxastic Kripke model*.
 
   Validities for Knowledge (Equivalence relation $tilde$, giving an S5 model):
@@ -901,7 +909,7 @@ digraph Z {
 
   $#knowledge($belief("")$)$ Interaction Properties:
   #enum(numbering: "i.", start: 7)[*Knowledge implies Belief* ($#knowledge($phi$) => #belief($phi$)$): If $s -> t$ then $s tilde t$.][*Strong Positive Introspection* ($#belief($phi$) => #knowledge(belief($phi$))$): If $s tilde t$ and $t -> w$ then $s -> w$.][*Strong Negative Introspection* ($not #belief($phi$) => #knowledge($not #belief($phi$)$)$): If $s tilde t$ and $t -> w$ then $s -> w$.]
-] #label("theorem-axioms-relational-properties")
+]
 
 *Observations*:
 1. Epistemic-doxastic Kripke models are equivalent to Simple Epistemic-Doxastic Models(@def-single-agent-pointed-epistemic-doxastic-model) 
@@ -914,8 +922,8 @@ digraph Z {
   - Modus Ponens: from $phi$ and $(phi arrow psi)$ infer $psi$
   - Necessitation: from $phi$ infer $#knowledge($phi$)$ and $#belief($phi$)$
   - Kripke's axioms for #knowledge("") and #belief(""):
-    - $#knowledge($phi arrow psi$) arrow #knowledge($phi$) arrow #knowledge($psi$)$ 
-    - $#belief($phi arrow psi$) arrow #belief($phi$) arrow #belief($psi$)$ 
+    - $(#knowledge($phi arrow psi$)) arrow (#knowledge($phi$) arrow #knowledge($psi$))$ 
+    - $(#belief($phi arrow psi$)) arrow (#belief($phi$) arrow #belief($psi$))$ 
 
 *Generalization*
 - It is convenient to have a more general semantics where the above do not hold
@@ -923,13 +931,13 @@ digraph Z {
   - People may believe they know things they don't actually know
   - There might be "crazy" agents with inconsistent beliefs
 
-#callout(title: "Equivalence of Models", style: "theorem")[
+#callout(title: "Equivalence of Models", style: "theorem", label_: "equivalence-of-models")[
   Every epistemic-doxastic sphere model $S = (S, S_0, norm(.), #actual_state)$ is completely equivalent to an epistemic-doxastic Kripke model $S' = (S, tilde, ->, norm(.), #actual_state)$ that satisfies the same sentences at $#actual_state$.
-] #label("theorem-equivalence-of-models")
+]
 
-#callout(title: "Logical Omniscience", style: "attention")[
+#callout(title: "Logical Omniscience", style: "attention", label_: "logical-omniscience")[
   Any Kripke modality validates axiom K ($K(phi => psi) => (#knowledge($phi$) => K psi)$) and the Necessitation rule (if $phi$ is valid, $#knowledge($phi$)$ is valid). Consequently, Kripke semantics models "ideal reasoners" with unlimited inference powers who know/believe all logical entailments, failing to capture bounded rationality.
-] #label("attention-logical-omniscience")
+]
 
 = Week 2
 
@@ -938,54 +946,125 @@ digraph Z {
 === Multi-Agent Kripke Models & Modalities
 
 #def("Multi-Agent Kripke Model")[
-  A multi-agent Kripke model is a tuple $ S = (S, {->_a}_(a in cal(A)), #interpretation($dot$)) $ where $cal(A)$ is a set of labels representing the names of epistemic agents.
+  A multi-agent Kripke model is a tuple $ bold("S") = (S, {->_a}_(a in cal(A)), #interpretation($dot$)) $ where $cal(A)$ is a set of labels representing the names of epistemic agents.
 ]
 
-#def("Epistemic Modalities")[
+#def("Epistemic/ Doxastic Modalities")[
   For every sentence $phi$, we define $square_a phi$ by universally quantifying over $->_a$-accessible worlds:
   $s models_S square_a phi <=> t models_S phi$ for all $t$ such that $s ->_a t$.
-  This is interpreted as knowledge, denoted $#knowledge($phi$, inf: "a")$, or belief, denoted $#belief($phi$, inf: "a")$. Its existential dual $diamond_a phi := not square_a not phi$ denotes epistemic possibility.
+  This is interpreted as knowledge, denoted $#knowledge($phi$, inf: "a")$, or belief, denoted $#belief($phi$, inf: "a")$. 
+  
+  Its existential dual $diamond_a phi := not square_a not phi$ denotes epistemic/ doxastic possibility.
 ]
 
 
 #example("The Concealed Coin")[
-  Two players $a$, $b$, along with a referee $c$ play a game. The referee covers a fair coin so nobody knows the outcome. Using concatenated arrows, we can express iterated knowledge. For instance, $b$ knows that $a$ does not know the outcome but knows it is Heads ($H$) or Tails ($T$):
-  $w models square_b (not square_a H and not square_a T) and square_b square_a (H or T)$.
+  Two players $a$, $b$, along with a referee $c$ play a game. The referee throws a fair coin so nobody knows the outcome.
+
+  #v(-.6em)
+    #figure(
+    align(center)[#scale(65%, reflow: true)[#figure(
+    raw-render(
+  ```dot
+  digraph Z {
+    node [shape=square, style=rounded];
+
+    // Group the v nodes on the top row
+    {
+        rank = same;
+        H;T;
+    }
+    H -> H [arrowhead=rvee, tailport=w, label="a,b,c"]; T -> T [arrowhead=lvee, tailport=e, label="a,b,c"]; H -> T [dir=both, arrowhead=vee, arrowtail=vee, penwidth=0.5, minlen=2, label="a,b,c"];
+}
+  ```
+))]]
+  )
+
+  Using concatenated arrows, we can express iterated knowledge. For instance, $b$ knows that $a$ does not know the outcome but knows it is Heads ($H$) or Tails ($T$):
+  $ w models square_b (not square_a H and not square_a T) and square_b square_a (H or T) $
 ]
 
 === Common Knowledge
 
 #def("Common Knowledge (Group)")[
   Common knowledge within a group $G subset.eq cal(A)$, denoted $#common-knowledge($phi$, inf: "G")$, is evaluated by quantifying over all worlds accessible by any finite concatenation of arrows within $G$:
-  $s models_S #common-knowledge($phi$, inf: "G") <=> t models_S phi$ for every $t$ plus every finite chain $s = s_0 ->_(a_1) s_1 ->_(a_2) dots ->_(a_n) s_n = t$ with $a_1, dots, a_n in G$.
-  It is equivalent to the Kripke modality for the reflexive-transitive closure of the union of all epistemic relations: $[(union_(a in G) ->_a)^*]$.
+
+  $ s models_S #common-knowledge($phi$, inf: "G") <=> t models_S phi $ for every $t$ and every finite chain $s = s_0 ->_(a_1) s_1 ->_(a_2) dots ->_(a_n) s_n = t$ with $a_1, dots, a_n in G$.
+]
+
+#notation("Common Knowledge")[
+  *Full common knowledge*: In the case that $G = cal(A)$, we omit the subscript and write $#common-knowledge($phi$)$.
+  *Knowledge/ Belief*: In epistemic-doxastic models we have both 
+  - _common knowledge_ $#common-k("")$ and 
+  - _common true belief_ $#common-belief("")$.
+]
+
+#info("Common Knowledge equivalence to Kripke Modality", label_: "common-knowledge-equiv-kripke")[
+  #common-knowledge($phi$, inf: $G$) is equivalent to the Kripke modality for the reflexive-transitive closure of the union of all epistemic relations: $[(union.big_(a in G) ->_a)^*]$.
+
+  #remember("")[
+    #def("Reflexive-transitive closure")[
+      Given a relation $R$, its _reflexive-transitive closure_ $R^*$ is defined by:
+      $ w R^* v "iff" exists "finite chain" ("length" n>=0): w=w_0 R w_1 R ... R w_n = v $
+    ]
+  ]
 ]
 
 #callout(title: "Common Knowledge as Infinite Conjunction", style: "intuition")[
-  Let $E_G phi := and_(a in G) square_a phi$ ("everybody in $G$ knows $phi$"). @def-common-knowledge-group is semantically equivalent to the infinite conjunction:
-  $phi and E_G phi and E_G E_G phi and dots$
+  Let $E_G phi := and_(a in G) square_a phi$ ("everybody in group $G$ knows $phi$").
+  
+  Then, common knowledge #common-knowledge($phi$, inf: "G") (@def-common-knowledge-group) is semantically equivalent to the infinite conjunction:
+  $ phi and E_G phi and E_G E_G phi and dots $
+
+  #attention("Infinitary definitions")[
+    The most used modal-epistemic languages are _finitary_ s.t. #common-knowledge($$, inf: "G") cannot be defined as the infinite conjunction, which is impossible to form.
+
+    Instead, #common-knowledge($$, inf: "G") is interpreted as a *primitive* operator induced by the semantic clause in @info-common-knowledge-equiv-kripke
+  ]
 ]
 
-#callout(title: "Validities for Common Modalities", style: "theorem")[
+#callout(title: "Validities for Common Modalities", style: "theorem", label_: "validities-for-common-modalities")[
   - *Fixed-Point Axiom* (Mix): $#common-knowledge($phi$, inf: "G") => (phi and E_G #common-knowledge($phi$, inf: "G"))$
-  - *Induction Axiom*: $#common-knowledge($phi => E_G phi$, inf: "G") => (phi => #common-knowledge($phi$, inf: "G"))$
+  - *Induction Axiom*: $#common-knowledge($(phi => E_G phi)$, inf: "G") => (phi => #common-knowledge($phi$, inf: "G"))$
 ]
+
+==== Syntax
+#splitgrid((50%, 45%), column-gutter: 2em)[
+*Epistemic logic with common knowledge* #h(1.4em) $|$
+$ phi ::= p | not phi | phi and phi | #knowledge($phi$, inf: $a$) | #common-k($phi$, inf: "G") $][
+*Doxastic logic with common true belief*
+$ phi ::= p | not phi | phi and phi | #belief($phi$, inf: $a$) | #common-belief($phi$, inf: "G") $]
+*Epistemic-doxastic logic with common knowledge and common (true) belief*
+$ phi ::= p | not phi | phi and phi | #knowledge($phi$, inf: $a$) | #belief($phi$, inf: $a$) | #common-k($phi$, inf: "G") | #common-belief($phi$, inf: "G") $
+
+*Complete axiomatization:*
+- Multi-agent versions of the axioms in @theorem-axioms-relational-properties (modalities labeled with agents)
+- Fixed-Point and Induction Axioms (@theorem-validities-for-common-modalities) for both $#common-k("", inf: "G")$ and $#common-belief("", inf: "G")$
+- Kripke axioms for both $#common-k("", inf: "G")$ and $#common-belief("", inf: "G")$: $#common-knowledge($(phi arrow psi)$, inf: "G") arrow (#common-knowledge($phi$, inf: "G") arrow #common-knowledge($psi$, inf: "G"))$
+- Necessitation for both $#common-k("", inf: "G")$ and $#common-belief("", inf: "G")$: $phi arrow #common-knowledge($phi$, inf: "G")$
 
 === Distributed Knowledge
 
 #def("Distributed Knowledge (Group)")[
-  Distributed knowledge within a group $G$, denoted $D square_G phi$ or $D k_G phi$, is obtained by quantifying over worlds simultaneously accessible by all arrows for agents in $G$ (i.e., the intersection of epistemic relations $inter_(a in G) ->_a$):
+  Distributed knowledge within a group $G$, denoted $#distributed-knowledge($phi$, inf: "G")$ or $#distributed-k($phi$, inf: "G")$, is obtained by quantifying over all worlds simultaneously accessible by all arrows for agents in $G$:
   $s models_S D square_G phi <=> t models_S phi$ for every $t$ such that $s ->_a t$ holds for all $a in G$.
 ]
-
 #callout(title: "Epistemic Potential", style: "intuition")[
-  @def-distributed-knowledge-group captures the implicit knowledge of the group: what the agents in $G$ could come to know if they pooled all their private knowledge.
+  @def-distributed-knowledge-group captures the implicit (or virtual) knowledge of the group: what the agents in $G$ could come to know if they pooled all their private knowledge.
+]
+#info("Distributed Knowledge equivalence to Kripke Modality", label_: "distributd-knowledge-equiv-kripke")[
+  #distributed-knowledge($$, inf: $G$) is equivalent to the Kripke modality corresponding to the intersection of epistemic relations $ inter.big_(a in G) ->_a $
+]
+
+#note("Interpretations of distributed modalities")[
+  - when the relations $arrow_a$ are reflexive: #distributed-k($$, inf: $G$) as some sort of distributed knowledge
+  - when the relations $arrow_a$ represent beliefs: #epistemic_op(base: $D b$, formula: $$, sup: "", inf: "G") may be inconsistent
 ]
 
 #example("Two Muddy Children")[
   Two children (1 & 2) have dirty foreheads ($d_1$, $d_2$). Each sees the other but not themselves. In the real world $w = (d_1, d_2)$, neither knows both are dirty, but it is distributed knowledge:
   $w models not #knowledge($d_1 and d_2$, inf: "1") and not #knowledge($d_1 and d_2$, inf: "2") and D k (d_1 and d_2)$.
-]
+] #label("continue-here")
 
 
 #callout(title: "Validities for Distributed Knowledge", style: "theorem")[
@@ -1031,7 +1110,7 @@ digraph Z {
   $#box-kripke($!phi$) #box-kripke($!psi$) theta <=> #box-kripke($!(phi and #box-kripke($!phi$) psi)$) theta$.
 ]
 
-*TODO*: read and improve
+*TODO*: #link(<continue-here>)[Continue here \[click\]]
 
 == (Lecture): #lectures.l2-2.name <lecture2-2>
 
@@ -1048,10 +1127,573 @@ digraph Z {
 = Week 4
 
 == (Lecture): #lectures.l4-1.name <lecture4-1>
+Based on #raw("DEL 2019-20 Lectures 4.2.pdf")
+
+=== The Failure of Standard DEL
+
+#callout(title: "DEL Failure: The Problem with Standard Updates", style: "attention")[
+  Standard Dynamic Epistemic Logic (DEL) update mechanisms fail when an agent is confronted with new information that contradicts their previously held _false_ beliefs. Under the standard update product, all doxastic relations originating from the real world are eliminated. This empty sphere of beliefs results in the agent believing everything (inconsistent beliefs), violating the consistency axiom (D). 
+]
+
+#example("Counterexample: Scenario 4")[
+  _Scenario 4_: Recall the state model immediately after taking a peak:
+  #v(-.6em)
+    #figure(
+    align(center)[#scale(65%, reflow: true)[#figure(
+    raw-render(
+  ```dot
+  digraph Z {
+    node [shape=square, style=rounded];
+    splines="line";
+
+    // Group the v nodes on the top row
+    {
+        rank = same;
+        H;T;
+    }
+    N [label = "H", shape=doublecircle]
+    N -> N [arrowhead=lvee, tailport=e, label="c"];
+    N -> H [arrowhead=vee, tailport=s, label="a,b"]; N -> T [arrowhead=vee, tailport=s, label="a,b"];
+    H -> H [arrowhead=rvee, tailport=w, label="a,b,c"]; T -> T [arrowhead=lvee, tailport=e, label="a,b,c"]; H -> T [dir=both, arrowhead=vee, arrowtail=vee, minlen=2, label="a,b,c"];
+}
+  ```
+))]]
+  )
+  $c$ privately knows that the coin lies heads up: $phi = #knowledge($H$, inf: $c$)$ (also: $not #knowledge($phi$, inf: $a,b$)$).
+
+  _Scenario 5_: $c$ sends a secret announcement to $a$: $!_(c,a) phi$, the event model is:
+  #v(-.6em)
+    #figure(
+    align(center)[#scale(65%, reflow: true)[#figure(
+    raw-render(
+  ```dot
+  digraph Z {
+    node [shape=square, style=rounded];
+    splines="line";
+
+    // Group the v nodes on the top row
+    {
+        rank = same;
+        N;T;
+    }
+    N [label = "phi", shape=doublecircle]
+    T [label = "true"]
+    N -> N [arrowhead=rvee, tailport=w, label="a, c"];
+    N -> T [arrowhead=vee, tailport=e, label="b"];
+}
+  ```
+))]]
+  )
+  #splitgrid((47.5%,47.5%), column-gutter: 5%)[
+    Intuitive updated state model:
+
+    #graph-figure(
+      ```dot
+      digraph Z {
+        node [shape=square, style=rounded];
+        splines="line";
+
+        // Group the v nodes on the top row
+        {
+            rank = same;
+            H;T;
+        }
+        N [label = "H", shape=doublecircle]
+        N -> N [arrowhead=lvee, tailport=e, label="a,c"];
+        N -> H [arrowhead=vee, tailport=s, label="b"]; N -> T [arrowhead=vee, tailport=s, label="b"];
+        H -> H [arrowhead=rvee, tailport=w, label="a,b,c"]; T -> T [arrowhead=lvee, tailport=e, label="a,b,c"]; H -> T [dir=both, arrowhead=vee, arrowtail=vee, minlen=2, label="a,b,c"];
+      }
+    ```
+    )
+  ][
+    Actual updated state model:
+
+    #graph-figure(
+      ```dot
+      digraph Z {
+        node [shape=square, style=rounded];
+        splines="line";
+
+        // Group the v nodes on the top row
+        {
+            rank = same;
+            H;T;
+        }
+        N [label = "H", shape=doublecircle]
+        N -> N [arrowhead=lvee, tailport=e, label="c"];
+        N -> H [arrowhead=vee, tailport=s, label="b"]; N -> T [arrowhead=vee, tailport=s, label="b"];
+        H -> H [arrowhead=rvee, tailport=w, label="a,b,c"]; T -> T [arrowhead=lvee, tailport=e, label="a,b,c"]; H -> T [dir=both, arrowhead=vee, arrowtail=vee, minlen=2, label="a,b,c"];
+      }
+    ```
+    )
+  ]
+]
+
+#callout(title: "Surprise Exam continued", style: "example")[
+  If an agent strongly believes an exam is on Monday or Tuesday, and updates with $!(not 1)$ (not Monday) and then $!(not 2)$ (not Tuesday), the resulting model has no states left in their belief sphere $S_0 = emptyset$. The agent has inconsistent beliefs, violating axiom $(bold("D"))$ Consistency of Beliefs.
+  #splitgrid(
+    (47.5%, 47.5%),
+    column-gutter: 5%,
+  )[
+  #graph-figure(
+    ```dot
+        graph G {
+          rankdir=LR;
+          node [shape=square, style=rounded];
+
+          subgraph cluster_0 {
+              label = "";
+              style = rounded;
+              color = black;
+              1; 2; 
+          }
+          3; 4; 5;
+          
+
+          // Optional edges to ensure they stay in a row
+          1 -- 2 -- 3 -- 4 -- 5 [style=invis];
+      }```
+  )][
+    #splitgrid(
+        (10%, auto),
+        column-gutter: 5%,
+    )[#v(3.5%)
+      $arrow.r.double$
+    ][
+    #v(3%)
+    #graph-figure(
+      ```dot
+          graph G {
+            rankdir=LR;
+            node [shape=square, style=rounded];
+            3; 4; 5;
+            
+
+            // Optional edges to ensure they stay in a row
+            3 -- 4 -- 5 [style=invis];
+        }```
+    )] 
+  ]#v(-1%)
+]
+
+#example("Newton")[
+  _It gets worse_: Agent $a$ used to believe that Newton was the first to discover the laws of gravitation ($p$) after being inspired by being hit on the head by a falling apple ($q$). Belief set: $T={p,q,(p and q)}$
+
+  $a$ learned this was a myth: $not (p and q)$. Belief set $T={p,q,not (p and q)}$. #text(red)[Inconsistent!]
+
+  $a$ needs to remove $p$ or $q$ from the belief set, logic cannot tell $a$ which.
+]
+
+=== Belief Revision and AGM Theory
+We can fix our update with *Belief Revision Theory*.
+#info("The Problem of Belief Revision")[What happens if an agent $a$ learns a new fact $phi$ that contradicts previous beliefs?
+
+$a$ has to give up some previous beliefs. But which of them? All of them?
+
+No, $a$ should try to maintain as many previous beliefs as possible, while still accepting the new fact $phi$ and without arriving at a contradiction.
+]
+
+#callout(title: "AGM Theory Intuition", style: "intuition")[
+  Standard Belief Revision Theory (AGM#footnote[Name after its authors: Carlos Alchourrón, Peter Gärdenfors, and David Makinson (1985).]) attempts to solve this via an axiomatic approach on theories (belief sets) $T$. 
+  
+  Given input $phi$, AGM defines:
+  - _Expansion operator_ $T + phi$: $T union {phi}$ closed under logical inference (which can be inconsistent if the new information contradicts $T$).
+  - _Revision operator_ $T * phi$: maintains consistency: only adds consistent inference results
+]
+
+#note("Standard AGM fails to capture higher-order beliefs.")[]
+
+#def("AGM Postulates for Belief Revision")[
+  Let $T$ be a theory and $phi, psi$ be formulas. The AGM revision operator $*$ satisfies:
+  1. *Closure:* $T * phi$ is a belief set.
+  2. *Success:* $phi in T * phi$.
+  3. *Inclusion:* $T * phi subset.eq T + phi$.
+  4. *Preservation:* If $not phi in.not T$ then $T + phi subset.eq T * phi$.
+  5. *Vacuity:* $T * phi$ is inconsistent iff $tack not phi$.
+  6. *Extensionality:* If $tack phi <-> psi$, then $T * phi = T * psi$.
+  7. *Subexpansion:* $T * (phi and psi) subset.eq (T * phi) + psi$ (Note: symmetry of conjunction).
+  8. *Superexpansion:* If $not psi in.not T * phi$, then $T * (phi and psi) supset.eq (T * phi) + psi$.
+]
+
+#question("Are the postulates 'correct'?")[This is impossible to say without formal semantics; no defintion for $*$. AGM only defines syntax.]
+
+#callout(title: "Higher-Order Beliefs and AGM", style: "attention")[
+  AGM postulates become inconsistent when applied to higher-order beliefs. For a Moore sentence $phi := p and not #belief($p$)$, the Success postulate requires believing $phi$ after learning it, which forces an introspective agent to acquire inconsistent beliefs. Furthermore, Vacuity is too liberal, allowing revision with any consistent sentence even if the agent already *knows* its negation. 
+]
+
+*Limiting Vacuity* $A G M^K$: Updated axioms (@def-agm-postulates-for-belief-revision)
+- Vacuity states: successful revision with _any_ logically consistent sentence $phi$ (not a contradiction)
+- Accounting for the agent's knowledge $T$: if $not phi in T$, should never revise with $phi$
+$arrow.r.double$ restrict Vacuity to formulas that are logically consistent and consistent with $T$: $ "if" not #knowledge($not phi$) "then" T star phi "is consistent" $
+
+=== Defining a more expressive language for Belief Revision
+_Strategy_ for defining a more expressive language + proof system:
+1. *Syntax*: (Non-monotonic) Conditional Logic: Conditional belief operators as contingency plans for belief revision.
+2. *Semantics*: Conditional Logic
+#v(-0.5em)
+#splitgrid((47.5%, 47.5%), column-gutter: 5%)[
+  #list(marker: "", list([Grove sphere models (Lewis-Stalnaker \ semantics for counterfactual conditionals)],[Spohn ordinal ranking models],
+  [Preferential models (J. Halpern)],))
+][
+  #list(marker: "", list(
+  [Belief revision models (O. Board)],
+  [Plausibility models (Baltag, Smets)],
+  [Probabilistic models and spaces (Popper, Brandenburger)]))
+]
+
+==== Sphere Models
+#callout(title: "Fallback Beliefs", style: "intuition")[
+  To accommodate belief revision semantically, agents need a contingency plan—weaker secondary beliefs they can fall back on if their primary beliefs are contradicted. This is formalized using nested spheres $S_0, S_1,...$ or plausibility orders over states.
+]
+
+#example("Suprise Exam")[
+  #splitgrid(split_equal, column-gutter: 1%)[
+    Student $a$ has tiered levels of belief: 
+  - _strongest_: $S_0 = {1,2}$
+  - _a bit weaker_: $S_1 = {1,2,3,4}$
+  - _weakest_ (implicit): $S_2 = S = {1,2,3,4,5}$
+  ][
+    #graph-figure(
+    ```dot
+      graph G {
+        rankdir=LR;
+        node [shape=square, style=rounded];
+
+        subgraph cluster_1 {
+          margin = 4;
+          style = rounded;
+          color = black;
+            subgraph cluster_0 {
+                margin = 4;
+                style = rounded;
+                color = black;
+                1; 2; 
+            }
+            3; 4; 
+        }    
+        5;
+        
+
+        // Optional edges to ensure they stay in a row
+        1 -- 2 -- 3 -- 4 -- 5 [style=invis];
+    }```
+  )
+  ]
+  #v(-1.5em)
+  If $a$'s first belief $S_0$ (Monday or Tuesday) is wrong, then $a$'s contingency is to belief in $S_1$ (Wednesday or Thursday).
+
+  #splitgrid((70%,auto), column-gutter: 5%)[
+    Now, after updates $!not 1, !not 2$, $a$ still holds consistent beliefs:
+
+    We can repeat this with the implicit last sphere of belief $S_2$, \ maintaining consistency and allowing for automatic belief revision.
+  ][
+    #graph-figure(
+      ```dot
+        graph G {
+          rankdir=LR;
+          node [shape=square, style=rounded];
+
+
+          subgraph cluster_0 {
+              margin = 4;
+              style = rounded;
+              color = black;
+              3; 4; 
+          }
+                
+          5;
+          
+
+          // Optional edges to ensure they stay in a row
+          3 -- 4 -- 5 [style=invis];
+      }```
+    )
+  ]
+]
+
+#remember("Well-foundedness and converse well-foundedness")[
+  #def-group(
+    def("Well-foundedness")[
+      Means there are *no infinite descending chains* ($S_0 > S_1 > dots > S_n > dots$). This guarantees that every non-empty subset has a minimal element (e.g., a "closest" world or "smallest" sphere).
+    ],
+    def("Converse well-foundedness")[
+      Means there are *no infinite ascending chains* ($S_0 < S_1 < dots < S_n < dots$) of better and better worlds. This guarantees that every non-empty subset has a maximal element (e.g., a "most plausible" world).
+    ],
+  )
+]#v(-0.5em)
+
+#def("Single-Agent Sphere Model for Belief Revision (Grove Model)")[
+  A Grove model is a tuple $bold("S") = (S, cal(F), #interpretation($dot$), #actual_state)$, where $cal(F)$ is a nested, well-founded, and exhaustive family of subsets of $S$ (spheres) such that:
+  1. Nested: $forall S', S'' in cal(F)$, either $S' subset.eq S''$ or $S'' subset.eq S'$.
+  2. Smallest intersecting sphere: $ forall P subset.eq S "with" P eq.not emptyset, quad exists S' in cal(F): forall S'' in cal(F): P inter S'' eq.not emptyset iff S' subset.eq S'' $
+  3. Exhaustive: $inter cal(F) eq.not emptyset$ and $S = union cal(F)$.
+  The smallest sphere $S_0 = inter cal(F)$ represents the agent's strongest beliefs.
+]
+
+#note("")[The above is an extension of simple models (not yet Kripke).]
+
+*Spohn Ordinals*
+Because the family of spheres $cal(F)$ is well-founded, we can sequentially identify the smallest spheres and index them:
+- *Smallest sphere:* $S_0 := inter cal(F)$, which has the property that $S_0 subset.eq S'$ for all spheres $S' in cal(F)$.
+- *Next smallest:* $S_1 in cal(F) backslash {S_0}$, such that $S_1 subset.eq S'$ for all remaining spheres $S' in cal(F) backslash {S_0}$.
+- *Indexing:* This allows the family $cal(F)$ to be indexed by ordinals (or natural numbers in finite cases) up to some ordinal $beta$:
+  $S_0 subset S_1 subset dots subset S_alpha subset S_(alpha+1) subset dots subset S_beta = S$
+
+#def-group(
+  def("Spohn Ordinal / Degree of Implausibility")[
+    For every world $w in S$, the Spohn ordinal $"ord"(w)$ of world $w$ is defined as the _least ordinal_ $alpha$ such that $w in S_alpha$, it represents the _"degree of implausibility"_ of $w$.
+    #v(-0.3em)
+  ],
+  def("Belief and Knowledge in Grove models")[
+    As in epistemic-doxastic models (@def-epistemic-doxastic-kripke-model): \ by quantifying respectively over
+    - $S$ for knowledge, and over
+    - $S_0$ for belief. (Student question: quantify over $S_1,S_2,...$ for weaker beliefs?)
+    #v(-0.3em)
+  ],
+  def("Updates in Grove models")[
+    An _update_ $!phi$ with a sentence $phi$ is defined on full sphere models $bold("S") = (S, cal(F), #interpretation($dot$), #actual_state)$ similarly as on sphere-based epistemic-doxastic models (@def-epistemic-doxastic-kripke-model), except the family of spheres is restricted to worlds in $interpretation(phi)_bold("S")$, the new family of spheres is $ cal(F)^prime = {S^prime inter interpretation(phi)_bold("S") space | space S^prime in cal(F): S^prime inter interpretation(phi)_bold("S") != emptyset} $
+    #v(-0.4em)
+  ]
+)
+
+==== Plausibility Models
+#remember("")[
+  #def-group(
+    def("Preorder")[Reflexive and transitive binary relation $R$ on set $S$: 
+    $ forall s in S: s <= s "and" forall s,t,w in S: (s <= t and t <= w) arrow s<=w $#v(-0.5em)],
+    def("Totality of a binary relation")[
+      $ forall s,t in S: s <= t or t <= s $#v(-0.5em)
+    ]
+  )
+]#v(-0.5em)
+#let le_ = $lt.eq$
+#let plaus = "pl."
+#let le_plaus = $#le_ _#plaus$ // change to prec?
+#let le_plaus_not = $cancel(#le_) _#plaus$
+#def("Single-Agent Plausibility Model")[
+  A plausibility model is a tuple $bold("S") = (S, #le_plaus, #interpretation($dot$), #actual_state)$ where:
+  - $S$ is a non-empty set of states (_possible worlds_).
+  - $#le_plaus op(subset.eq) S times S$ is a converse-well-founded total preorder (_plausibility order_).
+  - $interpretation(dot)$ assigns a set of worlds $interpretation(p)_bold("S") subset S$ to each $p in Prop$ (_valuation_).
+]#v(-0.5em)
+#intuition("Plausibility order")[
+  $s #le_plaus t$ means:
+  1. $s$ is at least as plausible as $t$.
+  2. $t$ is in at least as many spheres as $s$.
+  3. Independent of what agent $a$ learns, as long as $s$ is consistent with $a$'s beliefs and $t$ is epistemically possible, $t$ is also consistent with $a$'s beliefs. 
+]
+#v(-0.5em)
+
+#callout(title: "Equivalence of Spheres and Plausibility", style: "note")[
+  Grove models (@def-single-agent-sphere-model-for-belief-revision-grove-model) and plausibility models (@def-single-agent-plausibility-model) are mathematically equivalent. The plausibility relation can be extracted via $ s #le_plaus t iff forall S' in cal(F) : (s in S' arrow t in S') $ An alternative statement using Spohn Ordinals (@def-spohn-ordinal--degree-of-implausibility): $ s #le_plaus t arrow.r.l.double "ord"(s) >= "ord"(t). $
+  
+  Conversely, spheres can be generated by $ cal(F) := {w^(lt.eq) : w in S}; w^(lt.eq) = {s in S : w #le_plaus s}. $
+]#v(-0.5em)
+
+#notation("Strict plausibility")[
+  A bit of syntactic sugar: abbreviate $(s<=t "and" t #le_plaus_not)$ as $s<t$.
+]
+#note("Most plausible states")[
+  Totality + converse well-foundedness together are equivalent to requiring that in every set of states $S$ there are some “most
+plausible” ones: for every $P subset.eq S$, if $P$ is non-empty then the set
+$ "bestP" = max_#le_plaus P := {s in P | forall t in P: t #le_plaus s} $
+is also nonempty: $"bestP" != emptyset$.
+]
+
+#def-group(
+  def("Interpretation Map on Plausibility models")[
+    We extend the valuation $norm(p)_S$ to an interpretation map $#interpretation($dot$)_S$ for all propositional formulas using standard Boolean connectives.
+    - *Knowledge*: Truth in all possible worlds. A sentence $phi$ is known iff its interpretation is the whole state space:
+      $ #interpretation($#knowledge($phi$)$)_S = {s in S : #interpretation($phi$)_S = S} $
+      Meaning $#interpretation($#knowledge($phi$)$)_S = S$ iff $#interpretation($phi$)_S = S$, and $emptyset$ otherwise.
+    - *Belief*: Truth in all the most plausible worlds.
+      $ #interpretation($#belief($phi$)$)_S = {s in S : "best" S subset.eq #interpretation($phi$)_S} $
+      Meaning $#interpretation($#belief($phi$)$)_S = S$ iff $"best" S subset.eq #interpretation($phi$)_S$, and $emptyset$ otherwise.
+  ],
+  // def("Knowledge and Belief in Plausibility Models")[
+  //   - *Knowledge:* $s models #knowledge($phi$)$ iff $#interpretation($phi$)_S = S$.
+  //   - *Belief:* $s models #belief($phi$)$ iff $"best" S subset.eq #interpretation($phi$)_S$. 
+  // ],
+)
+
+=== Conditional Beliefs and The Logic of Knowledge
+
+#def("Conditional Belief")[
+  Let $P,Q subset.eq S$ be two propositions over a model $bold("S")$ and let $phi,psi$ be sentences. We say that at any world $s in S$,
+  - $belief(P, sup: Q)$: $P$ is believed conditional on $Q$, if $P$ is true in the most plausible $Q$-worlds:
+
+  $ "bestQ" subset.eq P $
+
+  - $belief(psi, sup: Q)$: $psi$ is believed conditional on $Q$, if $psi$ is true in the most plausible $Q$-worlds:
+
+  $ "bestQ" subset.eq interpretation(psi)_bold("S") $
+  
+  - $#belief($psi$, sup: $phi$)$: $psi$ is believed conditional on $phi$, if  $interpretation(psi)_bold("S")$ is believed given $interpretation(phi)_bold("S")$:
+
+  $ #interpretation($#belief($psi$, sup: $phi$)$)_bold("S") = {s in S : "best" #h(-0.05em) #interpretation($phi$)_S subset.eq #interpretation($psi$)_S} $
+]
+
+#intuition("Conditional Beliefs as Contingency Plans")[
+  Think of $belief(psi, sup: phi)$ as contingency plans for belief change: 
+
+  In case find out $phi$, change belief to $psi$.
+]
+
+#callout(title: "Conditional Belief as Belief Revision", style: "note")[
+  We can semantically capture the AGM(@def-agm-postulates-for-belief-revision) revision operator using conditional belief  (@def-conditional-belief): $T * phi := {theta : #actual_state models #belief($theta$, sup: $phi$)}$. This interpretation guarantees that all modified AGM axioms are sound.
+]
+
+
+
+
+#example("Surprise Exam")[
+  When drawing a plausibility model:
+  - Preorder: Assume reflexivity and transitivity $arrow.r.double$ (not drawn) 
+  - $s arrow t$: $t #le_plaus s$ (e.g., $4 #le_plaus 5$ and $5 arrow 4$).
+  #graph-figure(
+    ```dot
+    digraph G {
+          rankdir=LR;
+          node [shape=square, style=rounded];
+          
+          // Setting the global arrowhead style
+          edge [arrowhead=vee, arrowtail=vee];
+
+          A [label="1"]; 
+          B [label="2"]; 
+          C [label="3"]; 
+          D [label="4"]; 
+          E [label="5"];
+
+          // A and B point to each other
+          A -> B [dir=both];
+          C -> D [dir=both];
+          
+          // Nodes are laid out B to E, but arrows point backwards (E -> D -> C -> B)
+          B -> C [dir=back]; D -> E [dir=back];
+    }```
+  )
+  - $belief((1 or 2))$, $belief((3 or 4), sup: not (1 or 2))$
+]
+
+#example("Professor Wine - Formalization", label_: "professor-wine")[
+  Professor Wine knows there are only two explanations for feeling like a genius: he is a genius ($g$) or he's drunk ($d$). He doesn't feel drunk, so he believes he is a sober genius. If he realized he was drunk, he would conditionally believe his genius feeling was just the drink (drunk non-genius). In reality, he is both drunk and a genius.
+  - *Assumptions*: $#belief($g$)$, $#knowledge($g or d$)$, $#belief($not d$)$, $#belief($not g$, sup: $d$)$, and $d and g$.
+  - *The Model*: Worlds are $(d, g)$, $(d, not g)$, $(not d, g)$. The actual world is $(d, g)$.
+  - *Plausibility Order*: $(not d, g) < (d, not g) < (d, g)$. No $(not d, not g)$ world exists because he knows $#knowledge($g or d$)$.
+  - *Conclusion*: He believes he is a genius ($(d, g) models #belief($g$)$), but he does not *know* it, since $(d, not g)$ is a possible world. True belief is not knowledge because it can be lost upon learning new facts (like learning $d$).
+
+  #graph-figure(
+    ```dot
+    digraph G {
+          rankdir=LR;
+          node [shape=square, style=rounded];
+          
+          // Setting the global arrowhead style
+          edge [arrowhead=vee, arrowtail=vee];
+
+          A [label="* d,g", fontcolor="red"]; 
+          B [label="d, ㄱg"]; 
+          C [label="ㄱd, g"]; 
+          
+          A -> B -> C;
+    }```
+  )
+]
+
+#theorem("Full Introspection of Conditional Beliefs")[
+  Strong introspection holds for knowledge and standard beliefs, and it importantly extends to conditional beliefs:
+  $ #belief($phi$, sup: $psi$) arrow #knowledge(belief($phi$, sup: $psi$)) $ $ not #belief($phi$, sup: $psi$) arrow #knowledge($not belief(phi, sup: psi)$) $
+]
+
+#note("Knowledge vs. True Belief")[
+  Knowledge implies true belief ($#knowledge($phi$) arrow phi and #belief($phi$)$), but the converse is false in this setting. 
+  
+  Not every true belief qualifies as "knowledge", as it lacks stability against belief revision. (Recall @example-professor-wine)
+]
+
+=== Kripke Semantics and Belief Modalities
+
+#callout(title: "Difference from Standard Kripke Semantics", style: "attention")[
+  While plausibility models are single-agent Kripke models, the semantics of belief is *not* given by the standard Kripke semantics for the plausibility relation $#le_plaus$. 
+
+  Belief is *not* the Kripke modality for the plausibility relation.
+]
+
+#question("Knowledge as a Kripke Modality")[
+  For a set $S$, we must have:
+  $ s models knowledge(phi) arrow.r.l.double forall t: (s R_"knowledge" t) arrow (t models phi) $
+]
+
+#theorem("Belief and Conditional Belief as Kripke Modalities")[
+  We can define appropriate accessibility relations to make belief a Kripke modality:
+  - *Doxastic Accessibility Relation* $R_"belief"$:
+    $s R_"belief" t iff t in "bestS"$
+    #list(marker: none)[Then $s models #belief($phi$)$ iff $forall t (s R_"belief" t arrow t models phi)$.][Endowed with $R_"belief"$, plausibility models become KD45 doxastic models.]
+  - *Conditional Doxastic Accessibility Relation* $R_"belief"^psi$:
+    $ s R_"belief"^psi t iff t in "best" #interpretation($psi$)_S $
+    Then conditional belief is a Kripke modality: $s models #belief($phi$, sup: $psi$)$ iff $forall t (s R_"belief"^psi t arrow t models phi)$.
+]
+
+#note("Seriality and Consistency of Conditional Belief")[
+  The conditional doxastic arrows $R_"belief"^psi$ are *not necessarily serial*. They are serial only if the condition $psi$ is consistent with the agent's knowledge (i.e., $not #knowledge($not psi$)$ or $#interpretation($psi$)_S != emptyset$).
+  - *Interpretation*: Revision is restricted by knowledge. If $phi$ is known to be false, the agent should not be able to revise with $phi$.
+  - *Warning - Counterfactual vs. Conditional*:   
+    - _Counterfactually_, an agent may consistently imagine possibilities that go against their knowledge. 
+    - _Conditionally_, consistent beliefs must be based on possibilities consistent with their knowledge.
+]
+
+*Interpreting $A G M^K$ using conditional beliefs*:
+Given a plausibility model $bold("S") = (S, #le_plaus, interpretation(dot), #actual_state)$
+$ T = {theta in L | #actual_state models_bold("S") belief(theta)} $
+where $L$ is the language of epistemic-doxastic logic.
+
+_Note_: the agent's current theory $T$ consists of all the sentences beliefed in model $bold("S")$ at the real world $#actual_state$.
+
+For a sentence $phi in L$:
+$ T star phi := {theta in L | #actual_state models_bold("S") belief(theta, sup: phi)} $
+
+If we interpret revision with $phi$ in terms of doxastic conditioning with $phi$, all the $A G M^K$ axioms are sound. In fact $A G M^K$ are a subset of the following.
+
+#callout(title: "Axiomatization of Knowledge and Conditional Belief", style: "theorem")[
+  The complete logic bridging knowledge and conditional belief includes:
+  - *Propositional tautologies*
+  - *Modus Ponens*
+  - *Necessitation:* From $tack phi$ infer $tack #belief($phi$, sup: $psi$)$ and $tack #knowledge($phi$)$
+  - *Normality:* $#belief($phi => theta$, sup: $psi$) => (#belief($phi$, sup: $psi$) => #belief($theta$, sup: $psi$))$
+  - *Truthfulness of Knowledge:* $tack #knowledge($phi$) => phi$
+  - *Persistence of Knowledge:* $tack #knowledge($phi$) => #belief($phi$, sup: $psi$)$
+  - *Full Introspection:* $tack #belief($phi$, sup: $psi$) => #knowledge(belief($phi$, sup: $psi$))$ and $tack not #belief($phi$, sup: $psi$) => #knowledge($not #belief($phi$, sup: $psi$)$)$
+  - *Success of Belief Revision:* $tack #belief($phi$, sup: $phi$)$
+  - *Consistency of Belief Revision:* $tack not #knowledge($not phi$) => not #belief($"False"$, sup: $phi$)$
+  - *Inclusion:* $tack #belief($theta$, sup: $phi and psi$) => #belief($psi => theta$, sup: $phi$)$
+  - *Rational Monotonicity:* $tack not #belief($not psi$, sup: $phi$) and #belief($theta$, sup: $phi$) => #belief($theta$, sup: $phi and psi$)$
+]
+
+=== Dropping Well-foundedness
+
+#callout(title: "Infinite Models and Generalization", style: "intuition")[
+  In finite models, converse well-foundedness of $#le_plaus$ is automatically satisfied. If we drop this condition for infinite cases (keeping only the totality of the preorder $#le_plaus$), we can no longer guarantee the existence of "most plausible" states ($"best" S$ might be empty).
+]
+
+#def("Belief in Non-Wellfounded Models")[
+  We redefine conditional belief as "truth in all worlds that are plausible enough":
+  $ #interpretation($#belief($phi$, sup: $psi$)$)_S = {s in S : exists w in #interpretation($psi$)_S (#interpretation($psi$)_S inter w^(lt.eq) subset.eq #interpretation($phi$)_S)} $
+  where $w^(lt.eq) = {t in S : w #le_plaus t}$ is the sphere determined by $w$.
+]
+
+#theorem("Properties of Generalized Plausibility Models")[
+  - On converse-wellfounded models, this new definition is equivalent to the standard one.
+  - The logic of conditional beliefs on totally preordered (generalized) plausibility models is *exactly the same* as on converse-wellfounded plausibility models (the proof system remains sound and complete).
+  - *Key Differences*: Belief is *not* a Kripke modality in generalized models. Most importantly, the set of sentences that are believed may be *inconsistent* in such models, even though any finite subset of them is consistent.
+]
 
 == (Lecture): #lectures.t4-2.name <tutorial4-2>
 
 == (Lecture): #lectures.l4-3.name <lecture4-3>
+
+== Homework 1
+September 16
 
 = Week 5
 
