@@ -96,8 +96,16 @@
 #let box-kripke(formula) = $[formula]$
 #let diamond-kripke(formula) = $chevron.l formula chevron.r$
 #let actual_state = $s_star$
+#let transition(alpha, inf: none) = $scripts(arrow)^#alpha _#inf$
+#let model = $bold("S")$
 
 #let iff = $arrow.r.l.double$
+
+// logics
+#let S4 = $bold("S4")$
+#let S5 = $bold("S5")$
+#let K45 = $bold("K45")$
+#let KD45 = $bold("KD45")$
 
 *Instructor*: Alexandru Baltag (#link("mailto:TheAlexandruBaltag@gmail.com")) \ *TA*: Giuseppe Manes 
 (#link("giuseppe.manes@student.uva.nl"))
@@ -126,55 +134,64 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
 #let lectures = (
   "l1-1": (
     "status": STATUS.DONE, "name": "Introduction: Motivation, Main Themes, Puzzles", "ref": ref(<lecture1-1>)
-    ),
+  ),
   "l1-2": (
     "status": STATUS.DONE, "name": "Main Themes, Puzzles, and Paradoxes Continued", "ref": ref(<lecture1-2>)
-    ),
+  ),
   "l1-3": (
     "status": STATUS.DONE, "name": "Single-Agent Epistemic-Doxastic Logics: Kripke Models", "ref": ref(<lecture1-3>)
-    ),
+  ),
+
   "l2-1": (
-    "status": STATUS.WORK_IN_PROGRESS, "name": "Multi-agent Models and Public Announcement Logic (PAL)", "ref": ref(<lecture2-1>)
-    ),
+    "status": STATUS.DONE, "name": "Multi-agent Models, Common & Distributed Knowledge, and Updates", "ref": ref(<lecture2-1>)
+  ),
   "l2-2": (
-    "status": STATUS.NOT_STARTED, "name": "PAL Continued", "ref": ref(<lecture2-2>)
-    ),
+    "status": STATUS.WORK_IN_PROGRESS, "name": "Public Announcement Logic (PAL)", "ref": ref(<lecture2-2>)
+  ),
   "l2-3": (
-    "status": STATUS.NOT_STARTED, "name": "Does this one even exist??", "ref": ref(<lecture2-3>)
-    ),
+    "status": STATUS.NOT_STARTED, "name": "PAL continued", "ref": ref(<lecture2-3>)
+  ),
+
   "l3-1": (
-    "status": STATUS.NOT_STARTED, "name": "\"Learnability\" and \"Knowability\"", "ref": ref(<lecture3-1>)
-    ),
+    "status": STATUS.NOT_STARTED, "name": "Learnability and Knowability", "ref": ref(<lecture3-1>)
+  ),
   "t3-2": (
     "status": STATUS.NOT_STARTED, "name": "Tutorial 1", "ref": ref(<tutorial3-2>)
-    ),
+  ),
   "l3-3": (
     "status": STATUS.NOT_STARTED, "name": "The problem of belief revision", "ref": ref(<lecture3-3>)
-    ),
-  "l4-1": ("status": STATUS.WORK_IN_PROGRESS, "name": "Cheating and the Failure of Standard DEL", "ref": ref(<lecture3-3>)),
-"t4-2": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture4-1>)),
-"l4-3": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<tutorial4-2>)),
+  ),
 
-"l5-1": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture4-3>)),
-"t5-2": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture5-1>)),
-"l5-3": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<tutorial5-2>)),
+  "l4-1": (
+    "status": STATUS.DONE, "name": "Cheating and the Failure of Standard DEL", "ref": ref(<lecture4-1>)
+  ),
+  "t4-2": (
+    "status": STATUS.WORK_IN_PROGRESS, "name": "Dynamic Belief Revision in the general case", "ref": ref(<tutorial4-2>)
+  ),
+  "l4-3": (
+    "status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture4-3>)
+  ),
 
-"l6-1": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture5-3>)),
-"t6-2": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture6-1>)),
-"l6-3": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<tutorial6-2>)),
+  "l5-1": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture5-1>)),
+  "t5-2": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<tutorial5-2>)),
+  "l5-3": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture5-3>)),
 
-"l7-1": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture6-3>)),
-"t7-2": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture7-1>)),
-"l7-3": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<tutorial7-2>)),
+  "l6-1": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture6-1>)),
+  "t6-2": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<tutorial6-2>)),
+  "l6-3": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture6-3>)),
 
-"l8-1": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture7-3>)),
-"t8-2": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture8-1>)),
-"l8-3": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<tutorial8-2>)),
+  "l7-1": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture7-1>)),
+  "t7-2": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<tutorial7-2>)),
+  "l7-3": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture7-3>)),
+
+  "l8-1": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture8-1>)),
+  "t8-2": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<tutorial8-2>)),
+  "l8-3": ("status": STATUS.NOT_SEEN, "name": "", "ref": ref(<lecture8-3>)),
 )
 
 #let lecture-overview(data) = {
   // 1. Get keys and sort them so l1-1 comes before l1-2
-  let sorted-keys = data.keys().sorted()
+  let sorted-keys = data.keys()
 
   // 2. Create a flat array of table cells
   let cells = sorted-keys.map(k => {
@@ -183,7 +200,7 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
     // Construct the description (Name + optional Reference)
     let description = [
       #item.name
-      #if "ref" in item [ : #item.ref]
+      #if "ref" in item [: #item.ref]
     ]
     
     // Construct the status symbol
@@ -241,7 +258,7 @@ Do not distribute, please send this link: #link("https://github.com/frehburg/mol
     - use my custom definitions for common operators such as the set of propositional letters or epistemic operators:
 ]
 
-*TODO:* For some reason bullet point markers after 1 have no symbols
+Regex for replacing cite: #raw("\[cite: (\d+, )+\d+\]")
 
 *TODO:* fix that def title cannot be a `[content block]`
 
@@ -576,7 +593,7 @@ In the leaves ("outcomes" $o_j$) the first number is $a$'s payoff, the second nu
 
 #callout(title: "The BI Paradox and Rational Pessimism", style: "intuition")[
   - *Aumann's Argument*: Assuming _Common Knowledge_ (@def-common-knowledge) of Rationality ($"CKR"$), backward induction dictates $A$ chooses $o_3$ at $v_2$, so $B$ chooses $o_2$ at $v_1$, so $A$ chooses $o_1$ at $v_0$. The game terminates immediately at a suboptimal Pareto outcome.
-  - *Counterargument*: If $B$ reaches $v_1$, he observes $A$ violating $"CKR"$ (she didn't stop at $v_0$). If $B$ adopts *Rational Pessimism*—assuming $A$ is irrational and will thus choose $o_4$ at $v_2$—he should continue. If $A$ anticipates this belief revision, her initial deviation becomes strictly rational. The epistemic foundation of backward induction contradicts its own counterfactuals.
+  - *Counterargument*: If $B$ reaches $v_1$, he observes $A$ violating $"CKR"$ (they didn't stop at $v_0$). If $B$ adopts *Rational Pessimism*—assuming $A$ is irrational and will thus choose $o_4$ at $v_2$—he should continue. If $A$ anticipates this belief revision, her initial deviation becomes strictly rational. The epistemic foundation of backward induction contradicts its own counterfactuals.
 ]
 
 === Social Epistemology
@@ -616,7 +633,7 @@ Single-agent epistemic-doxastic logic expands standard propositional logic to fo
 $ phi ::= p | not phi | phi and phi | #knowledge($phi$) | #belief($phi$) $ where $p in Prop$.
 
 #def("Single-Agent, pointed Epistemic-Doxastic Model")[
-  Is a tuple $bold("S") = (S, S_0, #interpretation($dot$), #actual_state)$, where
+  Is a tuple $#model = (S, S_0, #interpretation($dot$), #actual_state)$, where
   - $S$: A set of _ontic_ states defining the agent's _epistemic state_ (epistemically possible).
   - $S_0$: A non-empty subset $S_0 subset.eq S$, called the _sphere of beliefs_ or the agent's _doxastic state_.
   - $#interpretation($dot$): Prop -> #powerset($S$)$: A _valuation_ map assigning atomic propositions to sets of states.
@@ -630,9 +647,9 @@ _Sphere-based_: represents beliefs as nested layers of possible worlds, ranking 
   - *Doxastic state*: the agent beliefs $#actual_state in S_0$
 ]
 
-#callout(title: "Truth", style: "notation")[We write the following if $phi$ is _true_ in world $w$. When the model $bold("S")$ is fixed, we skip the subscript.
+#callout(title: "Truth", style: "notation")[We write the following if $phi$ is _true_ in world $w$. When the model $#model$ is fixed, we skip the subscript.
 
-$ w models_bold("S") phi $
+$ w models_#model phi $
 ]
 
 #callout(title: "Atomic logical connectives", style: "note")[
@@ -641,11 +658,11 @@ $ w models_bold("S") phi $
 
 #def-group(
   def("Truth in an Interpretation")[
-    A sentence $phi$ is true in a model $bold("S")$ under the valuation map $#interpretation($dot$)_bold("S")$ if
+    A sentence $phi$ is true in a model $#model$ under the valuation map $#interpretation($dot$)_#model$ if
     #enum(numbering: "i.")[$phi = p; p in Prop$: $w models p "iff" w in #interpretation($p$)$,][$phi = not psi$: $w models not psi "iff" w cancel(models) psi$,][$phi = psi and chi$: $w models psi and chi "iff" w models psi "and" w models chi$,][$phi = #knowledge($phi$)$: $w models #knowledge($phi$) "iff" forall s in S, s models phi$,][$phi = #belief($phi$)$: $w models #knowledge($phi$) "iff" forall s in S_0, s models phi$.]
   ],
-  def("Validity")[A sentence $phi$ is *valid* in a model $bold("S")$ if it is true at every state $w in bold("S")$.],
-  def("Satisfiability")[A sentence $phi$ is *satisfiable* in a model $bold("S")$ if it is true at some state $w in bold("S")$.]
+  def("Validity")[A sentence $phi$ is *valid* in a model $#model$ if it is true at every state $w in #model$.],
+  def("Satisfiability")[A sentence $phi$ is *satisfiable* in a model $#model$ if it is true at some state $w in #model$.]
 )
 
 #callout(title: "Semantics of Knowledge and Belief", style: "note", label_:"semantics-knowledge-belief")[
@@ -812,7 +829,7 @@ A student beliefs (for some reason) the exam will be on Monday or Tuesday,\ but 
 === Kripke Semantics for Epistemic-Doxastic Logic
 Sphere models can be generalized using Kripke semantics to allow for varying strengths of knowledge and belief.
 
-#callout(title: "Kripke Model", style: "remember")[#def("Kripke Model")[A Kripke model is a tuple $bold("S") = (S, {R_i}_(i in I), norm(.), #actual_state)$ with set of states $S$, accessibility relations $R_i$, valuation $#interpretation($dot$)$, and actual state $#actual_state$.]]
+#callout(title: "Kripke Model", style: "remember")[#def("Kripke Model")[A Kripke model is a tuple $#model = (S, {R_i}_(i in I), norm(.), #actual_state)$ with set of states $S$, accessibility relations $R_i$, valuation $#interpretation($dot$)$, and actual state $#actual_state$.]]
 
 #def("Epistemic-Doxastic Kripke Model")[
   To model knowledge $#knowledge("")$ and belief $#belief("")$, this becomes $(S, tilde, ->, norm(.), #actual_state)$, where $tilde$ is the epistemic relation (for #knowledge("")) and $->$ is the doxastic relation (for $#belief("")$). 
@@ -890,10 +907,10 @@ digraph Z {
 - $(bold(4))$ Transitivity $square phi arrow square square phi$
 - $(bold(5))$ Euclideaness $diamond phi arrow square diamond phi$
 - $(bold("D"))$ Seriality $square phi arrow diamond phi$
-- _Weak Epistemic Model_ $(bold("S4")) = (bold("K")) + (bold("T")) + (bold(4))$: No negatice introspection (only relfex. & trans.)
-- _Epistemic Model_: $(bold("S5")) = (bold("K")) + (bold("T")) + (bold(5))$
-  - Note: An $(bold("S5"))$-model is one where the accessibility relations are equivalence relations: \ reflexive, transitive, symmetric (with the other two properties, Symmetry $equiv$ Euclidean)
-- _Doxastic Model_: $(bold("KD45")) = (bold("K")) + (bold("D")) + (bold(4)) + (bold(5))$
+- _Weak Epistemic Model_ $(#S4) = (bold("K")) + (bold("T")) + (bold(4))$: No negatice introspection (only relfex. & trans.)
+- _Epistemic Model_: $(#S5) = (bold("K")) + (bold("T")) + (bold(5))$
+  - Note: An $(#S5)$-model is one where the accessibility relations are equivalence relations: \ reflexive, transitive, symmetric (with the other two properties, Symmetry $equiv$ Euclidean)
+- _Doxastic Model_: $(#KD45) = (bold("K")) + (bold("D")) + (bold(4)) + (bold(5))$
   - Note: Doxastic Models are not symmetric, but serial ($forall s: exists t: s arrow t$), transitive, Euclidean
 
 ]
@@ -901,20 +918,20 @@ digraph Z {
 #callout(title: "Axioms and Relational Properties", style: "theorem", label_: "axioms-relational-properties")[
   A Kripke model satisfying all the below conditions on the relations $tilde$ and $arrow$ is called an *epistemic-doxastic Kripke model*.
 
-  Validities for Knowledge (Equivalence relation $tilde$, giving an S5 model):
+  Validities for Knowledge (Equivalence relation $tilde$, giving an #S5 model):
   #enum(numbering: "i.", start: 1)[*Veracity* ($#knowledge($phi$) => phi$): $tilde$ is reflexive.][*Positive Introspection* ($#knowledge($phi$) => #knowledge(knowledge($phi$))$): $tilde$ is transitive ($bold(4)$).][*Negative Introspection* ($not #knowledge($phi$) => #knowledge($not #knowledge($phi$)$)$): $tilde$ is Euclidean (and symmetric) ($bold(5)$).]
 
-  Validities for Belief (KD45 model properties for $->$):
+  Validities for Belief (#KD45 model properties for $->$):
   #enum(numbering: "i.", start: 4)[*Consistency* ($not B(phi and not phi)$): $->$ is serial.][*Positive Introspection* ($#belief($phi$) => #belief(belief($phi$))$): $->$ is transitive.][*Negative Introspection* ($not #belief($phi$) => "B" not #belief($phi$)$): $->$ is Euclidean.]
 
   $#knowledge($belief("")$)$ Interaction Properties:
   #enum(numbering: "i.", start: 7)[*Knowledge implies Belief* ($#knowledge($phi$) => #belief($phi$)$): If $s -> t$ then $s tilde t$.][*Strong Positive Introspection* ($#belief($phi$) => #knowledge(belief($phi$))$): If $s tilde t$ and $t -> w$ then $s -> w$.][*Strong Negative Introspection* ($not #belief($phi$) => #knowledge($not #belief($phi$)$)$): If $s tilde t$ and $t -> w$ then $s -> w$.]
 ]
 
-*Observations*:
-1. Epistemic-doxastic Kripke models are equivalent to Simple Epistemic-Doxastic Models(@def-single-agent-pointed-epistemic-doxastic-model) 
+#note("Observations")[
+1. Epistemic-doxastic Kripke models are equivalent to Simple Epistemic-Doxastic Models (@def-single-agent-pointed-epistemic-doxastic-model) 
 2. The epistemic relation is completely determined by the doxastic relation.
-
+]
 *Sound and Complete Proof System for single agent epistemic-doxastic logic*:
 - Axioms: 
   - From above: i. - iv., vii. - ix.
@@ -946,7 +963,7 @@ digraph Z {
 === Multi-Agent Kripke Models & Modalities
 
 #def("Multi-Agent Kripke Model")[
-  A multi-agent Kripke model is a tuple $ bold("S") = (S, {->_a}_(a in cal(A)), #interpretation($dot$)) $ where $cal(A)$ is a set of labels representing the names of epistemic agents.
+  A multi-agent Kripke model is a tuple $ #model = (S, {->_a}_(a in cal(A)), #interpretation($dot$)) $ where $cal(A)$ is a set of labels representing the names of epistemic agents.
 ]
 
 #def("Epistemic/ Doxastic Modalities")[
@@ -1037,7 +1054,7 @@ $ phi ::= p | not phi | phi and phi | #belief($phi$, inf: $a$) | #common-belief(
 *Epistemic-doxastic logic with common knowledge and common (true) belief*
 $ phi ::= p | not phi | phi and phi | #knowledge($phi$, inf: $a$) | #belief($phi$, inf: $a$) | #common-k($phi$, inf: "G") | #common-belief($phi$, inf: "G") $
 
-*Complete axiomatization:*
+*Complete Axiomatization for Common Knowledge*:
 - Multi-agent versions of the axioms in @theorem-axioms-relational-properties (modalities labeled with agents)
 - Fixed-Point and Induction Axioms (@theorem-validities-for-common-modalities) for both $#common-k("", inf: "G")$ and $#common-belief("", inf: "G")$
 - Kripke axioms for both $#common-k("", inf: "G")$ and $#common-belief("", inf: "G")$: $#common-knowledge($(phi arrow psi)$, inf: "G") arrow (#common-knowledge($phi$, inf: "G") arrow #common-knowledge($psi$, inf: "G"))$
@@ -1050,7 +1067,9 @@ $ phi ::= p | not phi | phi and phi | #knowledge($phi$, inf: $a$) | #belief($phi
   $s models_S D square_G phi <=> t models_S phi$ for every $t$ such that $s ->_a t$ holds for all $a in G$.
 ]
 #callout(title: "Epistemic Potential", style: "intuition")[
-  @def-distributed-knowledge-group captures the implicit (or virtual) knowledge of the group: what the agents in $G$ could come to know if they pooled all their private knowledge.
+  @def-distributed-knowledge-group captures the implicit (or virtual) knowledge of the group: what the agents in $G$ could come to know if they communicated all their private knowledge.
+
+  _Public announcements_: By communicating, private knowledge can become (common) knowledge.
 ]
 #info("Distributed Knowledge equivalence to Kripke Modality", label_: "distributd-knowledge-equiv-kripke")[
   #distributed-knowledge($$, inf: $G$) is equivalent to the Kripke modality corresponding to the intersection of epistemic relations $ inter.big_(a in G) ->_a $
@@ -1062,57 +1081,532 @@ $ phi ::= p | not phi | phi and phi | #knowledge($phi$, inf: $a$) | #belief($phi
 ]
 
 #example("Two Muddy Children")[
-  Two children (1 & 2) have dirty foreheads ($d_1$, $d_2$). Each sees the other but not themselves. In the real world $w = (d_1, d_2)$, neither knows both are dirty, but it is distributed knowledge:
-  $w models not #knowledge($d_1 and d_2$, inf: "1") and not #knowledge($d_1 and d_2$, inf: "2") and D k (d_1 and d_2)$.
-] #label("continue-here")
+  - Two children (1 & 2) have dirty foreheads ($d_1$, $d_2$). 
+  - Each sees the other but not themselves. 
+  - In the real world $#actual_state = (d_1, d_2)$, neither knows both are dirty, but it is distributed knowledge:
+  $ #actual_state models not #knowledge($(d_1 and d_2)$, inf: "1") and not #knowledge($(d_1 and d_2)$, inf: "2") and #distributed-k($(d_1 and d_2)$) $
 
+  #graph-figure(
+    ```dot
+    digraph G {
+  rankdir="TB" // Top to Bottom flow makes the A/B vs C/D split clearer
+  
+  node [shape=square, style="rounded"]
+  edge [arrowhead="vee", arrowtail="vee"]
+
+  // Node Definitions
+  A [label="d_1 d_2 *", fontcolor="red"]; 
+  B [label="d_1"];
+  C [label="d_2"];
+  D [label="Ø"]; // Using the empty set symbol for clarity
+
+  // Force horizontal alignment for the rows
+  { rank=same; A; B; }
+  { rank=same; C; D; }
+
+  // Self-loops (Reflexivity)
+  A -> A [label="1,2", tailport=n, headport=w];
+  B -> B [label="1,2", tailport=n, headport=e];
+  C -> C [label="1,2", tailport=s, headport=w];
+  D -> D [label="1,2", tailport=s, headport=e];
+
+  // Bidirectional transitions (Edges)
+  A -> B [dir="both", label="2"]; // Movement along dimension 2
+  C -> D [dir="both", label="2"];
+  
+  A -> C [dir="both", label="1"]; // Movement along dimension 1
+  B -> D [dir="both", label="1"];
+}
+    ```
+  )
+]
 
 #callout(title: "Validities for Distributed Knowledge", style: "theorem")[
+  The following are valid on all epistemic models:
   - $#knowledge($phi$, inf: "a") => D k phi$
   - $(#knowledge($phi$, inf: "a") and #knowledge($psi$, inf: "b")) => D k (phi and psi)$
 ]
+#linebreak()
+
+*Complete Axiomatization of Distributed Knowledge*:
+- Axioms for multi-agent epistemic logic (subset of multi-agent #S5)
+- Fixed-Point and Induction Axioms (@theorem-validities-for-common-modalities) for $#distributed-knowledge("", inf: "G")$
+- Kripke axiom $#distributed-knowledge("", inf: "G")$: $#distributed-knowledge($(phi arrow psi)$, inf: "G") arrow (#distributed-knowledge($phi$, inf: "G") arrow #distributed-knowledge($psi$, inf: "G"))$
+- Necessitation for $#distributed-knowledge("", inf: "G")$: $forall a in G: square_a phi arrow #distributed-knowledge($phi$, inf: "G")$
+
 
 === Dynamics & Public Announcements
 
-#def("Public Announcement Logic")[
-  A public announcement $!phi$ is a joint update that deletes all non-$phi$ worlds from a model. The model transformer maps $S$ to $S^(!phi) = (S_phi, ->_phi, #interpretation($dot$)_phi)$, where $S_phi = #interpretation($phi$)_S$, while the relations as well as valuations are restricted to $S_phi$. The dynamic modality is evaluated as:
-  $s models_S #box-kripke($!phi$) psi <=> t models_(S^(!phi)) psi$ for all $t in S^(!phi)$ such that $s ->_(S)^(!phi) t$.
+#def-group(
+  def("Updates on Sphere Models")[
+    When new information $phi$ is learned with absolute certainty, the resulting situation is represented by performing an update $!phi$ on the original model $#model$. This corresponds to simply deleting all non-$phi$-worlds from $#model$.
+    
+    The new epistemic and doxastic relations are the restrictions of the old ones to the new set of states.
+
+    - *New set of worlds*:
+    $ S' = S inter interpretation(phi)_#model = interpretation(phi)_#model = {w in S | w models_#model phi} $
+    - *New sphere of beliefs*: 
+    $ S'_0 = S_0 inter interpretation(phi)_#model = {w in S_0 | w models_#model phi} $
+    - *New valuation*:
+    $ interpretation(p)'_#model = interpretation(p)_#model inter  interpretation(phi)_#model $
+  ],
+  def("Updates on Kripke Models")[
+    Similar as above (@def-updates-on-kripke-models) and also need to deletic all doxastic and epistemic arrows connecting to or from a deleted world. As above, the new doxastic and epistemic relations are restrictions to the new set of states $interpretation(phi)_#model$.
+  ]
+)
+
+#attention("Assumption: truthful updates")[
+  An update $!phi$ means absolute certainty of $phi$. Thus, update $!phi$ can only be performed on a model if $phi$ is true at the real world: $s_star models_#model phi$ because absolute certainty implies truth.
 ]
 
+#example("Concealed Coin: Announcement with absolute certainty")[
+  The referee $c$ opens his palm and shows the face of the coin to
+  everybody (to the public, composed of $a$ and $b$, but also to himself $c$):
+  they all see it's Heads up ($"H"$), and they all see that the others see it
+  etc.
 
-#callout(title: "PAL Reduction Axioms", style: "theorem")[
-  PAL (@def-public-announcement-logic) allows translating dynamic formulas to basic modal logic via reduction axioms:
-  - *Atomic Permanence*: $#box-kripke($!phi$) p <=> (phi => p)$
-  - *Announcement-Negation*: $#box-kripke($!phi$) not psi <=> (phi => not #box-kripke($!phi$) psi)$
-  - *Announcement-Conjunction*: $#box-kripke($!phi$) (psi_1 and psi_2) <=> (#box-kripke($!phi$) psi_1 and #box-kripke($!phi$) psi_2)$
-  - *Announcement-Knowledge*: $#box-kripke($!phi$) square_a psi <=> (phi => square_a #box-kripke($!phi$) psi)$
+  This announcement comes with *absolute certainty* and thus truth.
+
+  So this is a _public announcement_ that the coin lies Heads up.
+  We denote this event by $!"H"$. Intuitively, after the announcement, we
+  have common knowledge of $"H"$: $#common-k($"H"$, inf: $a,b,c$)$
 ]
 
-#callout(title: "Expressivity & Succinctness", style: "info")[
-  PAL has the exact same expressivity as basic modal logic because dynamic modalities can be eliminated using the reduction axioms. However, PAL is exponentially more succinct.
+#example("Surprise Exam: Empty sphere of beliefs")[
+  The student beliefs the exam will be either on Monday ($1$) or Tuesday ($2$), but actually the exam takes place on Thursday ($#actual_state = 4$).
+
+  Sphere model representation of the situation with updates: 
+  #v(-1.5em)
+  #grid(
+    columns: (32%, 32%, 32%),
+    column-gutter: 3%,
+    [
+      #scale(60%)[
+        #graph-figure(
+          ```dot
+            graph G {
+              rankdir=LR;
+              node [shape=square, style=rounded, fontsize=20, width=.5, height=0.5, fixedsize=true];
+
+              subgraph cluster_0 {
+                  label = "S_0";
+                  fontsize=20;
+                  style = rounded;
+                  color = black;
+                  1; 2; 
+              }
+              3; "4*" [fontcolor="red"]; 5;
+              
+
+              // Optional edges to ensure they stay in a row
+              1 -- 2 -- 3 -- "4*" -- 5 [style=invis];
+          }```
+        )
+      ]
+      #v(-1.5em)
+      #align(center)[$!(not 1)$]
+    ],
+    [
+      #scale(60%)[
+        #graph-figure(
+          ```dot
+            graph G {
+              rankdir=LR;
+              node [shape=square, style=rounded, fontsize=20, width=.5, height=0.5, fixedsize=true];
+
+              subgraph cluster_0 {
+                  label = "S_0";
+                  fontsize=20;
+                  style = rounded;
+                  color = black;
+                  1 [style=invis, label=""]; 2; 
+              }
+              3; "4*" [fontcolor="red"]; 5;
+              
+
+              // Optional edges to ensure they stay in a row
+              1 -- 2 -- 3 -- "4*" -- 5 [style=invis];
+          }```
+        )
+      ]
+      #v(-1.5em)
+      #align(center)[$!(not 2)$]
+    ],
+    [
+      #scale(60%)[
+        #graph-figure(
+          ```dot
+            graph G {
+              rankdir=LR;
+              node [shape=square, style=rounded, fontsize=20, width=.5, height=0.5, fixedsize=true];
+
+              subgraph cluster_0 {
+                  label = "S_0";
+                  fontsize=20;
+                  style = rounded;
+                  color = black;
+
+                  1 [style=invis, label=""]; 2 [style=invis, label=""];
+                    
+              }
+              3; "4*" [fontcolor="red"]; 5;
+              
+
+              // Optional edges to ensure they stay in a row
+              1 -- 2 -- 3 -- "4*" -- 5 [style=invis];
+          }```
+        )
+      ]
+      #v(-1.5em)
+      #align(center)[#text(red)[$S_0 = emptyset arrow.zigzag$]! $bold("D")$ requires $S_0 != emptyset$]
+    ],
+  )
 ]
 
-=== Moore Sentences & Paradoxes
+#info("The Problem of Belief Revision")[
+  In doxastic models, if an announcement contradicts prior beliefs, the update might erase all worlds within an agent's sphere of beliefs. 
 
-#def("Moore Sentences")[
-  Sentences that become false after being truthfully announced. For a Moore sentence $phi$, we have $#box-kripke($!phi$) not phi$. Therefore, they become known to be false after being announced: $#box-kripke($!phi$) #knowledge($not phi$, inf: "a")$.
+  This results in an empty sphere of beliefs $S_0 = emptyset$, violating @theorem-axioms-relational-properties iv. Consistency of Beliefs ($bold("D")$) meaning the agent has inconsistent beliefs and believes everything. 
 ]
 
-#callout(title: "Moore Sentences in Muddy Children", style: "example")[
-  "You are dirty but you do not know it" is a Moore sentence for child 1: $d_1 and not #knowledge($d_1$, inf: "1")$.
-  This is initially true in the muddy children model. However, after it is publicly announced, child 1 learns they are dirty. The second conjunct becomes false, making the entire sentence false.
-  
-  _Continuation_: In the grand finale of the muddy children puzzle, children repeatedly announce their ignorance: $!(and_i (not #knowledge($d_i$, inf: "i") and not #knowledge($not d_i$, inf: "i")))$. Each round deletes worlds where a child would have known their state, converting distributed knowledge into common knowledge until the dirty children deduce they are dirty.
-]
-
-#theorem("Closure under Composition")[
-  Performing two successive public announcements is equivalent to a single, more complex announcement:
-  $#box-kripke($!phi$) #box-kripke($!psi$) theta <=> #box-kripke($!(phi and #box-kripke($!phi$) psi)$) theta$.
-]
-
-*TODO*: #link(<continue-here>)[Continue here \[click\]]
+#question("How can we revise our beliefs without arriving at inconsistent beliefs?")[We will revisit this later.]
 
 == (Lecture): #lectures.l2-2.name <lecture2-2>
+=== Introduction to DEL and PAL
+
+#info("Background")[#v(-0.5em)
+  1. Public Announcement Logic (PAL) \[indep.: Plaza (1989), Gerbrandy and Groeneveld (1997)\]. 
+  2. PAC $=$ PAL + #common-knowledge("") operator \[complete axiomatization: Baltag, Moss, and Solecki (1998)\].#v(-0.5em)
+]
+#v(-0.5em)
+#remember("Propositional Dynamic Logic (PDL)")[#v(-0.5em)
+  #def("PDL Dynamic Modalities")[
+    Given a model $#model = (S, {R}, interpretation(dot))$, program $alpha$, $#box-kripke($alpha$)$ is a universal Kripke modality, semantically defined via the relation $R_alpha subset.eq S times S$ for a world $s in S$:
+    $ s models_#model #box-kripke($alpha$) "iff" forall t in S: s R_alpha t: t models_#model phi $
+
+    The dual (existential) dynamic modality is defined as:
+    $ #diamond-kripke($alpha$) phi := not [alpha] not phi $
+  #v(-0.5em)]
+]
+#v(-0.5em)
+#notation("Transition relations")[#v(-0.5em)
+  The relations $R_alpha$ are interpreted as _transition relations_ in DEL; they relate an input-state $s$ to possible output-states $t$ that might result by executing program $alpha$ on input $s$. 
+  
+  Thus, $s R_alpha t$ is often written as $s transition(alpha) t$#v(-0.5em)
+]
+
+#def("Dynamic Epistemic Logic")[
+  _Dynamic Epistemic Logic_ (DEL) is a formal framework in logic and computer science used to model how the knowledge and beliefs of multiple agents change over time in response to specific events or communications.
+]
+
+*Expressing informational changes*:
+- DEL borrows dynamic modalities $#box-kripke($alpha$)$ from PDL.
+- Interpret PDL programs as epistemic actions $alpha$
+- _Intended meaning_: if action $alpha$ is performed (in the current state), then $phi$ will become true afterwards.
+
+#info("DEL vs PDL Semantics")[
+  Unlike PDL, DEL considers transition relations between states living in _different_ models. Initial models are only supposed to represent the epistemic situation at a given moment and might not contain states corresponding to all possible action outputs. While one could mathematically convert an "open" system into a "closed" one containing all future states, in a truly open system the number of possible actions is a proper class, making the model too large.
+
+  Thus, DEL performs updates by interpreting epistemic actions such as public announcements as _model transformers_ (@def-public-announcement-as-a-model-transformer).
+]
+
+=== Public Announcement Logic
+==== Syntax
+The syntax of basic PAL is obtained by adding dynamic modalities for public announcements to basic multi-modal logic:
+
+$ phi ::= p | not phi | phi and phi | #knowledge($phi$, inf: $a$) | [!phi]phi $
+
+==== Semantics
+- PAL formulas are interpreted on multi-agent Kripke models:
+  -  _epistemic #S5 models_: epistemic logic with public announcements,
+  - _doxastic #K45 models_: doxastic logic with public announcements
+    - _Note_: Axiom $(bold("D"))$ (consistency of beliefs) is inconsistent with public announcements.
+
+#def("DEL semantics of the dynamic modalities")[
+  are given by:
+
+  For any state $s in S$
+  $ s models_#model [alpha]phi #iff forall t in S^alpha: s #transition($alpha$, inf: model) t: t models_(S^alpha) phi $
+]
+
+#intuition("General framework for epistemic actions as model transformers")[
+  An epistemic action $alpha$ acts as a _model transformer_ consisting of:
+  
+  + A map $#model mapsto #model^alpha$ that takes any initial Kripke model $#model$ into an "updated" model $#model^alpha$.
+  + A binary transition relation $transition(alpha, inf: #model) subset.eq S times S^alpha$ between the input-states of the initial model $#model$ and the output-states (living in the updated model $#model^alpha$).
+]
+
+#def("Public Announcement as a Model Transformer")[
+  A public announcement $! phi$ (@def-updates-on-kripke-models) acting as a _model transformer_ 
+  
+  1. maps any model $#model = (S, arrow^a, #interpretation($dot$))$ to a new model $#model^(!phi) = (S_phi, arrow^a_phi, #interpretation($dot$)_phi)$, given by:
+  
+  #list(marker: "", list(indent: 1.5em, spacing: 1em,)[
+    *Domain*: $S_phi := #interpretation($phi$)_#model$][
+    *Relations* $arrow^a_phi$: $s arrow^a_phi t$ iff $s arrow^a t$, for $s, t in S_phi$.][
+    *Valuation*: $#interpretation($p$)_phi := #interpretation($p$)_S inter S_phi$.
+  ])
+  
+  2. Contains the transition relation $#transition($!phi$, inf: model)$, relating any state $s in #model$ satisfying $phi$ to the same state $s$ in the restricted model $#model^(!phi)$.
+]
+
+=== Solving the Muddy Children Puzzle
+
+#example("Muddy Children", label_: "muddy-children-solved-25")[
+  _Note_: Epistemic #S5 model $arrow.r.double$ reflexivity, but skipped drawing reflexive arrows
+  #splitgrid((55%,auto),column-gutter: 1em,)[
+    - 3 children: ${1,2,3}$, 
+    - $d_i$ denotes "child $i$ is dirty". 
+    - There are 8 possible worlds. 
+    - Let $#actual_state = d d c$: where children 1 and 2 are dirty, and child 3 is clean: $d_1 and d_2 and not d_3$.
+  
+  In the initial model, it is common knowledge that each child knows if the others are dirty or not, but does not know if they themselves are dirty.
+  ][#v(-2em)
+    #scale(80%)[
+      #graph-figure(
+        ```dot
+        digraph G {
+            splines=line;
+            nodesep=0.5;
+            ranksep=0.4;
+            
+            // Node styling
+            node [shape=box, style=rounded, margin="0.1,0.05"];
+            
+            // Edge styling
+            edge [dir=both, arrowhead=vee, arrowtail=vee];
+
+            // Define horizontal ranks
+            { rank=source; ddd; }
+            { rank=same; cdd; dcd; ddc; }
+            { rank=same; ccd; cdc; dcc; }
+            { rank=sink; ccc; }
+
+            // Vertical straight edges (weighted heavily to force them to be completely straight)
+            ddd -> dcd [label=" 2", weight=10];
+            cdd -> ccd [label=" 2", weight=10];
+            ddc -> dcc [label=" 2", weight=10];
+            cdc -> ccc [label=" 2", weight=10];
+
+            // Invisible structural edge to keep the middle column perfectly aligned
+            dcd -> cdc [style=invis, weight=10];
+
+            // Diagonal edges from the top node
+            ddd -> cdd [label="1 "];
+            ddd -> ddc [label=" 3"];
+
+            // Crossing inner diagonal edges
+            cdd -> cdc [label="3 "];
+            dcd -> ccd [label=" 1"];
+            dcd -> dcc [label=" 3"];
+            ddc -> cdc [label="1 "];
+
+            // Diagonal edges to the bottom node
+            ccd -> ccc [label="3 "];
+            dcc -> ccc [label=" 1"];
+        }```
+      )
+    ]
+  ]
+  #v(-2em)
+  
+  1. *First Announcement:* The Father announces "At least one of you is dirty". If he is an infallible source, this public announcement is an update $!(d_1 or d_2 or d_3)$, which deletes the $c c c$ world.
+  #v(-2em)
+  #align(center)[  #scale(80%)[
+      #graph-figure(
+        ```dot
+        digraph G {
+            // Graph properties for exact layout matching
+            splines=line;
+            nodesep=0.8;
+            ranksep=0.2;
+            
+            // Node styling
+            node [shape=box, style=rounded, fontname="Times-Italic", fontsize=18, margin="0.1,0.05"];
+            
+            // Edge styling
+            edge [dir=both, fontname="Times-Roman", fontsize=14, arrowsize=0.7];
+
+            // Define horizontal ranks
+            { rank=source; ddd; }
+            { rank=same; cdd; dcd; ddc; }
+            { rank=same; ccd; cdc; dcc; }
+
+            // Vertical straight edges (weighted heavily to force them to be completely straight)
+            ddd -> dcd [label=" 2", weight=10];
+            cdd -> ccd [label="2", weight=10];
+            ddc -> dcc [label=" 2", weight=10];
+
+            // Invisible structural edge to keep the middle column perfectly aligned
+            dcd -> cdc [style=invis, weight=10];
+
+            // Diagonal edges from the top node
+            ddd -> cdd [label="1 "];
+            ddd -> ddc [label=" 3"];
+
+            // Crossing inner diagonal edges
+            cdd -> cdc [label="3 "];
+            dcd -> ccd [label=" 1"];
+            dcd -> dcc [label=" 3"];
+            ddc -> cdc [label="1 "];
+        }
+        ```
+      ) 
+    ]
+  ]
+  
+  2. *First Round of Questioning:* The children answer "I don't know if I am dirty or not". Assuming they tell the truth, this is a public update:
+  $ !(and.big_i (not #knowledge($d_i$, inf: $i$) and not #knowledge($not d_i$, inf: $i$))) $
+  This eliminates worlds where a child would know their state (like $d c c$, $c d c$, $c c d$). After this update, in the real world $d d c$, children 1 and 2 now _know_ they are dirty, while child 3 still does not know.
+
+  #v(-1em)
+  #align(center)[  #scale(80%)[
+      #graph-figure(
+        ```dot
+        digraph G {
+            // Graph properties for exact layout matching
+            splines=line;
+            nodesep=0.8;
+            ranksep=0.1;
+            
+            // Node styling
+            node [shape=box, style=rounded, fontname="Times-Italic", fontsize=18, margin="0.1,0.05"];
+            
+            // Edge styling
+            edge [dir=both, fontname="Times-Roman", fontsize=14, arrowsize=0.7];
+
+            // Define horizontal ranks
+            { rank=source; ddd; }
+            { rank=same; cdd; dcd; ddc; }
+
+            // Vertical straight edge (weighted heavily to force it to be completely straight)
+            ddd -> dcd [label=" 2", weight=10];
+
+            // Diagonal edges from the top node
+            ddd -> cdd [label="1 "];
+            ddd -> ddc [label=" 3"];
+        }
+        ```
+      ) 
+    ]
+  ]
+  
+  3. *Second Round of Questioning:* Children 1 and 2 answer that they know, while child 3 answers that they don't. This constitutes a new public update:
+  $ !(#knowledge($d_1$, inf: $1$) and #knowledge($d_2$, inf: $2$) and not #knowledge($d_3$, inf: $3$) and not #knowledge($not d_3$, inf: $3$)) $
+  #splitgrid((90%,auto))[This eliminates all remaining worlds except for $#actual_state = d d c$. Now, child 3 knows it's clean!][#scale(100%)[
+    #align(center)[  #scale(80%)[
+        #graph-figure(
+          ```dot
+          digraph G {
+              // Graph properties for exact layout matching
+              splines=line;
+              nodesep=0.8;
+              ranksep=0.1;
+              
+              // Node styling
+              node [shape=box, style=rounded, fontname="Times-Italic", fontsize=18, margin="0.1,0.05"];
+              
+              "*ddc" [fontcolor=red];
+          }
+          ```
+        ) 
+      ]
+    ]
+  ]]
+]
+
+=== Axiomatizations and Expressivity
+
+#callout(title: "Complete Axiomatizations & Reduction Axioms", style: "theorem")[
+  A complete axiomatization of basic PAL is given by combining the standard multi-agent modal logic axioms, Kripke's axiom, the Necessitation rule for dynamic modalities $[!phi]$, and the following *Reduction Axioms* (Recursion Axioms):
+  - *Atomic Permanence*: $[!phi]p #iff (phi => p)$
+  - *Announcement-Negation*: $[!phi]not psi #iff (phi => not[!phi]psi)$
+  - *Announcement-Conjunction*: $[!phi](psi and theta) #iff ([!phi]psi and [!phi]theta)$
+  - *Announcement-Knowledge*: $[!phi]#knowledge($psi$, inf: $a$) #iff (phi => #knowledge($[!phi]psi$, inf: $a$))$
+  
+  *Note:* These are axiom schemata, rather than single axioms, and the logic is _not_ closed under substitution. Epistemic/doxastic logic with public announcements is completely axiomatized by taking #S5/#K45 axioms alongside the Reduction Axioms stated for $K$ or $B$.
+]
+
+#info("Expressivity and Succinctness of PAL")[
+  By recursively applying the Reduction Axioms, any PAL formula can be rewritten into an equivalent formula in basic modal (epistemic/doxastic) logic. Thus, PAL has the exact same expressivity as basic modal logic, meaning all dynamic modalities are eliminable. 
+  
+  However, there is a difference in succinctness: PAL is exponentially more succinct. For example, capturing the full $n$-agent Muddy Children scenario (including announcements) in basic epistemic logic yields a vastly more complex formula than doing so in PAL.
+]
+
+=== Moore Sentences
+
+#def("Moore Sentences")[
+  It is a misconception that every sentence becomes known, becomes true, or becomes common knowledge after being truthfully publicly announced. A *Moore sentence* is a sentence $phi$ that becomes FALSE immediately after it is truthfully publicly announced. 
+  
+  Therefore, the following claims are universally WRONG for all formulas:
+  - $[!phi]phi$
+  - $[!phi]#knowledge($phi$, inf: $a$)$
+  - $[!phi]#common-k($phi$)$
+  
+  Moreover, Moore sentences always become COMMONLY KNOWN TO BE FALSE after being publicly announced:
+  $ [!phi]#common-k($not phi$) $
+]
+
+#example("Moore Sentences in Muddy Children")[
+  Consider the statement "You are dirty but you don't know it" addressed to child 1: $d_1 and not #knowledge($d_1$, inf: 1)$. 
+
+  In the initial real world $w = (d_1, d_2)$ of the Two Muddy Children story, this sentence evaluates to true. We can represent the initial epistemic state and its update:
+
+  #graph-figure(
+  ```dot
+  digraph Moore {
+    node [shape=square, style=rounded];
+    rankdir=LR;
+    
+    subgraph cluster_0 {
+        label = "Initial Model M";
+        w1 [label="w: (d1, d2)", peripheries=2];
+        w2 [label="(d1)"];
+        w3 [label="(d2)"];
+        
+        w1 -> w2 [dir=both, arrowhead=vee, arrowtail=vee, label="2"];
+        w1 -> w3 [dir=both, arrowhead=vee, arrowtail=vee, label="1"];
+    }
+    
+    subgraph cluster_1 {
+        label = "Updated Model M^{!(d1 ∧ ¬K1 d1)}";
+        u1 [label="w: (d1, d2)", peripheries=2];
+        u2 [label="(d1)"];
+        
+        u1 -> u2 [dir=both, arrowhead=vee, arrowtail=vee, label="2"];
+    }
+    
+    w1 -> u1 [style=dashed, label="update"];
+  }
+  ```)
+
+  - In the updated model $M^(!(d_1 and not #knowledge($d_1$, inf: $1$)))$, the world $(d_2)$ has been deleted.
+  - In the remaining worlds, child 1 now _knows_ they are dirty, meaning the previously announced sentence $d_1 and not #knowledge($d_1$, inf: 1)$ has become false.
+  - In fact, it becomes common knowledge that the statement is false: $w models_(M^(!phi)) #common-k($not (d_1 and not #knowledge($d_1$, inf: $1$))$)$.
+]
+
+#example("Further Examples of Moore Sentences")[
+  - *Muddy Children (2 children):* "Both children are dirty but none of them knows he's dirty": 
+    $ d_1 and d_2 and not #knowledge($d_1$, inf: $1$) and not #knowledge($d_2$, inf: $2$) $
+  - *Muddy Children (2 children):* "Both of you are dirty but none of you know this (=that you are both dirty)": 
+    $ d_1 and d_2 and not #knowledge($d_1 and d_2$, inf: $1$) and not #knowledge($d_1 and d_2$, inf: $2$) $
+  - *Alice, Bob, and Charles story ("love triangle"):* "Bob doesn't know about our affair":
+    $ ("affair") and not #knowledge($"affair"$, inf: $b$) $
+  - *Muddy Children ($k > 2$):* The sentence "nobody knows if he's dirty or not" is true initially, and remains true after being publicly announced once. BUT it becomes false (a Moore sentence) after $k - 1$ repeated announcements!
+]
+
+=== Iteration and Closure
+
+#info("Announcements about Announcements")[
+  It is important that in PAL we can iterate all constructions. We can announce not only facts $!p$ or combinations of facts $!(p or not q)$, but also epistemic formulas $!(not #knowledge($p$, inf: $a$))$. We can even make announcements about other announcements: $!([!q] not #knowledge($p$, inf: $a$))$. This is essential for the closure property.
+]
+
+#callout(title: "Closure Under Composition", style: "theorem")[
+  Performing two public announcements successively $!phi ; !psi$ is equivalent to performing a single, more complex public announcement $!(phi and [!phi]psi)$. This semantic closure of public announcements under sequential composition is captured by the following valid schema:
+  $ [!phi][!psi]theta #iff [!(phi and [!phi]psi)]theta $
+]
+
+*Continue at* #link(<example-muddy-children-solved-25>)[AFTER THE EXAMPLE: \[click here\] (slide 11/29 in #raw("DEL actual lecture 2.pdf"))]
 
 == (Lecture): #lectures.l2-3.name <lecture2-3>
 
@@ -1423,7 +1917,7 @@ _Strategy_ for defining a more expressive language + proof system:
 ]#v(-0.5em)
 
 #def("Single-Agent Sphere Model for Belief Revision (Grove Model)")[
-  A Grove model is a tuple $bold("S") = (S, cal(F), #interpretation($dot$), #actual_state)$, where $cal(F)$ is a nested, well-founded, and exhaustive family of subsets of $S$ (spheres) such that:
+  A Grove model is a tuple $#model = (S, cal(F), #interpretation($dot$), #actual_state)$, where $cal(F)$ is a nested, well-founded, and exhaustive family of subsets of $S$ (spheres) such that:
   1. Nested: $forall S', S'' in cal(F)$, either $S' subset.eq S''$ or $S'' subset.eq S'$.
   2. Smallest intersecting sphere: $ forall P subset.eq S "with" P eq.not emptyset, quad exists S' in cal(F): forall S'' in cal(F): P inter S'' eq.not emptyset iff S' subset.eq S'' $
   3. Exhaustive: $inter cal(F) eq.not emptyset$ and $S = union cal(F)$.
@@ -1451,7 +1945,7 @@ Because the family of spheres $cal(F)$ is well-founded, we can sequentially iden
     #v(-0.3em)
   ],
   def("Updates in Grove models")[
-    An _update_ $!phi$ with a sentence $phi$ is defined on full sphere models $bold("S") = (S, cal(F), #interpretation($dot$), #actual_state)$ similarly as on sphere-based epistemic-doxastic models (@def-epistemic-doxastic-kripke-model), except the family of spheres is restricted to worlds in $interpretation(phi)_bold("S")$, the new family of spheres is $ cal(F)^prime = {S^prime inter interpretation(phi)_bold("S") space | space S^prime in cal(F): S^prime inter interpretation(phi)_bold("S") != emptyset} $
+    An _update_ $!phi$ with a sentence $phi$ is defined on full sphere models $#model = (S, cal(F), #interpretation($dot$), #actual_state)$ similarly as on sphere-based epistemic-doxastic models (@def-epistemic-doxastic-kripke-model), except the family of spheres is restricted to worlds in $interpretation(phi)_#model$, the new family of spheres is $ cal(F)^prime = {S^prime inter interpretation(phi)_#model space | space S^prime in cal(F): S^prime inter interpretation(phi)_#model != emptyset} $
     #v(-0.4em)
   ]
 )
@@ -1471,10 +1965,10 @@ Because the family of spheres $cal(F)$ is well-founded, we can sequentially iden
 #let le_plaus = $#le_ _#plaus$ // change to prec?
 #let le_plaus_not = $cancel(#le_) _#plaus$
 #def("Single-Agent Plausibility Model")[
-  A plausibility model is a tuple $bold("S") = (S, #le_plaus, #interpretation($dot$), #actual_state)$ where:
+  A plausibility model is a tuple $#model = (S, #le_plaus, #interpretation($dot$), #actual_state)$ where:
   - $S$ is a non-empty set of states (_possible worlds_).
   - $#le_plaus op(subset.eq) S times S$ is a converse-well-founded total preorder (_plausibility order_).
-  - $interpretation(dot)$ assigns a set of worlds $interpretation(p)_bold("S") subset S$ to each $p in Prop$ (_valuation_).
+  - $interpretation(dot)$ assigns a set of worlds $interpretation(p)_#model subset S$ to each $p in Prop$ (_valuation_).
 ]#v(-0.5em)
 #intuition("Plausibility order")[
   $s #le_plaus t$ means:
@@ -1519,18 +2013,18 @@ is also nonempty: $"bestP" != emptyset$.
 === Conditional Beliefs and The Logic of Knowledge
 
 #def("Conditional Belief")[
-  Let $P,Q subset.eq S$ be two propositions over a model $bold("S")$ and let $phi,psi$ be sentences. We say that at any world $s in S$,
+  Let $P,Q subset.eq S$ be two propositions over a model $#model$ and let $phi,psi$ be sentences. We say that at any world $s in S$,
   - $belief(P, sup: Q)$: $P$ is believed conditional on $Q$, if $P$ is true in the most plausible $Q$-worlds:
 
   $ "bestQ" subset.eq P $
 
   - $belief(psi, sup: Q)$: $psi$ is believed conditional on $Q$, if $psi$ is true in the most plausible $Q$-worlds:
 
-  $ "bestQ" subset.eq interpretation(psi)_bold("S") $
+  $ "bestQ" subset.eq interpretation(psi)_#model $
   
-  - $#belief($psi$, sup: $phi$)$: $psi$ is believed conditional on $phi$, if  $interpretation(psi)_bold("S")$ is believed given $interpretation(phi)_bold("S")$:
+  - $#belief($psi$, sup: $phi$)$: $psi$ is believed conditional on $phi$, if  $interpretation(psi)_#model$ is believed given $interpretation(phi)_#model$:
 
-  $ #interpretation($#belief($psi$, sup: $phi$)$)_bold("S") = {s in S : "best" #h(-0.05em) #interpretation($phi$)_S subset.eq #interpretation($psi$)_S} $
+  $ #interpretation($#belief($psi$, sup: $phi$)$)_#model = {s in S : "best" #h(-0.05em) #interpretation($phi$)_S subset.eq #interpretation($psi$)_S} $
 ]
 
 #intuition("Conditional Beliefs as Contingency Plans")[
@@ -1629,7 +2123,7 @@ is also nonempty: $"bestP" != emptyset$.
   We can define appropriate accessibility relations to make belief a Kripke modality:
   - *Doxastic Accessibility Relation* $R_"belief"$:
     $s R_"belief" t iff t in "bestS"$
-    #list(marker: none)[Then $s models #belief($phi$)$ iff $forall t (s R_"belief" t arrow t models phi)$.][Endowed with $R_"belief"$, plausibility models become KD45 doxastic models.]
+    #list(marker: none)[Then $s models #belief($phi$)$ iff $forall t (s R_"belief" t arrow t models phi)$.][Endowed with $R_"belief"$, plausibility models become #KD45 doxastic models.]
   - *Conditional Doxastic Accessibility Relation* $R_"belief"^psi$:
     $ s R_"belief"^psi t iff t in "best" #interpretation($psi$)_S $
     Then conditional belief is a Kripke modality: $s models #belief($phi$, sup: $psi$)$ iff $forall t (s R_"belief"^psi t arrow t models phi)$.
@@ -1644,14 +2138,14 @@ is also nonempty: $"bestP" != emptyset$.
 ]
 
 *Interpreting $A G M^K$ using conditional beliefs*:
-Given a plausibility model $bold("S") = (S, #le_plaus, interpretation(dot), #actual_state)$
-$ T = {theta in L | #actual_state models_bold("S") belief(theta)} $
+Given a plausibility model $#model = (S, #le_plaus, interpretation(dot), #actual_state)$
+$ T = {theta in L | #actual_state models_#model belief(theta)} $
 where $L$ is the language of epistemic-doxastic logic.
 
-_Note_: the agent's current theory $T$ consists of all the sentences beliefed in model $bold("S")$ at the real world $#actual_state$.
+_Note_: the agent's current theory $T$ consists of all the sentences beliefed in model $#model$ at the real world $#actual_state$.
 
 For a sentence $phi in L$:
-$ T star phi := {theta in L | #actual_state models_bold("S") belief(theta, sup: phi)} $
+$ T star phi := {theta in L | #actual_state models_#model belief(theta, sup: phi)} $
 
 If we interpret revision with $phi$ in terms of doxastic conditioning with $phi$, all the $A G M^K$ axioms are sound. In fact $A G M^K$ are a subset of the following.
 
@@ -1689,6 +2183,95 @@ If we interpret revision with $phi$ in terms of doxastic conditioning with $phi$
 ]
 
 == (Lecture): #lectures.t4-2.name <tutorial4-2>
+
+=== Generalizing Dynamic Belief Revision
+
+#callout(title: "Intuition", style: "intuition")[
+  Standard updates represent a very specific kind of learning where the new information is "hard" and comes with a warranty of truthfulness[cite: 15]. The goal of dynamic belief revision is to generalize this to "softer" forms of learning, answering how we can compute an agent's new higher-order beliefs after learning new information that might not be absolutely certain.
+]
+
+#def("Belief Upgrade")[
+  A belief upgrade is a model transformer $T$, defined as a partial map from a plausibility model $S = (S, <=, interpretation(dot), #actual_state)$ to a new plausibility model $T(S) = (S', <=', interpretation(dot) sect S', #actual_state)$. 
+  The upgrade is defined ONLY if the real world $#actual_state$ survives it, meaning $#actual_state in S'$. The domain where $T$ can be performed is denoted as $"Dom"_S(T) := S'$.
+] #label("def-belief-upgrade")
+
+#def("Soft vs Hard Upgrades")[
+  - *Soft Upgrade*: A total map where $"Dom"_S(T) = S$ for all models. It does not add "hard" knowledge but only changes the agent's beliefs or belief-revision plans based on "soft information".
+  - *Hard Upgrade*: Shrinks the state set to a proper subset $S' subset S$, effectively adding new absolute knowledge[cite: 40].
+] #label("def-soft-hard-upgrades")
+
+=== Formal Semantics of Upgrades
+
+#callout(title: "Dynamic Operators", style: "info")[
+  We extend the language with dynamic operators $#box-kripke($T$) psi$ to express that $psi$ will surely be true after upgrade $T$.
+  - Semantics: $s models #box-kripke($T$) psi$ iff $s in "Dom"_S(T) arrow.r.double s models_(T(S)) psi$.
+  - Dual modality: $interpretation(#diamond-kripke($T$) psi)_s = interpretation(psi)_(T(S))$.
+]
+
+=== Types of Upgrades and Trust
+
+Different upgrades correspond to different attitudes toward the reliability of the information source.
+
+#def("Update")[
+  Denoted by $! phi$. Used when the source is infallible (guaranteed truthful). It deletes all non-$phi$ states and keeps the same plausibility order among the remaining states[cite: 51].
+] #label("def-update")
+
+#def("Radical Upgrade")[
+  Denoted by $arrow.t phi$ (Lexicographic Revision). Used when the source is fallible but highly reliable (strongly believed). All $phi$-worlds become strictly more plausible than all non-$phi$-worlds, while the old ordering remains within the two respective zones.
+] #label("def-radical-upgrade")
+
+#def("Conservative Upgrade")[
+  Denoted by $dagger phi$ (Minimal Revision). Used when the source is trusted "barely" (simply believed, but easily given up). Only the "best" $phi$-worlds become better than all other worlds; the old order remains everywhere else[cite: 54].
+] #label("def-conservative-upgrade")
+
+=== Strong Belief
+
+#def("Strong Belief")[
+  A formula $phi$ is strongly believed ($"Sb"(phi)$) if:
+  1. It is consistent with knowledge: $interpretation(phi)_S != emptyset$.
+  2. All $phi$-worlds are strictly more plausible than all non-$phi$-worlds: $s > t$ for every $s in interpretation(phi)_S$ and $t in.not interpretation(phi)_S$.
+  Strong belief is believed until proven wrong. It implies belief but is *not* closed under logical inference ($"Sb"(phi and psi) != "Sb"(phi) and "Sb"(psi)$).
+] #label("def-strong-belief")
+
+=== The Wine Example
+
+Let $d$ denote being drunk and $g$ denote being a genius. The arrows $arrow.r$ point to strictly more plausible states.
+
+#callout(title: "Initial Setup and Update", style: "example")[
+  - *Initial Model*: $d, g arrow.r d, not g arrow.r not d, g$. Albert holds a strong false belief that he is sober ($not d$)[cite: 140].
+  - *Update* ($!d$): Albert sees a flawless blood test. The state $not d, g$ is deleted. The model becomes $d, g arrow.r d, not g$. He now has knowledge that he is drunk: $knowledge(d)$[cite: 73].
+]
+
+#callout(title: "Radical vs Conservative Upgrades", style: "example")[
+  Suppose instead Albert hears he is drunk from Mary Curry, a trusted but fallible friend[cite: 83]. 
+  
+  - *Radical Upgrade* ($arrow.t d$): Albert strongly believes Mary[cite: 151]. We promote all $d$-worlds.
+    Result: $not d, g arrow.r d, g arrow.r d, not g$. Albert's strong belief reverts; he now strongly believes he is drunk[cite: 164].
+    
+  - *Conservative Upgrade* ($dagger d$): Albert has fragile trust in Mary[cite: 167]. We promote only the *most plausible* $d$-world, which was $d, not g$.
+    Result: $d, g arrow.r not d, g arrow.r d, not g$. He acquires a weak belief in $d$ ($belief(d) and belief(not d, sup: g)$); if told he is a genius, he will revert to believing he was sober.
+]
+
+=== Theorems and Properties
+
+#callout(title: "Knowledge and Belief Induction", style: "theorem")[
+  - Updates induce knowledge: $[! phi] knowledge("BEFORE" phi)$.
+  - Conservative upgrades induce belief: $not knowledge(not phi) arrow.r.double [dagger phi] belief("BEFORE" phi)$.
+  - Radical upgrades induce strong belief: $not knowledge(not phi) arrow.r.double [arrow.t phi] "Sb"("BEFORE" phi)$.
+  - Conservative upgrades are special radical upgrades: $dagger phi = arrow.t ("best" phi)$.
+]
+
+#callout(title: "Compositionality", style: "theorem")[
+  - Updates are closed under sequential composition: The sequence of $! phi$ then $! psi$ is equivalent to $! (phi and [! phi] psi)$.
+  - Radical upgrades are *not* closed under composition. 
+    *Counter-example*: Doing $arrow.t (d and g)$ followed by $arrow.t d$ on the initial Wine model results in $not d, g arrow.r d, not g arrow.r d, g$, which cannot be reached by any single radical or conservative upgrade.
+]
+
+#callout(title: "Reduction Laws", style: "theorem")[
+  To fully axiomatize the logic, we must pre-encode dynamic behavior into static conditional beliefs.
+  - Belief under update: $[! psi] belief(phi) iff (psi arrow.r belief([! psi] phi, sup: psi))$.
+  - Conditional belief under update: $[! psi] belief(phi, sup: theta) iff (psi arrow.r belief([! psi] phi, sup: psi and [! psi] theta))$[cite: 247].
+]
 
 == (Lecture): #lectures.l4-3.name <lecture4-3>
 
