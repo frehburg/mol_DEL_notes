@@ -2619,21 +2619,41 @@ The Father asks them, repeatedly: "Do you know your own number?". The two are su
 
   (a) _(10 points)_ What is Alice's number?
   #callout(title: "Answer to Exercise 2 (a)")[
-    $n_a = 3$.
+    $a$ has the number $3$ written on their forehead.
+    
+    $ n_a = 3 $
   ]
   (b) _(5 points)_ Will Bob ever know his number (without looking in the mirror or being told the number by Alice)? If so, when will he answer "I know my number"?
+  #callout(title: "Answer to Exercise 2 (a)")[
+    $b$ will never know his number (without looking in the mirror or being told the number by $a$.
+  ]
 
   (c) _(20 points)_ Prove your conclusions in (a) and (b) semantically, by drawing the initial epistemic model, then applying repeated updates with the (semantic information conveyed by the) children's answers. Draw each intermediary model, and explain your conclusions.
-  #callout(title: "Answer to Exercise 2 (c)")[
-    #splitgrid((40%,auto))[All values of $g(n)$ computed: $ n &= 1, g(n) = 3 \ n &= 2, g(n) = 1 \ n &= 3, g(n) = 5 \ n &= 4, g(n) = 1 \ n &= 5, g(n) = 7 \ n &= 6, g(n) = 4 \ n &= 7, g(n) = 9 \ n &= 8, g(n) = 1 \ n &= 9, g(n) = 11 \ n &= 10, g(n) = 8 \ n &= 11, g(n) = 13 > 12 arrow.zigzag \ n &= 12, g(n) = 10 $][
-      Either $x = a$ and $y = b$ or vice versa
-      #table(columns: (25%,auto,auto,auto),[],table.cell(colspan: 3)[*possible values for $n_x$*],[*$x$ sees*],[$i = 1$],[$i=2$],[$i=3$],[$n_y=1$],[${2,3,4,8}$],[${}$],[${}$],[$n_y=2$],[${1}$],[${}$],[${}$],[$n_y=3$],[${1,5}$],[${}$],[${}$],[$n_y=4$],[${1,6}$],[${}$],[${}$],[$n_y=5$],[${3,7}$],[${}$],[${}$],[$n_y=6$],[${4}$],[${}$],[${}$],[$n_y=7$],[${5,9}$],[${}$],[${}$],[$n_y=8$],[${1,10}$],[${}$],[${}$],[$n_y=9$],[${7,11}$],[${}$],[${}$],[$n_y=10$],[${8,12}$],[${}$],[${}$],[$n_y=11$],[${9}$],[${}$],[${}$],[$n_y=12$],[${10}$],[${}$],[${}$])
-    ]
-
-    I fought with dot for a long time but the edges just don't want to be straight lines. So it looks ugly but it contains the right information. _Initial set up_:
+  #callout(title: "Answer to Exercise 2 (c): Initial Situation")[
+    #splitgrid((40%,auto))[All values of $g(n)$ computed: $ n &= 1, g(n) = 3 quad n = 2, g(n) = 1 \ n &= 3, g(n) = 5 quad n = 4, g(n) = 1 \ n &= 5, g(n) = 7 quad n = 6, g(n) = 4 \ n &= 7, g(n) = 9 quad n = 8, g(n) = 1 \ n &= 9, g(n) = 11 quad n = 10, g(n) = 8 \ n &= 11, g(n) = 13 > 12 arrow.zigzag \ n &= 12, g(n) = 10 $
+    Denote by $G_i (n_y)$ the set of possible values for $n_x$ upon seeing $n_y$ under $g$ after announcement round $i$, where either $x = a$ and $y=b$ or vice versa.][ 
+      #v(-4em)
+      #scale(70%)[
+      #table(columns: (20%,auto,auto,auto,auto),[],table.cell(colspan: 4)[*possible values for $n_x$*],[*$x$ sees*],[$i = 0$],[$i=1$],[$i=2$],[$i=3$],
+      [$n_y=1$],[${2,3,4,8}$],[${3,4,8}$],[${3,8}$],[${3}$],
+      [$n_y=2$],[${1}$],[$emptyset$],[$emptyset$],[$emptyset$],
+      [$n_y=3$],[${1,5}$],[${1,5}$],[${1,5}$],[${1,5}$],
+      [$n_y=4$],[${1,6}$],[${1}$],[$emptyset$],[$emptyset$],
+      [$n_y=5$],[${3,7}$],[${3,7}$],[${3}$],[${3}$],
+      [$n_y=6$],[${4}$],[$emptyset$],[$emptyset$],[$emptyset$],
+      [$n_y=7$],[${5,9}$],[${5,9}$],[${5}$],[$emptyset$],
+      [$n_y=8$],[${1,10}$],[${1,10}$],[${1}$],[$emptyset$],
+      [$n_y=9$],[${7,11}$],[${7}$],[$emptyset$],[$emptyset$],
+      [$n_y=10$],[${8,12}$],[${8}$],[$emptyset$],[$emptyset$],[$n_y=11$],[${9}$],[$emptyset$],[$emptyset$],[$emptyset$],
+      [$n_y=12$],[${10}$],[$emptyset$],[$emptyset$],[$emptyset$])
+    ]]
+    #v(-3.5em)
+    // I fought with dot for a long time but the edges just don't want to be straight lines. So it looks ugly but it contains the right information. 
     
-    #v(-20em)
-    #scale(40%)[#graph-figure(
+    $#model$:
+    
+    #v(-23em)
+    #scale(38%)[#graph-figure(
       ```dot
       digraph Grid12x12 {
     splines = line;
@@ -3157,11 +3177,18 @@ The Father asks them, repeatedly: "Do you know your own number?". The two are su
 }
       ```
     )]
+    #v(-11em)
   ]
-  #callout(title: "Answer to Exercise 2 (c) continued")[
-    _Iteration 1_: After the first announcements of ignorance.
+  #callout(title: "Answer to Exercise 2 (c) continued (i): After the first announcements of ignorance.")[
+    _Eliminations:_
 
-    Eliminations:
+    (*ER1*) Elimination rule 1: Whenever $x$ sees $n_y = u$ and $G_i (u)$ is a singleton ${o}$, then $x$ knows their number is $o$. If they continue to pledge ignorance, $o$ cannot be $n_x$. (Note the symmetry in the updates while both answer that they don't know). 
+    + $(1,2)$ and $(2,1)$: $G_0 (2) = {1}$. Thus upon seeing $n_y = 2$ $x$ knows $n_x = 1$. But the continued pledge of ignorance eliminates these worlds.
+    + $(6,4)$ and $(4,6)$. following the same logic.
+    + $(11,9)$ and $(9,11)$ following the same logic.
+    + $(12,10)$ and $(10,12)$ following the same logic.
+
+    $#model^prime$:
     
     #v(-18em)
     #scale(40%)[#graph-figure(
@@ -3688,18 +3715,1110 @@ The Father asks them, repeatedly: "Do you know your own number?". The two are su
 }
     ```
     )]
+    #v(-15em)
   ]
 
-  #callout(title:"Answer to Exercise 2 (c)")[
-    test
+  #callout(title:"Answer to Exercise 2 (c) continued (ii): After the second announcements of ignorance.")[
+    _Eliminations_:
+
+    (*ER2*) Elimination rule 2: After eliminating possible worlds, the set of possible values $G_i (n_y)$ for $n_x$ upon seeing $n_y$ shrinks, allowing the iteration of (*ER1*).
+    5. $(4,1)$ and $(1,4)$
+    + $(9,7)$ and $(7,9)$
+    + $(10,8)$ and $(8,10)$
+
+    $#model^prime.double$:
+    #v(-25em)
+    #scale(40%)[#graph-figure(
+      ```dot
+      digraph Grid12x12 {
+    splines = line;
+    node [shape=square, style=rounded, width=1, fixedsize=true, fontsize=25];
+    edge [penwidth=1, arrowhead=vee, arrowtail=vee, fontsize=25];
+    ranksep = 0.4; // Slightly increased so labels don't clip lines
+    nodesep = 0.3;
+
+    // Visible nodes with x_a^* y_b labels
+    a1b3 [label="1_a^* 3_b"];
+    a3b5 [label="3_a^* 5_b"];
+    a5b7 [label="5_a^* 7_b"];
+    a8b1 [label="8_a^* 1_b"];
+
+    // Visible nodes with x_a y^*_b labels
+    a3b1 [label="3_a 1^*_b"];
+    a5b3 [label="5_a 3^*_b"];
+    a7b5 [label="7_a 5^*_b"];
+    a1b8 [label="1_a 8^*_b"];
+
+    // Set invisible attributes for nodes not in the list
+    a1b1 [style=invis, label=""];
+    a1b2 [style=invis, label=""];
+    a1b4 [style=invis, label=""];
+    a1b5 [style=invis, label=""];
+    a1b6 [style=invis, label=""];
+    a1b7 [style=invis, label=""];
+    a1b9 [style=invis, label=""];
+    a1b10 [style=invis, label=""];
+    a1b11 [style=invis, label=""];
+    a1b12 [style=invis, label=""];
+
+    a2b1 [style=invis, label=""];
+    a2b2 [style=invis, label=""];
+    a2b3 [style=invis, label=""];
+    a2b4 [style=invis, label=""];
+    a2b5 [style=invis, label=""];
+    a2b6 [style=invis, label=""];
+    a2b7 [style=invis, label=""];
+    a2b8 [style=invis, label=""];
+    a2b9 [style=invis, label=""];
+    a2b10 [style=invis, label=""];
+    a2b11 [style=invis, label=""];
+    a2b12 [style=invis, label=""];
+
+    a3b2 [style=invis, label=""];
+    a3b3 [style=invis, label=""];
+    a3b4 [style=invis, label=""];
+    a3b6 [style=invis, label=""];
+    a3b7 [style=invis, label=""];
+    a3b8 [style=invis, label=""];
+    a3b9 [style=invis, label=""];
+    a3b10 [style=invis, label=""];
+    a3b11 [style=invis, label=""];
+    a3b12 [style=invis, label=""];
+
+    a4b1 [style=invis, label=""];
+    a4b2 [style=invis, label=""];
+    a4b3 [style=invis, label=""];
+    a4b4 [style=invis, label=""];
+    a4b5 [style=invis, label=""];
+    a4b6 [style=invis, label=""];
+    a4b7 [style=invis, label=""];
+    a4b8 [style=invis, label=""];
+    a4b9 [style=invis, label=""];
+    a4b10 [style=invis, label=""];
+    a4b11 [style=invis, label=""];
+    a4b12 [style=invis, label=""];
+
+    a5b1 [style=invis, label=""];
+    a5b2 [style=invis, label=""];
+    a5b4 [style=invis, label=""];
+    a5b5 [style=invis, label=""];
+    a5b6 [style=invis, label=""];
+    a5b8 [style=invis, label=""];
+    a5b9 [style=invis, label=""];
+    a5b10 [style=invis, label=""];
+    a5b11 [style=invis, label=""];
+    a5b12 [style=invis, label=""];
+
+    a6b1 [style=invis, label=""];
+    a6b2 [style=invis, label=""];
+    a6b3 [style=invis, label=""];
+    a6b4 [style=invis, label=""];
+    a6b5 [style=invis, label=""];
+    a6b6 [style=invis, label=""];
+    a6b7 [style=invis, label=""];
+    a6b8 [style=invis, label=""];
+    a6b9 [style=invis, label=""];
+    a6b10 [style=invis, label=""];
+    a6b11 [style=invis, label=""];
+    a6b12 [style=invis, label=""];
+
+    a7b1 [style=invis, label=""];
+    a7b2 [style=invis, label=""];
+    a7b3 [style=invis, label=""];
+    a7b4 [style=invis, label=""];
+    a7b6 [style=invis, label=""];
+    a7b7 [style=invis, label=""];
+    a7b8 [style=invis, label=""];
+    a7b9 [style=invis, label=""];
+    a7b10 [style=invis, label=""];
+    a7b11 [style=invis, label=""];
+    a7b12 [style=invis, label=""];
+
+    a8b2 [style=invis, label=""];
+    a8b3 [style=invis, label=""];
+    a8b4 [style=invis, label=""];
+    a8b5 [style=invis, label=""];
+    a8b6 [style=invis, label=""];
+    a8b7 [style=invis, label=""];
+    a8b8 [style=invis, label=""];
+    a8b9 [style=invis, label=""];
+    a8b10 [style=invis, label=""];
+    a8b11 [style=invis, label=""];
+    a8b12 [style=invis, label=""];
+
+    a9b1 [style=invis, label=""];
+    a9b2 [style=invis, label=""];
+    a9b3 [style=invis, label=""];
+    a9b4 [style=invis, label=""];
+    a9b5 [style=invis, label=""];
+    a9b6 [style=invis, label=""];
+    a9b7 [style=invis, label=""];
+    a9b8 [style=invis, label=""];
+    a9b9 [style=invis, label=""];
+    a9b10 [style=invis, label=""];
+    a9b11 [style=invis, label=""];
+    a9b12 [style=invis, label=""];
+
+    a10b1 [style=invis, label=""];
+    a10b2 [style=invis, label=""];
+    a10b3 [style=invis, label=""];
+    a10b4 [style=invis, label=""];
+    a10b5 [style=invis, label=""];
+    a10b6 [style=invis, label=""];
+    a10b7 [style=invis, label=""];
+    a10b8 [style=invis, label=""];
+    a10b9 [style=invis, label=""];
+    a10b10 [style=invis, label=""];
+    a10b11 [style=invis, label=""];
+    a10b12 [style=invis, label=""];
+
+    a11b1 [style=invis, label=""];
+    a11b2 [style=invis, label=""];
+    a11b3 [style=invis, label=""];
+    a11b4 [style=invis, label=""];
+    a11b5 [style=invis, label=""];
+    a11b6 [style=invis, label=""];
+    a11b7 [style=invis, label=""];
+    a11b8 [style=invis, label=""];
+    a11b9 [style=invis, label=""];
+    a11b10 [style=invis, label=""];
+    a11b11 [style=invis, label=""];
+    a11b12 [style=invis, label=""];
+
+    a12b1 [style=invis, label=""];
+    a12b2 [style=invis, label=""];
+    a12b3 [style=invis, label=""];
+    a12b4 [style=invis, label=""];
+    a12b5 [style=invis, label=""];
+    a12b6 [style=invis, label=""];
+    a12b7 [style=invis, label=""];
+    a12b8 [style=invis, label=""];
+    a12b9 [style=invis, label=""];
+    a12b10 [style=invis, label=""];
+    a12b11 [style=invis, label=""];
+    a12b12 [style=invis, label=""];
+
+    { rank=same; a1b1; a1b2; a1b3; a1b4; a1b5; a1b6; a1b7; a1b8; a1b9; a1b10; a1b11; a1b12; }
+    { rank=same; a2b1; a2b2; a2b3; a2b4; a2b5; a2b6; a2b7; a2b8; a2b9; a2b10; a2b11; a2b12; }
+    { rank=same; a3b1; a3b2; a3b3; a3b4; a3b5; a3b6; a3b7; a3b8; a3b9; a3b10; a3b11; a3b12; }
+    { rank=same; a4b1; a4b2; a4b3; a4b4; a4b5; a4b6; a4b7; a4b8; a4b9; a4b10; a4b11; a4b12; }
+    { rank=same; a5b1; a5b2; a5b3; a5b4; a5b5; a5b6; a5b7; a5b8; a5b9; a5b10; a5b11; a5b12; }
+    { rank=same; a6b1; a6b2; a6b3; a6b4; a6b5; a6b6; a6b7; a6b8; a6b9; a6b10; a6b11; a6b12; }
+    { rank=same; a7b1; a7b2; a7b3; a7b4; a7b5; a7b6; a7b7; a7b8; a7b9; a7b10; a7b11; a7b12; }
+    { rank=same; a8b1; a8b2; a8b3; a8b4; a8b5; a8b6; a8b7; a8b8; a8b9; a8b10; a8b11; a8b12; }
+    { rank=same; a9b1; a9b2; a9b3; a9b4; a9b5; a9b6; a9b7; a9b8; a9b9; a9b10; a9b11; a9b12; }
+    { rank=same; a10b1; a10b2; a10b3; a10b4; a10b5; a10b6; a10b7; a10b8; a10b9; a10b10; a10b11; a10b12; }
+    { rank=same; a11b1; a11b2; a11b3; a11b4; a11b5; a11b6; a11b7; a11b8; a11b9; a11b10; a11b11; a11b12; }
+    { rank=same; a12b1; a12b2; a12b3; a12b4; a12b5; a12b6; a12b7; a12b8; a12b9; a12b10; a12b11; a12b12; }
+
+    // Horizontal edges (Row 1)
+    a1b3 -> a1b8 [dir=both, label=a]
+    a1b2 -> a1b3 [dir=both, style=invis, label=""];
+    a1b3 -> a1b4 [dir=both, style=invis, label=""];
+    a1b4 -> a1b8 [dir=both, style=invis, label=""];
+
+    //inactive
+    a1b1 -> a1b2 [dir=both, style=invis, label=""];
+    a1b4 -> a1b5 [dir=both, style=invis, label=""];
+    a1b5 -> a1b6 [dir=both, style=invis, label=""];
+    a1b6 -> a1b7 [dir=both, style=invis, label=""];
+    a1b7 -> a1b8 [dir=both, style=invis, label=""];
+    a1b8 -> a1b9 [dir=both, style=invis, label=""];
+    a1b9 -> a1b10 [dir=both, style=invis, label=""];
+    a1b10 -> a1b11 [dir=both, style=invis, label=""];
+    a1b11 -> a1b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 2)
+    a2b1 -> a2b2 [dir=both, style=invis, label=""];
+    a2b2 -> a2b3 [dir=both, style=invis, label=""];
+    a2b3 -> a2b4 [dir=both, style=invis, label=""];
+    a2b4 -> a2b5 [dir=both, style=invis, label=""];
+    a2b5 -> a2b6 [dir=both, style=invis, label=""];
+    a2b6 -> a2b7 [dir=both, style=invis, label=""];
+    a2b7 -> a2b8 [dir=both, style=invis, label=""];
+    a2b8 -> a2b9 [dir=both, style=invis, label=""];
+    a2b9 -> a2b10 [dir=both, style=invis, label=""];
+    a2b10 -> a2b11 [dir=both, style=invis, label=""];
+    a2b11 -> a2b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 3)
+    a3b1 -> a3b5 [dir=both, label="a"];
+    // inactive
+    a3b1 -> a3b2 [dir=both, style=invis, label=""];
+    a3b2 -> a3b3 [dir=both, style=invis, label=""];
+    a3b3 -> a3b4 [dir=both, style=invis, label=""];
+    a3b4 -> a3b5 [dir=both, style=invis, label=""];
+    a3b5 -> a3b6 [dir=both, style=invis, label=""];
+    a3b6 -> a3b7 [dir=both, style=invis, label=""];
+    a3b7 -> a3b8 [dir=both, style=invis, label=""];
+    a3b8 -> a3b9 [dir=both, style=invis, label=""];
+    a3b9 -> a3b10 [dir=both, style=invis, label=""];
+    a3b10 -> a3b11 [dir=both, style=invis, label=""];
+    a3b11 -> a3b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 4)
+    a4b1 -> a4b6 [dir=both, style=invis, label=""];
+    // inactive
+    a4b1 -> a4b2 [dir=both, style=invis, label=""];
+    a4b2 -> a4b3 [dir=both, style=invis, label=""];
+    a4b3 -> a4b4 [dir=both, style=invis, label=""];
+    a4b4 -> a4b5 [dir=both, style=invis, label=""];
+    a4b5 -> a4b6 [dir=both, style=invis, label=""];
+    a4b6 -> a4b7 [dir=both, style=invis, label=""];
+    a4b7 -> a4b8 [dir=both, style=invis, label=""];
+    a4b8 -> a4b9 [dir=both, style=invis, label=""];
+    a4b9 -> a4b10 [dir=both, style=invis, label=""];
+    a4b10 -> a4b11 [dir=both, style=invis, label=""];
+    a4b11 -> a4b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 5)
+    a5b3 -> a5b7 [dir=both, label="a"];
+    // inactive
+    a5b1 -> a5b2 [dir=both, style=invis, label=""];
+    a5b2 -> a5b3 [dir=both, style=invis, label=""];
+    a5b3 -> a5b4 [dir=both, style=invis, label=""];
+    a5b4 -> a5b5 [dir=both, style=invis, label=""];
+    a5b5 -> a5b6 [dir=both, style=invis, label=""];
+    a5b6 -> a5b7 [dir=both, style=invis, label=""];
+    a5b7 -> a5b8 [dir=both, style=invis, label=""];
+    a5b8 -> a5b9 [dir=both, style=invis, label=""];
+    a5b9 -> a5b10 [dir=both, style=invis, label=""];
+    a5b10 -> a5b11 [dir=both, style=invis, label=""];
+    a5b11 -> a5b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 6)
+    a6b1 -> a6b2 [dir=both, style=invis, label=""];
+    a6b2 -> a6b3 [dir=both, style=invis, label=""];
+    a6b3 -> a6b4 [dir=both, style=invis, label=""];
+    a6b4 -> a6b5 [dir=both, style=invis, label=""];
+    a6b5 -> a6b6 [dir=both, style=invis, label=""];
+    a6b6 -> a6b7 [dir=both, style=invis, label=""];
+    a6b7 -> a6b8 [dir=both, style=invis, label=""];
+    a6b8 -> a6b9 [dir=both, style=invis, label=""];
+    a6b9 -> a6b10 [dir=both, style=invis, label=""];
+    a6b10 -> a6b11 [dir=both, style=invis, label=""];
+    a6b11 -> a6b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 7)
+    a7b5 -> a7b9 [dir=both, style=invis, label=""];
+    // inactive
+    a7b1 -> a7b2 [dir=both, style=invis, label=""];
+    a7b2 -> a7b3 [dir=both, style=invis, label=""];
+    a7b3 -> a7b4 [dir=both, style=invis, label=""];
+    a7b4 -> a7b5 [dir=both, style=invis, label=""];
+    a7b5 -> a7b6 [dir=both, style=invis, label=""];
+    a7b6 -> a7b7 [dir=both, style=invis, label=""];
+    a7b7 -> a7b8 [dir=both, style=invis, label=""];
+    a7b8 -> a7b9 [dir=both, style=invis, label=""];
+    a7b9 -> a7b10 [dir=both, style=invis, label=""];
+    a7b10 -> a7b11 [dir=both, style=invis, label=""];
+    a7b11 -> a7b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 8)
+    a8b1 -> a8b10 [dir=both, style=invis, label=""];
+    // inactive
+    a8b1 -> a8b2 [dir=both, style=invis, label=""];
+    a8b2 -> a8b3 [dir=both, style=invis, label=""];
+    a8b3 -> a8b4 [dir=both, style=invis, label=""];
+    a8b4 -> a8b5 [dir=both, style=invis, label=""];
+    a8b5 -> a8b6 [dir=both, style=invis, label=""];
+    a8b6 -> a8b7 [dir=both, style=invis, label=""];
+    a8b7 -> a8b8 [dir=both, style=invis, label=""];
+    a8b8 -> a8b9 [dir=both, style=invis, label=""];
+    a8b9 -> a8b10 [dir=both, style=invis, label=""];
+    a8b10 -> a8b11 [dir=both, style=invis, label=""];
+    a8b11 -> a8b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 9)
+    a9b7 -> a9b11 [dir=both, style=invis, label=""];
+    // inactive
+    a9b1 -> a9b2 [dir=both, style=invis, label=""];
+    a9b2 -> a9b3 [dir=both, style=invis, label=""];
+    a9b3 -> a9b4 [dir=both, style=invis, label=""];
+    a9b4 -> a9b5 [dir=both, style=invis, label=""];
+    a9b5 -> a9b6 [dir=both, style=invis, label=""];
+    a9b6 -> a9b7 [dir=both, style=invis, label=""];
+    a9b7 -> a9b8 [dir=both, style=invis, label=""];
+    a9b8 -> a9b9 [dir=both, style=invis, label=""];
+    a9b9 -> a9b10 [dir=both, style=invis, label=""];
+    a9b10 -> a9b11 [dir=both, style=invis, label=""];
+    a9b11 -> a9b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 10)
+    a10b8 -> a10b12 [dir=both, style=invis, label=""];
+    // inactive
+    a10b1 -> a10b2 [dir=both, style=invis, label=""];
+    a10b2 -> a10b3 [dir=both, style=invis, label=""];
+    a10b3 -> a10b4 [dir=both, style=invis, label=""];
+    a10b4 -> a10b5 [dir=both, style=invis, label=""];
+    a10b5 -> a10b6 [dir=both, style=invis, label=""];
+    a10b6 -> a10b7 [dir=both, style=invis, label=""];
+    a10b7 -> a10b8 [dir=both, style=invis, label=""];
+    a10b8 -> a10b9 [dir=both, style=invis, label=""];
+    a10b9 -> a10b10 [dir=both, style=invis, label=""];
+    a10b10 -> a10b11 [dir=both, style=invis, label=""];
+    a10b11 -> a10b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 11)
+    a11b1 -> a11b2 [dir=both, style=invis, label=""];
+    a11b2 -> a11b3 [dir=both, style=invis, label=""];
+    a11b3 -> a11b4 [dir=both, style=invis, label=""];
+    a11b4 -> a11b5 [dir=both, style=invis, label=""];
+    a11b5 -> a11b6 [dir=both, style=invis, label=""];
+    a11b6 -> a11b7 [dir=both, style=invis, label=""];
+    a11b7 -> a11b8 [dir=both, style=invis, label=""];
+    a11b8 -> a11b9 [dir=both, style=invis, label=""];
+    a11b9 -> a11b10 [dir=both, style=invis, label=""];
+    a11b10 -> a11b11 [dir=both, style=invis, label=""];
+    a11b11 -> a11b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 12)
+    a12b1 -> a12b2 [dir=both, style=invis, label=""];
+    a12b2 -> a12b3 [dir=both, style=invis, label=""];
+    a12b3 -> a12b4 [dir=both, style=invis, label=""];
+    a12b4 -> a12b5 [dir=both, style=invis, label=""];
+    a12b5 -> a12b6 [dir=both, style=invis, label=""];
+    a12b6 -> a12b7 [dir=both, style=invis, label=""];
+    a12b7 -> a12b8 [dir=both, style=invis, label=""];
+    a12b8 -> a12b9 [dir=both, style=invis, label=""];
+    a12b9 -> a12b10 [dir=both, style=invis, label=""];
+    a12b10 -> a12b11 [dir=both, style=invis, label=""];
+    a12b11 -> a12b12 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 1)
+    a3b1 -> a8b1 [dir=both, label=b]
+    a2b1 -> a3b1 [dir=both, style=invis, label=""];
+    a3b1 -> a4b1 [dir=both, style=invis, label=""];
+    a4b1 -> a8b1 [dir=both, style=invis, label=""];
+    // inactive
+    a1b1 -> a2b1 [dir=both, style=invis, label=""];
+    a4b1 -> a5b1 [dir=both, style=invis, label=""];
+    a5b1 -> a6b1 [dir=both, style=invis, label=""];
+    a6b1 -> a7b1 [dir=both, style=invis, label=""];
+    a7b1 -> a8b1 [dir=both, style=invis, label=""];
+    a8b1 -> a9b1 [dir=both, style=invis, label=""];
+    a9b1 -> a10b1 [dir=both, style=invis, label=""];
+    a10b1 -> a11b1 [dir=both, style=invis, label=""];
+    a11b1 -> a12b1 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 2)
+    a1b2 -> a2b2 [dir=both, style=invis, label=""];
+    a2b2 -> a3b2 [dir=both, style=invis, label=""];
+    a3b2 -> a4b2 [dir=both, style=invis, label=""];
+    a4b2 -> a5b2 [dir=both, style=invis, label=""];
+    a5b2 -> a6b2 [dir=both, style=invis, label=""];
+    a6b2 -> a7b2 [dir=both, style=invis, label=""];
+    a7b2 -> a8b2 [dir=both, style=invis, label=""];
+    a8b2 -> a9b2 [dir=both, style=invis, label=""];
+    a9b2 -> a10b2 [dir=both, style=invis, label=""];
+    a10b2 -> a11b2 [dir=both, style=invis, label=""];
+    a11b2 -> a12b2 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 3)
+    a1b3 -> a5b3 [dir=both, label="b"];
+    // inactive
+    a1b3 -> a2b3 [dir=both, style=invis, label=""];
+    a2b3 -> a3b3 [dir=both, style=invis, label=""];
+    a3b3 -> a4b3 [dir=both, style=invis, label=""];
+    a4b3 -> a5b3 [dir=both, style=invis, label=""];
+    a5b3 -> a6b3 [dir=both, style=invis, label=""];
+    a6b3 -> a7b3 [dir=both, style=invis, label=""];
+    a7b3 -> a8b3 [dir=both, style=invis, label=""];
+    a8b3 -> a9b3 [dir=both, style=invis, label=""];
+    a9b3 -> a10b3 [dir=both, style=invis, label=""];
+    a10b3 -> a11b3 [dir=both, style=invis, label=""];
+    a11b3 -> a12b3 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 4)
+    a1b4 -> a6b4 [dir=both, style=invis, label=""];
+    a1b4 -> a2b4 [dir=both, style=invis, label=""];
+    a2b4 -> a3b4 [dir=both, style=invis, label=""];
+    a3b4 -> a4b4 [dir=both, style=invis, label=""];
+    a4b4 -> a5b4 [dir=both, style=invis, label=""];
+    a5b4 -> a6b4 [dir=both, style=invis, label=""];
+    a6b4 -> a7b4 [dir=both, style=invis, label=""];
+    a7b4 -> a8b4 [dir=both, style=invis, label=""];
+    a8b4 -> a9b4 [dir=both, style=invis, label=""];
+    a9b4 -> a10b4 [dir=both, style=invis, label=""];
+    a10b4 -> a11b4 [dir=both, style=invis, label=""];
+    a11b4 -> a12b4 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 5)
+    a3b5 -> a7b5 [dir=both, label="b"];
+    a1b5 -> a2b5 [dir=both, style=invis, label=""];
+    a2b5 -> a3b5 [dir=both, style=invis, label=""];
+    a3b5 -> a4b5 [dir=both, style=invis, label=""];
+    a4b5 -> a5b5 [dir=both, style=invis, label=""];
+    a5b5 -> a6b5 [dir=both, style=invis, label=""];
+    a6b5 -> a7b5 [dir=both, style=invis, label=""];
+    a7b5 -> a8b5 [dir=both, style=invis, label=""];
+    a8b5 -> a9b5 [dir=both, style=invis, label=""];
+    a9b5 -> a10b5 [dir=both, style=invis, label=""];
+    a10b5 -> a11b5 [dir=both, style=invis, label=""];
+    a11b5 -> a12b5 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 6)
+    a1b6 -> a2b6 [dir=both, style=invis, label=""];
+    a2b6 -> a3b6 [dir=both, style=invis, label=""];
+    a3b6 -> a4b6 [dir=both, style=invis, label=""];
+    a4b6 -> a5b6 [dir=both, style=invis, label=""];
+    a5b6 -> a6b6 [dir=both, style=invis, label=""];
+    a6b6 -> a7b6 [dir=both, style=invis, label=""];
+    a7b6 -> a8b6 [dir=both, style=invis, label=""];
+    a8b6 -> a9b6 [dir=both, style=invis, label=""];
+    a9b6 -> a10b6 [dir=both, style=invis, label=""];
+    a10b6 -> a11b6 [dir=both, style=invis, label=""];
+    a11b6 -> a12b6 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 7)
+    a5b7 -> a9b7 [dir=both, style=invis, label=""];
+    a1b7 -> a2b7 [dir=both, style=invis, label=""];
+    a2b7 -> a3b7 [dir=both, style=invis, label=""];
+    a3b7 -> a4b7 [dir=both, style=invis, label=""];
+    a4b7 -> a5b7 [dir=both, style=invis, label=""];
+    a5b7 -> a6b7 [dir=both, style=invis, label=""];
+    a6b7 -> a7b7 [dir=both, style=invis, label=""];
+    a7b7 -> a8b7 [dir=both, style=invis, label=""];
+    a8b7 -> a9b7 [dir=both, style=invis, label=""];
+    a9b7 -> a10b7 [dir=both, style=invis, label=""];
+    a10b7 -> a11b7 [dir=both, style=invis, label=""];
+    a11b7 -> a12b7 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 8)
+    a1b8 -> a10b8 [dir=both, style=invis, label=""];
+    a1b8 -> a2b8 [dir=both, style=invis, label=""];
+    a2b8 -> a3b8 [dir=both, style=invis, label=""];
+    a3b8 -> a4b8 [dir=both, style=invis, label=""];
+    a4b8 -> a5b8 [dir=both, style=invis, label=""];
+    a5b8 -> a6b8 [dir=both, style=invis, label=""];
+    a6b8 -> a7b8 [dir=both, style=invis, label=""];
+    a7b8 -> a8b8 [dir=both, style=invis, label=""];
+    a8b8 -> a9b8 [dir=both, style=invis, label=""];
+    a9b8 -> a10b8 [dir=both, style=invis, label=""];
+    a10b8 -> a11b8 [dir=both, style=invis, label=""];
+    a11b8 -> a12b8 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 9)
+    a7b9 -> a11b9 [dir=both, style=invis, label=""];
+    a1b9 -> a2b9 [dir=both, style=invis, label=""];
+    a2b9 -> a3b9 [dir=both, style=invis, label=""];
+    a3b9 -> a4b9 [dir=both, style=invis, label=""];
+    a4b9 -> a5b9 [dir=both, style=invis, label=""];
+    a5b9 -> a6b9 [dir=both, style=invis, label=""];
+    a6b9 -> a7b9 [dir=both, style=invis, label=""];
+    a7b9 -> a8b9 [dir=both, style=invis, label=""];
+    a8b9 -> a9b9 [dir=both, style=invis, label=""];
+    a9b9 -> a10b9 [dir=both, style=invis, label=""];
+    a10b9 -> a11b9 [dir=both, style=invis, label=""];
+    a11b9 -> a12b9 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 10)
+    a8b10 -> a12b10 [dir=both, style=invis, label=""];
+    a1b10 -> a2b10 [dir=both, style=invis, label=""];
+    a2b10 -> a3b10 [dir=both, style=invis, label=""];
+    a3b10 -> a4b10 [dir=both, style=invis, label=""];
+    a4b10 -> a5b10 [dir=both, style=invis, label=""];
+    a5b10 -> a6b10 [dir=both, style=invis, label=""];
+    a6b10 -> a7b10 [dir=both, style=invis, label=""];
+    a7b10 -> a8b10 [dir=both, style=invis, label=""];
+    a8b10 -> a9b10 [dir=both, style=invis, label=""];
+    a9b10 -> a10b10 [dir=both, style=invis, label=""];
+    a10b10 -> a11b10 [dir=both, style=invis, label=""];
+    a11b10 -> a12b10 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 11)
+    a1b11 -> a2b11 [dir=both, style=invis, label=""];
+    a2b11 -> a3b11 [dir=both, style=invis, label=""];
+    a3b11 -> a4b11 [dir=both, style=invis, label=""];
+    a4b11 -> a5b11 [dir=both, style=invis, label=""];
+    a5b11 -> a6b11 [dir=both, style=invis, label=""];
+    a6b11 -> a7b11 [dir=both, style=invis, label=""];
+    a7b11 -> a8b11 [dir=both, style=invis, label=""];
+    a8b11 -> a9b11 [dir=both, style=invis, label=""];
+    a9b11 -> a10b11 [dir=both, style=invis, label=""];
+    a10b11 -> a11b11 [dir=both, style=invis, label=""];
+    a11b11 -> a12b11 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 12)
+    a1b12 -> a2b12 [dir=both, style=invis, label=""];
+    a2b12 -> a3b12 [dir=both, style=invis, label=""];
+    a3b12 -> a4b12 [dir=both, style=invis, label=""];
+    a4b12 -> a5b12 [dir=both, style=invis, label=""];
+    a5b12 -> a6b12 [dir=both, style=invis, label=""];
+    a6b12 -> a7b12 [dir=both, style=invis, label=""];
+    a7b12 -> a8b12 [dir=both, style=invis, label=""];
+    a8b12 -> a9b12 [dir=both, style=invis, label=""];
+    a9b12 -> a10b12 [dir=both, style=invis, label=""];
+    a10b12 -> a11b12 [dir=both, style=invis, label=""];
+    a11b12 -> a12b12 [dir=both, style=invis, label=""];
+}
+      ```
+    )]
+    #v(-22em)
+  ]
+
+  #callout(title:"Answer to Exercise 2 (c) continued (iii): After the third announcements of ignorance.")[
+    _Eliminations_:
+    8. $(8,1)$ and $(1,8)$
+    9. $(7,5)$ and $(5,7)$
+
+
+    #v(-18em)
+    #scale(40%)[#graph-figure(
+    ```dot
+    digraph Grid12x12 {
+    splines = line;
+    node [shape=square, style=rounded, width=1, fixedsize=true, fontsize=25];
+    edge [penwidth=1, arrowhead=vee, arrowtail=vee, fontsize=25];
+    ranksep = 0.4; // Slightly increased so labels don't clip lines
+    nodesep = 0.3;
+
+    // Visible nodes with x_a^* y_b labels
+    a1b3 [label="1_a^* 3_b"];
+    a3b5 [label="3_a^* 5_b"];
+
+    // Visible nodes with x_a y^*_b labels
+    a3b1 [label="3_a 1^*_b"];
+    a5b3 [label="5_a 3^*_b"];
+
+    // Set invisible attributes for nodes not in the list
+    a1b1 [style=invis, label=""];
+    a1b2 [style=invis, label=""];
+    a1b4 [style=invis, label=""];
+    a1b5 [style=invis, label=""];
+    a1b6 [style=invis, label=""];
+    a1b7 [style=invis, label=""];
+    a1b8 [style=invis, label=""];
+    a1b9 [style=invis, label=""];
+    a1b10 [style=invis, label=""];
+    a1b11 [style=invis, label=""];
+    a1b12 [style=invis, label=""];
+
+    a2b1 [style=invis, label=""];
+    a2b2 [style=invis, label=""];
+    a2b3 [style=invis, label=""];
+    a2b4 [style=invis, label=""];
+    a2b5 [style=invis, label=""];
+    a2b6 [style=invis, label=""];
+    a2b7 [style=invis, label=""];
+    a2b8 [style=invis, label=""];
+    a2b9 [style=invis, label=""];
+    a2b10 [style=invis, label=""];
+    a2b11 [style=invis, label=""];
+    a2b12 [style=invis, label=""];
+
+    a3b2 [style=invis, label=""];
+    a3b3 [style=invis, label=""];
+    a3b4 [style=invis, label=""];
+    a3b6 [style=invis, label=""];
+    a3b7 [style=invis, label=""];
+    a3b8 [style=invis, label=""];
+    a3b9 [style=invis, label=""];
+    a3b10 [style=invis, label=""];
+    a3b11 [style=invis, label=""];
+    a3b12 [style=invis, label=""];
+
+    a4b1 [style=invis, label=""];
+    a4b2 [style=invis, label=""];
+    a4b3 [style=invis, label=""];
+    a4b4 [style=invis, label=""];
+    a4b5 [style=invis, label=""];
+    a4b6 [style=invis, label=""];
+    a4b7 [style=invis, label=""];
+    a4b8 [style=invis, label=""];
+    a4b9 [style=invis, label=""];
+    a4b10 [style=invis, label=""];
+    a4b11 [style=invis, label=""];
+    a4b12 [style=invis, label=""];
+
+    a5b1 [style=invis, label=""];
+    a5b2 [style=invis, label=""];
+    a5b4 [style=invis, label=""];
+    a5b5 [style=invis, label=""];
+    a5b6 [style=invis, label=""];
+    a5b7 [style=invis, label=""];
+    a5b8 [style=invis, label=""];
+    a5b9 [style=invis, label=""];
+    a5b10 [style=invis, label=""];
+    a5b11 [style=invis, label=""];
+    a5b12 [style=invis, label=""];
+
+    a6b1 [style=invis, label=""];
+    a6b2 [style=invis, label=""];
+    a6b3 [style=invis, label=""];
+    a6b4 [style=invis, label=""];
+    a6b5 [style=invis, label=""];
+    a6b6 [style=invis, label=""];
+    a6b7 [style=invis, label=""];
+    a6b8 [style=invis, label=""];
+    a6b9 [style=invis, label=""];
+    a6b10 [style=invis, label=""];
+    a6b11 [style=invis, label=""];
+    a6b12 [style=invis, label=""];
+
+    a7b1 [style=invis, label=""];
+    a7b2 [style=invis, label=""];
+    a7b3 [style=invis, label=""];
+    a7b4 [style=invis, label=""];
+    a7b5 [style=invis, label=""];
+    a7b6 [style=invis, label=""];
+    a7b7 [style=invis, label=""];
+    a7b8 [style=invis, label=""];
+    a7b9 [style=invis, label=""];
+    a7b10 [style=invis, label=""];
+    a7b11 [style=invis, label=""];
+    a7b12 [style=invis, label=""];
+
+    a8b1 [style=invis, label=""];
+    a8b2 [style=invis, label=""];
+    a8b3 [style=invis, label=""];
+    a8b4 [style=invis, label=""];
+    a8b5 [style=invis, label=""];
+    a8b6 [style=invis, label=""];
+    a8b7 [style=invis, label=""];
+    a8b8 [style=invis, label=""];
+    a8b9 [style=invis, label=""];
+    a8b10 [style=invis, label=""];
+    a8b11 [style=invis, label=""];
+    a8b12 [style=invis, label=""];
+
+    a9b1 [style=invis, label=""];
+    a9b2 [style=invis, label=""];
+    a9b3 [style=invis, label=""];
+    a9b4 [style=invis, label=""];
+    a9b5 [style=invis, label=""];
+    a9b6 [style=invis, label=""];
+    a9b7 [style=invis, label=""];
+    a9b8 [style=invis, label=""];
+    a9b9 [style=invis, label=""];
+    a9b10 [style=invis, label=""];
+    a9b11 [style=invis, label=""];
+    a9b12 [style=invis, label=""];
+
+    a10b1 [style=invis, label=""];
+    a10b2 [style=invis, label=""];
+    a10b3 [style=invis, label=""];
+    a10b4 [style=invis, label=""];
+    a10b5 [style=invis, label=""];
+    a10b6 [style=invis, label=""];
+    a10b7 [style=invis, label=""];
+    a10b8 [style=invis, label=""];
+    a10b9 [style=invis, label=""];
+    a10b10 [style=invis, label=""];
+    a10b11 [style=invis, label=""];
+    a10b12 [style=invis, label=""];
+
+    a11b1 [style=invis, label=""];
+    a11b2 [style=invis, label=""];
+    a11b3 [style=invis, label=""];
+    a11b4 [style=invis, label=""];
+    a11b5 [style=invis, label=""];
+    a11b6 [style=invis, label=""];
+    a11b7 [style=invis, label=""];
+    a11b8 [style=invis, label=""];
+    a11b9 [style=invis, label=""];
+    a11b10 [style=invis, label=""];
+    a11b11 [style=invis, label=""];
+    a11b12 [style=invis, label=""];
+
+    a12b1 [style=invis, label=""];
+    a12b2 [style=invis, label=""];
+    a12b3 [style=invis, label=""];
+    a12b4 [style=invis, label=""];
+    a12b5 [style=invis, label=""];
+    a12b6 [style=invis, label=""];
+    a12b7 [style=invis, label=""];
+    a12b8 [style=invis, label=""];
+    a12b9 [style=invis, label=""];
+    a12b10 [style=invis, label=""];
+    a12b11 [style=invis, label=""];
+    a12b12 [style=invis, label=""];
+
+    { rank=same; a1b1; a1b2; a1b3; a1b4; a1b5; a1b6; a1b7; a1b8; a1b9; a1b10; a1b11; a1b12; }
+    { rank=same; a2b1; a2b2; a2b3; a2b4; a2b5; a2b6; a2b7; a2b8; a2b9; a2b10; a2b11; a2b12; }
+    { rank=same; a3b1; a3b2; a3b3; a3b4; a3b5; a3b6; a3b7; a3b8; a3b9; a3b10; a3b11; a3b12; }
+    { rank=same; a4b1; a4b2; a4b3; a4b4; a4b5; a4b6; a4b7; a4b8; a4b9; a4b10; a4b11; a4b12; }
+    { rank=same; a5b1; a5b2; a5b3; a5b4; a5b5; a5b6; a5b7; a5b8; a5b9; a5b10; a5b11; a5b12; }
+    { rank=same; a6b1; a6b2; a6b3; a6b4; a6b5; a6b6; a6b7; a6b8; a6b9; a6b10; a6b11; a6b12; }
+    { rank=same; a7b1; a7b2; a7b3; a7b4; a7b5; a7b6; a7b7; a7b8; a7b9; a7b10; a7b11; a7b12; }
+    { rank=same; a8b1; a8b2; a8b3; a8b4; a8b5; a8b6; a8b7; a8b8; a8b9; a8b10; a8b11; a8b12; }
+    { rank=same; a9b1; a9b2; a9b3; a9b4; a9b5; a9b6; a9b7; a9b8; a9b9; a9b10; a9b11; a9b12; }
+    { rank=same; a10b1; a10b2; a10b3; a10b4; a10b5; a10b6; a10b7; a10b8; a10b9; a10b10; a10b11; a10b12; }
+    { rank=same; a11b1; a11b2; a11b3; a11b4; a11b5; a11b6; a11b7; a11b8; a11b9; a11b10; a11b11; a11b12; }
+    { rank=same; a12b1; a12b2; a12b3; a12b4; a12b5; a12b6; a12b7; a12b8; a12b9; a12b10; a12b11; a12b12; }
+
+    // Horizontal edges (Row 1)
+    a1b3 -> a1b8 [dir=both, style=invis, label=""]
+    a1b2 -> a1b3 [dir=both, style=invis, label=""];
+    a1b3 -> a1b4 [dir=both, style=invis, label=""];
+    a1b4 -> a1b8 [dir=both, style=invis, label=""];
+
+    //inactive
+    a1b1 -> a1b2 [dir=both, style=invis, label=""];
+    a1b4 -> a1b5 [dir=both, style=invis, label=""];
+    a1b5 -> a1b6 [dir=both, style=invis, label=""];
+    a1b6 -> a1b7 [dir=both, style=invis, label=""];
+    a1b7 -> a1b8 [dir=both, style=invis, label=""];
+    a1b8 -> a1b9 [dir=both, style=invis, label=""];
+    a1b9 -> a1b10 [dir=both, style=invis, label=""];
+    a1b10 -> a1b11 [dir=both, style=invis, label=""];
+    a1b11 -> a1b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 2)
+    a2b1 -> a2b2 [dir=both, style=invis, label=""];
+    a2b2 -> a2b3 [dir=both, style=invis, label=""];
+    a2b3 -> a2b4 [dir=both, style=invis, label=""];
+    a2b4 -> a2b5 [dir=both, style=invis, label=""];
+    a2b5 -> a2b6 [dir=both, style=invis, label=""];
+    a2b6 -> a2b7 [dir=both, style=invis, label=""];
+    a2b7 -> a2b8 [dir=both, style=invis, label=""];
+    a2b8 -> a2b9 [dir=both, style=invis, label=""];
+    a2b9 -> a2b10 [dir=both, style=invis, label=""];
+    a2b10 -> a2b11 [dir=both, style=invis, label=""];
+    a2b11 -> a2b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 3)
+    a3b1 -> a3b5 [dir=both, label="a"];
+    // inactive
+    a3b1 -> a3b2 [dir=both, style=invis, label=""];
+    a3b2 -> a3b3 [dir=both, style=invis, label=""];
+    a3b3 -> a3b4 [dir=both, style=invis, label=""];
+    a3b4 -> a3b5 [dir=both, style=invis, label=""];
+    a3b5 -> a3b6 [dir=both, style=invis, label=""];
+    a3b6 -> a3b7 [dir=both, style=invis, label=""];
+    a3b7 -> a3b8 [dir=both, style=invis, label=""];
+    a3b8 -> a3b9 [dir=both, style=invis, label=""];
+    a3b9 -> a3b10 [dir=both, style=invis, label=""];
+    a3b10 -> a3b11 [dir=both, style=invis, label=""];
+    a3b11 -> a3b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 4)
+    a4b1 -> a4b6 [dir=both, style=invis, label=""];
+    // inactive
+    a4b1 -> a4b2 [dir=both, style=invis, label=""];
+    a4b2 -> a4b3 [dir=both, style=invis, label=""];
+    a4b3 -> a4b4 [dir=both, style=invis, label=""];
+    a4b4 -> a4b5 [dir=both, style=invis, label=""];
+    a4b5 -> a4b6 [dir=both, style=invis, label=""];
+    a4b6 -> a4b7 [dir=both, style=invis, label=""];
+    a4b7 -> a4b8 [dir=both, style=invis, label=""];
+    a4b8 -> a4b9 [dir=both, style=invis, label=""];
+    a4b9 -> a4b10 [dir=both, style=invis, label=""];
+    a4b10 -> a4b11 [dir=both, style=invis, label=""];
+    a4b11 -> a4b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 5)
+    a5b3 -> a5b7 [dir=both, style=invis, label=""];
+    // inactive
+    a5b1 -> a5b2 [dir=both, style=invis, label=""];
+    a5b2 -> a5b3 [dir=both, style=invis, label=""];
+    a5b3 -> a5b4 [dir=both, style=invis, label=""];
+    a5b4 -> a5b5 [dir=both, style=invis, label=""];
+    a5b5 -> a5b6 [dir=both, style=invis, label=""];
+    a5b6 -> a5b7 [dir=both, style=invis, label=""];
+    a5b7 -> a5b8 [dir=both, style=invis, label=""];
+    a5b8 -> a5b9 [dir=both, style=invis, label=""];
+    a5b9 -> a5b10 [dir=both, style=invis, label=""];
+    a5b10 -> a5b11 [dir=both, style=invis, label=""];
+    a5b11 -> a5b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 6)
+    a6b1 -> a6b2 [dir=both, style=invis, label=""];
+    a6b2 -> a6b3 [dir=both, style=invis, label=""];
+    a6b3 -> a6b4 [dir=both, style=invis, label=""];
+    a6b4 -> a6b5 [dir=both, style=invis, label=""];
+    a6b5 -> a6b6 [dir=both, style=invis, label=""];
+    a6b6 -> a6b7 [dir=both, style=invis, label=""];
+    a6b7 -> a6b8 [dir=both, style=invis, label=""];
+    a6b8 -> a6b9 [dir=both, style=invis, label=""];
+    a6b9 -> a6b10 [dir=both, style=invis, label=""];
+    a6b10 -> a6b11 [dir=both, style=invis, label=""];
+    a6b11 -> a6b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 7)
+    a7b5 -> a7b9 [dir=both, style=invis, label=""];
+    // inactive
+    a7b1 -> a7b2 [dir=both, style=invis, label=""];
+    a7b2 -> a7b3 [dir=both, style=invis, label=""];
+    a7b3 -> a7b4 [dir=both, style=invis, label=""];
+    a7b4 -> a7b5 [dir=both, style=invis, label=""];
+    a7b5 -> a7b6 [dir=both, style=invis, label=""];
+    a7b6 -> a7b7 [dir=both, style=invis, label=""];
+    a7b7 -> a7b8 [dir=both, style=invis, label=""];
+    a7b8 -> a7b9 [dir=both, style=invis, label=""];
+    a7b9 -> a7b10 [dir=both, style=invis, label=""];
+    a7b10 -> a7b11 [dir=both, style=invis, label=""];
+    a7b11 -> a7b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 8)
+    a8b1 -> a8b10 [dir=both, style=invis, label=""];
+    // inactive
+    a8b1 -> a8b2 [dir=both, style=invis, label=""];
+    a8b2 -> a8b3 [dir=both, style=invis, label=""];
+    a8b3 -> a8b4 [dir=both, style=invis, label=""];
+    a8b4 -> a8b5 [dir=both, style=invis, label=""];
+    a8b5 -> a8b6 [dir=both, style=invis, label=""];
+    a8b6 -> a8b7 [dir=both, style=invis, label=""];
+    a8b7 -> a8b8 [dir=both, style=invis, label=""];
+    a8b8 -> a8b9 [dir=both, style=invis, label=""];
+    a8b9 -> a8b10 [dir=both, style=invis, label=""];
+    a8b10 -> a8b11 [dir=both, style=invis, label=""];
+    a8b11 -> a8b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 9)
+    a9b7 -> a9b11 [dir=both, style=invis, label=""];
+    // inactive
+    a9b1 -> a9b2 [dir=both, style=invis, label=""];
+    a9b2 -> a9b3 [dir=both, style=invis, label=""];
+    a9b3 -> a9b4 [dir=both, style=invis, label=""];
+    a9b4 -> a9b5 [dir=both, style=invis, label=""];
+    a9b5 -> a9b6 [dir=both, style=invis, label=""];
+    a9b6 -> a9b7 [dir=both, style=invis, label=""];
+    a9b7 -> a9b8 [dir=both, style=invis, label=""];
+    a9b8 -> a9b9 [dir=both, style=invis, label=""];
+    a9b9 -> a9b10 [dir=both, style=invis, label=""];
+    a9b10 -> a9b11 [dir=both, style=invis, label=""];
+    a9b11 -> a9b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 10)
+    a10b8 -> a10b12 [dir=both, style=invis, label=""];
+    // inactive
+    a10b1 -> a10b2 [dir=both, style=invis, label=""];
+    a10b2 -> a10b3 [dir=both, style=invis, label=""];
+    a10b3 -> a10b4 [dir=both, style=invis, label=""];
+    a10b4 -> a10b5 [dir=both, style=invis, label=""];
+    a10b5 -> a10b6 [dir=both, style=invis, label=""];
+    a10b6 -> a10b7 [dir=both, style=invis, label=""];
+    a10b7 -> a10b8 [dir=both, style=invis, label=""];
+    a10b8 -> a10b9 [dir=both, style=invis, label=""];
+    a10b9 -> a10b10 [dir=both, style=invis, label=""];
+    a10b10 -> a10b11 [dir=both, style=invis, label=""];
+    a10b11 -> a10b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 11)
+    a11b1 -> a11b2 [dir=both, style=invis, label=""];
+    a11b2 -> a11b3 [dir=both, style=invis, label=""];
+    a11b3 -> a11b4 [dir=both, style=invis, label=""];
+    a11b4 -> a11b5 [dir=both, style=invis, label=""];
+    a11b5 -> a11b6 [dir=both, style=invis, label=""];
+    a11b6 -> a11b7 [dir=both, style=invis, label=""];
+    a11b7 -> a11b8 [dir=both, style=invis, label=""];
+    a11b8 -> a11b9 [dir=both, style=invis, label=""];
+    a11b9 -> a11b10 [dir=both, style=invis, label=""];
+    a11b10 -> a11b11 [dir=both, style=invis, label=""];
+    a11b11 -> a11b12 [dir=both, style=invis, label=""];
+
+    // Horizontal edges (Row 12)
+    a12b1 -> a12b2 [dir=both, style=invis, label=""];
+    a12b2 -> a12b3 [dir=both, style=invis, label=""];
+    a12b3 -> a12b4 [dir=both, style=invis, label=""];
+    a12b4 -> a12b5 [dir=both, style=invis, label=""];
+    a12b5 -> a12b6 [dir=both, style=invis, label=""];
+    a12b6 -> a12b7 [dir=both, style=invis, label=""];
+    a12b7 -> a12b8 [dir=both, style=invis, label=""];
+    a12b8 -> a12b9 [dir=both, style=invis, label=""];
+    a12b9 -> a12b10 [dir=both, style=invis, label=""];
+    a12b10 -> a12b11 [dir=both, style=invis, label=""];
+    a12b11 -> a12b12 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 1)
+    a3b1 -> a8b1 [dir=both, style=invis, label=""]
+    a2b1 -> a3b1 [dir=both, style=invis, label=""];
+    a3b1 -> a4b1 [dir=both, style=invis, label=""];
+    a4b1 -> a8b1 [dir=both, style=invis, label=""];
+    // inactive
+    a1b1 -> a2b1 [dir=both, style=invis, label=""];
+    a4b1 -> a5b1 [dir=both, style=invis, label=""];
+    a5b1 -> a6b1 [dir=both, style=invis, label=""];
+    a6b1 -> a7b1 [dir=both, style=invis, label=""];
+    a7b1 -> a8b1 [dir=both, style=invis, label=""];
+    a8b1 -> a9b1 [dir=both, style=invis, label=""];
+    a9b1 -> a10b1 [dir=both, style=invis, label=""];
+    a10b1 -> a11b1 [dir=both, style=invis, label=""];
+    a11b1 -> a12b1 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 2)
+    a1b2 -> a2b2 [dir=both, style=invis, label=""];
+    a2b2 -> a3b2 [dir=both, style=invis, label=""];
+    a3b2 -> a4b2 [dir=both, style=invis, label=""];
+    a4b2 -> a5b2 [dir=both, style=invis, label=""];
+    a5b2 -> a6b2 [dir=both, style=invis, label=""];
+    a6b2 -> a7b2 [dir=both, style=invis, label=""];
+    a7b2 -> a8b2 [dir=both, style=invis, label=""];
+    a8b2 -> a9b2 [dir=both, style=invis, label=""];
+    a9b2 -> a10b2 [dir=both, style=invis, label=""];
+    a10b2 -> a11b2 [dir=both, style=invis, label=""];
+    a11b2 -> a12b2 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 3)
+    a1b3 -> a5b3 [dir=both, label="b"];
+    // inactive
+    a1b3 -> a2b3 [dir=both, style=invis, label=""];
+    a2b3 -> a3b3 [dir=both, style=invis, label=""];
+    a3b3 -> a4b3 [dir=both, style=invis, label=""];
+    a4b3 -> a5b3 [dir=both, style=invis, label=""];
+    a5b3 -> a6b3 [dir=both, style=invis, label=""];
+    a6b3 -> a7b3 [dir=both, style=invis, label=""];
+    a7b3 -> a8b3 [dir=both, style=invis, label=""];
+    a8b3 -> a9b3 [dir=both, style=invis, label=""];
+    a9b3 -> a10b3 [dir=both, style=invis, label=""];
+    a10b3 -> a11b3 [dir=both, style=invis, label=""];
+    a11b3 -> a12b3 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 4)
+    a1b4 -> a6b4 [dir=both, style=invis, label=""];
+    a1b4 -> a2b4 [dir=both, style=invis, label=""];
+    a2b4 -> a3b4 [dir=both, style=invis, label=""];
+    a3b4 -> a4b4 [dir=both, style=invis, label=""];
+    a4b4 -> a5b4 [dir=both, style=invis, label=""];
+    a5b4 -> a6b4 [dir=both, style=invis, label=""];
+    a6b4 -> a7b4 [dir=both, style=invis, label=""];
+    a7b4 -> a8b4 [dir=both, style=invis, label=""];
+    a8b4 -> a9b4 [dir=both, style=invis, label=""];
+    a9b4 -> a10b4 [dir=both, style=invis, label=""];
+    a10b4 -> a11b4 [dir=both, style=invis, label=""];
+    a11b4 -> a12b4 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 5)
+    a3b5 -> a7b5 [dir=both, style=invis, label=""];
+    a1b5 -> a2b5 [dir=both, style=invis, label=""];
+    a2b5 -> a3b5 [dir=both, style=invis, label=""];
+    a3b5 -> a4b5 [dir=both, style=invis, label=""];
+    a4b5 -> a5b5 [dir=both, style=invis, label=""];
+    a5b5 -> a6b5 [dir=both, style=invis, label=""];
+    a6b5 -> a7b5 [dir=both, style=invis, label=""];
+    a7b5 -> a8b5 [dir=both, style=invis, label=""];
+    a8b5 -> a9b5 [dir=both, style=invis, label=""];
+    a9b5 -> a10b5 [dir=both, style=invis, label=""];
+    a10b5 -> a11b5 [dir=both, style=invis, label=""];
+    a11b5 -> a12b5 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 6)
+    a1b6 -> a2b6 [dir=both, style=invis, label=""];
+    a2b6 -> a3b6 [dir=both, style=invis, label=""];
+    a3b6 -> a4b6 [dir=both, style=invis, label=""];
+    a4b6 -> a5b6 [dir=both, style=invis, label=""];
+    a5b6 -> a6b6 [dir=both, style=invis, label=""];
+    a6b6 -> a7b6 [dir=both, style=invis, label=""];
+    a7b6 -> a8b6 [dir=both, style=invis, label=""];
+    a8b6 -> a9b6 [dir=both, style=invis, label=""];
+    a9b6 -> a10b6 [dir=both, style=invis, label=""];
+    a10b6 -> a11b6 [dir=both, style=invis, label=""];
+    a11b6 -> a12b6 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 7)
+    a5b7 -> a9b7 [dir=both, style=invis, label=""];
+    a1b7 -> a2b7 [dir=both, style=invis, label=""];
+    a2b7 -> a3b7 [dir=both, style=invis, label=""];
+    a3b7 -> a4b7 [dir=both, style=invis, label=""];
+    a4b7 -> a5b7 [dir=both, style=invis, label=""];
+    a5b7 -> a6b7 [dir=both, style=invis, label=""];
+    a6b7 -> a7b7 [dir=both, style=invis, label=""];
+    a7b7 -> a8b7 [dir=both, style=invis, label=""];
+    a8b7 -> a9b7 [dir=both, style=invis, label=""];
+    a9b7 -> a10b7 [dir=both, style=invis, label=""];
+    a10b7 -> a11b7 [dir=both, style=invis, label=""];
+    a11b7 -> a12b7 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 8)
+    a1b8 -> a10b8 [dir=both, style=invis, label=""];
+    a1b8 -> a2b8 [dir=both, style=invis, label=""];
+    a2b8 -> a3b8 [dir=both, style=invis, label=""];
+    a3b8 -> a4b8 [dir=both, style=invis, label=""];
+    a4b8 -> a5b8 [dir=both, style=invis, label=""];
+    a5b8 -> a6b8 [dir=both, style=invis, label=""];
+    a6b8 -> a7b8 [dir=both, style=invis, label=""];
+    a7b8 -> a8b8 [dir=both, style=invis, label=""];
+    a8b8 -> a9b8 [dir=both, style=invis, label=""];
+    a9b8 -> a10b8 [dir=both, style=invis, label=""];
+    a10b8 -> a11b8 [dir=both, style=invis, label=""];
+    a11b8 -> a12b8 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 9)
+    a7b9 -> a11b9 [dir=both, style=invis, label=""];
+    a1b9 -> a2b9 [dir=both, style=invis, label=""];
+    a2b9 -> a3b9 [dir=both, style=invis, label=""];
+    a3b9 -> a4b9 [dir=both, style=invis, label=""];
+    a4b9 -> a5b9 [dir=both, style=invis, label=""];
+    a5b9 -> a6b9 [dir=both, style=invis, label=""];
+    a6b9 -> a7b9 [dir=both, style=invis, label=""];
+    a7b9 -> a8b9 [dir=both, style=invis, label=""];
+    a8b9 -> a9b9 [dir=both, style=invis, label=""];
+    a9b9 -> a10b9 [dir=both, style=invis, label=""];
+    a10b9 -> a11b9 [dir=both, style=invis, label=""];
+    a11b9 -> a12b9 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 10)
+    a8b10 -> a12b10 [dir=both, style=invis, label=""];
+    a1b10 -> a2b10 [dir=both, style=invis, label=""];
+    a2b10 -> a3b10 [dir=both, style=invis, label=""];
+    a3b10 -> a4b10 [dir=both, style=invis, label=""];
+    a4b10 -> a5b10 [dir=both, style=invis, label=""];
+    a5b10 -> a6b10 [dir=both, style=invis, label=""];
+    a6b10 -> a7b10 [dir=both, style=invis, label=""];
+    a7b10 -> a8b10 [dir=both, style=invis, label=""];
+    a8b10 -> a9b10 [dir=both, style=invis, label=""];
+    a9b10 -> a10b10 [dir=both, style=invis, label=""];
+    a10b10 -> a11b10 [dir=both, style=invis, label=""];
+    a11b10 -> a12b10 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 11)
+    a1b11 -> a2b11 [dir=both, style=invis, label=""];
+    a2b11 -> a3b11 [dir=both, style=invis, label=""];
+    a3b11 -> a4b11 [dir=both, style=invis, label=""];
+    a4b11 -> a5b11 [dir=both, style=invis, label=""];
+    a5b11 -> a6b11 [dir=both, style=invis, label=""];
+    a6b11 -> a7b11 [dir=both, style=invis, label=""];
+    a7b11 -> a8b11 [dir=both, style=invis, label=""];
+    a8b11 -> a9b11 [dir=both, style=invis, label=""];
+    a9b11 -> a10b11 [dir=both, style=invis, label=""];
+    a10b11 -> a11b11 [dir=both, style=invis, label=""];
+    a11b11 -> a12b11 [dir=both, style=invis, label=""];
+
+    // Vertical edges (Column 12)
+    a1b12 -> a2b12 [dir=both, style=invis, label=""];
+    a2b12 -> a3b12 [dir=both, style=invis, label=""];
+    a3b12 -> a4b12 [dir=both, style=invis, label=""];
+    a4b12 -> a5b12 [dir=both, style=invis, label=""];
+    a5b12 -> a6b12 [dir=both, style=invis, label=""];
+    a6b12 -> a7b12 [dir=both, style=invis, label=""];
+    a7b12 -> a8b12 [dir=both, style=invis, label=""];
+    a8b12 -> a9b12 [dir=both, style=invis, label=""];
+    a9b12 -> a10b12 [dir=both, style=invis, label=""];
+    a10b12 -> a11b12 [dir=both, style=invis, label=""];
+    a11b12 -> a12b12 [dir=both, style=invis, label=""];
+}
+    ```
+    )]
+    #v(-30em)
+
+    _Iteration 4_: $a$ knows, $b$ does not know
+
+    How can $a$ know their number? Scenarios:
+    1. $a$ sees $n_b = 1$: Then $a$ would know $n_a = 3$. 
+    2. $a$ sees $n_b = 3$: $G_3 (3) = {1,5}$, so $a$ couldn't truthfully announce that they know $n_a$, since there would be $2$ choices left.
+    3. $a$ sees $n_b = 5$: Then $a$ would know $n_a = 3$. 
+
+    Thus, we rule out scenario 2. In either scenario 1 or 3, $n_a = 3$.
   ]
 
 
-+ (30 points)
-  + (15 points) Is the following formula valid or not on epistemic models with two agents (a and b)?
-    $K_a (D p or D "not" p) => D(K_a p or K_a "not" p)$
-    If your answer is yes, then give a semantic argument for this (by reasoning on possible worlds in any arbitrary epistemic model, using the semantic clauses for K, Dk and propositional connectives). If you are answer is no, then provide a counterexample (by drawing an epistemic model, and presenting
-#callout("September 16")
+3. _(30 points)_
+#let dex3(formula) = $#distributed-k($(formula)$, inf: $a,b$)$
+
+  (a) _(15 points)_ Is the following formula valid or not on epistemic models with two agents (a and b)?
+    
+    $ #knowledge($(dex3(p) or dex3(not p))$, inf: $a$) => dex3(#knowledge($(p)$, inf: $a$) or #knowledge($(not p)$, inf: $a$)) $
+    
+    *If your answer is yes, then give a semantic argument for this* (by reasoning on possible worlds in any arbitrary epistemic model, using the semantic clauses for $#knowledge("")$, $#distributed-k($$, inf: $a,b$)$, and propositional connectives). *If you are answer is no, then provide a counterexample* (by drawing an epistemic model, and presenting some world in that model, and showing that the premise is true and the conclusion false in that world).
+    
+    NOTE: Recall that epistemic models are Kripke models in which all relations are equivalence relations, $K$ represents knowledge by a specific agent (indicated by the subscript), while $D$ represents distributed knowledge (in the group composed of agents $a$ and $b$).
+
+  (b) _(15 points)_ Is the converse formula valid or not on epistemic models with two agents ($a$ and $b$)?
+  
+    $D(K_a p or K_a "not" p) => K_a(D p or D "not" p)$
+    
+    As before, *if your answer is yes then give a semantic argument for this, while you are answer is no then provide a counterexample.*
 
 = Week 5
 
