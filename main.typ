@@ -4855,11 +4855,11 @@ The Father asks them, repeatedly: "Do you know your own number?". The two are su
 
       _Proof conclusion false_: 
 
-      In an S5 epistemic model, $x models #knowledge($(phi)$, inf: $a$)$ iff $phi$ is true in all worlds in $[x]_a$.
+      In an #S5 epistemic model, $x models #knowledge($(phi)$, inf: $a$)$ iff $phi$ is true in all worlds in $[x]_a$.
       - $s cancel(models) #knowledge($(p)$, inf: $a$)$ because $r in [s]_a$ and $r models not p$.
-      - $s cancel(models) #knowledge($(p)$, inf: $a$)$ because $s in [s]_a$ and $s models p$.
+      - $s cancel(models) #knowledge($(not p)$, inf: $a$)$ because $s in [s]_a$ and $s models p$.
       
-      Since $#knowledge($(p)$, inf: $a$) and not #knowledge($(not p)$, inf: $a$)$ holds for all nodes, $dex3(#knowledge($(p)$, inf: $a$) or #knowledge($(not p)$, inf: $a$))$ cannot hold anywhere.
+      Since $not #knowledge($(p)$, inf: $a$) and not #knowledge($(not p)$, inf: $a$)$ holds for all nodes, $dex3(#knowledge($(p)$, inf: $a$) or #knowledge($(not p)$, inf: $a$))$ cannot hold anywhere.
       #align(right,$square$)
 
     ]
