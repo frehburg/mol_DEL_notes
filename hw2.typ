@@ -7,7 +7,7 @@
   // Metadata
   journal: "Computational Complexity",
   title: "Homework set 3",
-  subtitle: [Due March 18, 2026, at 23:30 \
+  subtitle: [Due March 17, 2026, at 23:30 \
   via #link("https://canvas.uva.nl/courses/56624/assignments/661481").],
   // date: datetime(year: 2024, month: 10, day: 24), // Or remove to use today's date
   font: "New Computer Modern",
@@ -127,9 +127,97 @@ In a far away country, the queen is giving distinctions of honor by placing hats
       phi_1 = phi_q and phi_C
       $
     ],
-    [Answer here.
+    [
+      $bold(Sigma)$, where $e_(a b)$ denotes the case that $a$ and $b$ look into the mirror, both seeing red and $q$ sees them both. $e_a$ denotes the event that $a$ looks in the mirror seeing red, without suspecting $b$ doing so too or being seen by $q$. Similarly for $e_b$. $e_"skip"$ is the case that nothing happens.
+      #grid(
+        columns: (50%, 50%),
+        [#graph-figure(
+        ```dot
+        digraph G {
+          node [shape=circle]
+          edge [arrowhead=vee, arrowtail=vee]
+
+          e [label="e_(s k i p)"];
+          ea [label="e_a"];
+          eb [label="e_b"];
+          eab [label="e_(a b) *"];
+
+          eab -> ea [label="a"];
+          eab -> eb [label="b"];
+          eab -> eab [label="q"];
+
+          ea -> ea [label="a"];
+          eb -> eb [label="b"];
+
+          ea -> e [label="b,q"]; eb -> e [label="a,q"];
+          e -> e [label="a,b,q"]
+        }
+        ```
+      )],
+      [
+        $ "pre"(s) = cases({top} "if" s = e_"skip", {r_a} "if" s = e_a, {r_b} "if" s = e_b, {r_a, r_b} "if" s = e_(a b)) $
+      ]
+      )
     ],
-    [Answer here.
+    [
+      $#S times.o bold(Sigma)$
+      #graph-figure(
+        ```dot
+        digraph G {
+          node [shape=square, style=rounded];
+          edge [arrowhead="vee", arrowtail="vee"];
+          
+          {
+            rank=same;
+            rrab [label="r_a r_b e_(a b)*"];
+            rra [label="r_a r_b e_a"];
+            rrb [label="r_a r_b e_b"];
+            rrt [label="r_a r_b e_(s k i p)"];
+          }
+          {
+            rank=same;
+            wrb [label="w_a r_b e_b"];
+            rwa [label="r_a w_b e_a"];
+          }
+
+          {
+            rank=same;
+            wrt [label="w_a r_b e_(s k i p)"];
+            rwt [label="r_a w_b e_(s k i p)"];
+          }
+
+          rrab -> rrab [label="q", arrowport=w, tailport=w]
+          rrab -> rra [label="a"];
+          rrab -> rrb [label="b"];
+
+          rra -> rra [label="a \ \ \ \ \ \ \ .", arrowport="n", tailport="n"];
+          rra -> rrt [label="b,q"];
+          rra -> rwt [label="b"];
+
+          rrb -> rrb [label="b"];
+          rrb -> rrt [label="a,q \ \ \ \ \ \ \ ."];
+          rrb -> wrt [label="a"];
+
+          rrt -> rrt [label="a,b,q"];
+          // rrt -> wrt [label="a"];
+          rrt -> rwt [label="b", dir=both];
+
+          wrb -> rrt [label="a"];
+          wrb -> wrb [label="b"];
+          wrb -> wrt [label="a,q"];
+
+          wrt -> rrt [label="a", dir=both];
+          wrt -> wrt [label="a,b,q"];
+
+          rwa -> rrt [label="b"];
+          rwa -> rwa [label="a"];
+          rwa -> rwt [label="b,q"];
+
+          // rwt -> rrt [label="b"];
+          rwt -> rwt [label="a,b,q"];
+        }
+        ```
+      )
     ],
   )
 ]
