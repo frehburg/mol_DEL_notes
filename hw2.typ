@@ -97,12 +97,12 @@ In a far away country, the queen is giving distinctions of honor by placing hats
 #callout(title: "Answer to Exercise 1")[
   #enum(numbering: "1.",
     [
-      The below model $#S$ is an #S5 model and thus all relations are reflexive, however reflexive connections are not drawn for visual simplicity.
+      $#S$:
       #graph-figure(
         ```dot
         digraph G {
-          node [shape=square, style=rounded];
-          edge [arrowhead="plain", arrowtail="plain"];
+          node [shape=square, style=rounded, fontsize=16, fixedsize=true, width=0.8, height=0.8];
+          edge [arrowhead="plain", arrowtail="plain", fontsize=16];
 
           {
             rank=same;
@@ -111,9 +111,14 @@ In a far away country, the queen is giving distinctions of honor by placing hats
             rw [label = "r_a, w_b"];
           }
           
+          // Linear connections
+          wr -> rr [label="a"];
           rr -> rw [label="b"];
 
-          wr -> rr [label="a"];
+          // Reflexive connections (self-loops) all routed to the North (top)
+          wr -> wr [label="a,b,q", headport="n", tailport="n"];
+          rr -> rr [label="a,b,q", headport="n", tailport="n"];
+          rw -> rw [label="a,b,q", headport="n", tailport="n"];
         }
         ```
       )
@@ -134,8 +139,9 @@ In a far away country, the queen is giving distinctions of honor by placing hats
         [#graph-figure(
         ```dot
         digraph G {
-          node [shape=circle]
-          edge [arrowhead=vee, arrowtail=vee]
+          node [shape=circle, fontsize=16, fixedsize=true, width=0.6, height=0.6];
+          edge [arrowhead=vee, arrowtail=vee, fontsize=16];
+          rankdir=LR;
 
           e [label="e_(s k i p)"];
           ea [label="e_a"];
@@ -164,8 +170,8 @@ In a far away country, the queen is giving distinctions of honor by placing hats
       #graph-figure(
         ```dot
         digraph G {
-          node [shape=square, style=rounded];
-          edge [arrowhead="vee", arrowtail="vee"];
+          node [shape=square, style=rounded, fontsize=16, fixedsize=true, width=1, height=1];
+          edge [arrowhead="plain", arrowtail="plain", fontsize=16];
           
           {
             rank=same;
@@ -245,19 +251,254 @@ There are four agents: Alice, Bob, Charles and Eve (the evil outsider). A coin i
 
 #callout(title: "Answer to Exercise 2")[
   #enum(numbering: "1.",
-    [Answer here.
+    [
+    $M_0$:
+      #graph-figure(
+        ```dot
+        digraph G {
+          node [shape=square, style=rounded, fontsize=16, fixedsize=true, width=0.8, height=0.8];
+          edge [arrowhead="plain", arrowtail="plain", fontsize=16];
+
+          {
+            rank=same;
+            T; H [label="H *"];
+          }
+
+          T -> H [label="b,c,e"];
+          T -> T [label="a,b,c,e", arrowport="w", tailport="w"];
+          H -> H [label="a,b,c,e"]
+        }
+        ```
+      )
     ],
-    [Answer here.
+    [ 
+      $bold(Sigma):$ $e_(b)$ is the action where $a$ sends a secret message to $b$, $e_(b c)$ is the action where $a$ also sends the BCC to $c$, and $e_"skip"$ is the action where nothing happens
+      #grid(
+        columns: (50%, 50%),
+        [#graph-figure(
+        ```dot
+        digraph G {
+          node [shape=circle, fontsize=16, fixedsize=true, width=0.8, height=0.8];
+          edge [arrowhead="plain", arrowtail="plain", fontsize=16];
+          rankdir=LR;
+
+          {
+            ebc [label="e_(b c) *"];
+            eb [label="e_b"];
+            e [label="e_(s k i p)"];
+          }
+
+          ebc -> ebc [label="a, c"];
+          ebc -> eb [label="b"];
+          ebc -> e [label="e"];
+
+          eb -> eb [label="a,b"];
+          eb -> e [label="c,e"];
+
+          e -> e [label="a,b,c,e"]
+          
+        }
+        ```
+      )],
+      [
+        $ "pre"(s) = cases({top} "if" s = e_"skip", {H} "if" s = e_b, {H} "if" s = e_(b c)) $
+      ]
+      )
     ],
-    [Answer here.
+    [$M_1 = M_0 times.o bold(Sigma):$
+      #graph-figure(
+        ```dot
+        digraph G {
+          node [shape=square, style=rounded, fontsize=16, fixedsize=true, width=0.8, height=0.8];
+          edge [arrowhead="plain", arrowtail="plain", fontsize=16];
+          rankdir=LR;
+
+          Ht [label="H e_(s k i p)"];
+          Tt [label="T e_(s k i p)"]; 
+          Hbc [label="H e_(b c) *"];
+          Hb [label="H e_b"];
+
+          Hbc -> Hbc [label="a,c"];
+          Hbc -> Tt [label="e"];
+          Hbc -> Ht [label="e"];
+          Hbc -> Hb [label="b"];
+
+          Hb -> Hb [label="a,b"];
+          Hb -> Ht [label="c,e"];
+          Hb -> Tt [label="c,e"];
+
+          Ht -> Ht [label="a"];
+
+          Ht -> Tt [label="b,c,e", dir="both"];
+
+          Tt -> Tt [label="a"];
+        }
+        ```
+      )
     ],
-    [Answer here.
+    [$bold(Sigma)^prime:$ $e_(b c e)$ is the action of $e$'s hack, the rest is the same as in 2.
+      #grid(
+        columns: (50%, 50%),
+        [#graph-figure(
+        ```dot
+        digraph G {
+          node [shape=circle, fontsize=16, fixedsize=true, width=0.8, height=0.8];
+          edge [arrowhead="plain", arrowtail="plain", fontsize=16];
+          rankdir=LR;
+
+          {
+            ebce [label="e_(b c e) *"]
+            ebc [label="e_(b c)"];
+            eb [label="e_b"];
+            e [label="e_(s k i p)"];
+          }
+
+          ebce -> ebce [label="e"];
+          ebce -> ebc [label="a,c"];
+          ebce -> eb [label="b"];
+
+          ebc -> ebc [label="a, c"];
+          ebc -> eb [label="b"];
+          ebc -> e [label="e"];
+
+          eb -> eb [label="a,b"];
+          eb -> e [label="c,e"];
+
+          e -> e [label="a,b,c,e"]
+          
+        }
+        ```
+      )],
+      [
+        $ "pre"(s) = cases({top} "if" s = e_"skip", {H} "if" s = e_b, {H} "if" s = e_(b c), {H} "if" s = e_(b c e)) $
+      ]
+      )
     ],
-    [Answer here.
+    [$M_1^prime = M_0 times.o bold(Sigma)^prime:$
+      #graph-figure(
+        ```dot
+        digraph G {
+          node [shape=square, style=rounded, fontsize=16, fixedsize=true, width=0.8, height=0.8];
+          edge [arrowhead="plain", arrowtail="plain", fontsize=16];
+          rankdir=LR;
+
+          Ht [label="H e_(s k i p)"];
+          Tt [label="T e_(s k i p)"]; 
+          Hbc [label="H e_(b c)"];
+          Hbce [label="H e_(b c e) *"];
+          Hb [label="H e_b"];
+
+          Hbce -> Hbce [label="e"];
+          Hbce -> Hbc [label="a,c"];
+          Hbce -> Hb [label="b"];
+
+          Hbc -> Hbc [label="a,c"];
+          Hbc -> Tt [label="e"];
+          Hbc -> Ht [label="e"];
+          Hbc -> Hb [label="b"];
+
+          Hb -> Hb [label="a,b"];
+          Hb -> Ht [label="c,e"];
+          Hb -> Tt [label="c,e"];
+
+          Ht -> Ht [label="a"];
+
+          Ht -> Tt [label="b,c,e", dir="both"];
+
+          Tt -> Tt [label="a"];
+        }
+        ```
+      )
     ],
-    [Answer here.
+  )
+]
+
+#callout(title: "Answer to Exercise 2 (continued)")[
+  #enum(numbering: "1.", start: 6,
+    [$bold(Sigma)^prime.double:$ $e_e$ is the action of $e$'s hack and delivery block, the rest is the same as in 2.
+      #grid(
+        columns: (50%, 50%),
+        [#graph-figure(
+        ```dot
+        digraph G {
+          node [shape=circle, fontsize=16, fixedsize=true, width=0.8, height=0.8];
+          edge [arrowhead="plain", arrowtail="plain", fontsize=16];
+          rankdir=LR;
+
+          {
+            ee [label="e_e *"]
+            ebc [label="e_(b c)"];
+            eb [label="e_b"];
+            e [label="e_(s k i p)"];
+          }
+
+          ee -> ee [label="e"];
+          ee -> e [label="b,c"];
+          ee -> ebc [label="a"];
+
+          ebc -> ebc [label="a, c"];
+          ebc -> eb [label="b"];
+          ebc -> e [label="e"];
+
+          eb -> eb [label="a,b"];
+          eb -> e [label="c,e"];
+
+          e -> e [label="a,b,c,e"]
+          
+        }
+        ```
+      )],
+      [
+        $ "pre"(s) = cases({top} "if" s = e_"skip", {H} "if" s = e_b, {H} "if" s = e_(b c), {H} "if" s = e_(e)) $
+      ]
+      )
     ],
-    [Answer here.
+    [$M_1^prime.double = M_0 times.o bold(Sigma)^prime.double:$
+      #graph-figure(
+        ```dot
+        digraph G {
+          node [shape=square, style=rounded, fontsize=16, fixedsize=true, width=0.8, height=0.8];
+          edge [arrowhead="plain", arrowtail="plain", fontsize=16];
+          rankdir=LR;
+
+          {
+            rank=1;
+            Hbc [label="H e_(b c)"];
+            He [label="H e_e *"];
+          };
+
+          {
+            rank=2;
+            Hb [label="H e_b"];
+          };
+          {
+            rank=3;
+            Ht [label="H e_(s k i p)"];
+            Tt [label="T e_(s k i p)"]; 
+          };
+
+          He -> He [label="e"];
+          He -> Hbc [label="a"];
+          He -> Ht [label="b,c"];
+          He -> Tt [label="b,c"];
+
+          Hbc -> Hbc [label="a,c", arrowport="w",tailport="s"];
+          Hbc -> Tt [label="e"];
+          Hbc -> Ht [label="e"];
+          Hbc -> Hb [label="b"];
+
+          Hb -> Hb [label="a,b"];
+          Hb -> Ht [label="c,e"];
+          Hb -> Tt [label="c,e"];
+
+          Ht -> Ht [label="a"];
+
+          Ht -> Tt [label="b,c,e", dir="both"];
+
+          Tt -> Tt [label="a", arrowport="w",tailport="s"];
+        }
+        ```
+      )
     ],
   )
 ]
@@ -265,7 +506,7 @@ There are four agents: Alice, Bob, Charles and Eve (the evil outsider). A coin i
 
 === Exercise 3 (36 points)
 
-We say that a property P is preserved by product update iff: for every initial Kripke model M having property P and every event model $Sigma$ having property P, their product update $M times.circle Sigma$ also has property P. For each of the properties below, specify whether or not they are preserved by product update. If your answer is "yes", give a brief semantic argument (proof). If your answer is "no", give a counterexample.
+We say that a property $P$ is preserved by product update iff: for every initial Kripke model M having property $P$ and every event model $Sigma$ having property $P$, their product update $M times.o Sigma$ also has property $P$. For each of the properties below, specify whether or not they are preserved by product update. If your answer is "yes", give a brief semantic argument (proof). If your answer is "no", give a counterexample.
 
 #enum(numbering: "1.",
   [_(9 points)_ symmetry: if $v R_a s$ then $s R_a w$.
@@ -280,9 +521,11 @@ We say that a property P is preserved by product update iff: for every initial K
 
 #callout(title: [Answer to Exercise 3])[
   #enum(numbering: "1.",
-    [Answer here.
+    [
+      I don't think so.
     ],
-    [Answer here.
+    [
+      
     ],
     [Answer here.
     ],
