@@ -102,7 +102,7 @@ In a far away country, the queen is giving distinctions of honor by placing hats
         ```dot
         digraph G {
           node [shape=square, style=rounded, fontsize=16, fixedsize=true, width=0.8, height=0.8];
-          edge [arrowhead="plain", arrowtail="plain", fontsize=16];
+          edge [arrowhead="vee", arrowtail="vee", fontsize=16];
 
           {
             rank=same;
@@ -112,8 +112,8 @@ In a far away country, the queen is giving distinctions of honor by placing hats
           }
           
           // Linear connections
-          wr -> rr [label="a"];
-          rr -> rw [label="b"];
+          wr -> rr [label="a", dir=both];
+          rr -> rw [label="b", dir=both];
 
           // Reflexive connections (self-loops) all routed to the North (top)
           wr -> wr [label="a,b,q", headport="n", tailport="n"];
@@ -171,7 +171,7 @@ In a far away country, the queen is giving distinctions of honor by placing hats
         ```dot
         digraph G {
           node [shape=square, style=rounded, fontsize=16, fixedsize=true, width=1, height=1];
-          edge [arrowhead="plain", arrowtail="plain", fontsize=16];
+          edge [arrowhead="vee", arrowtail="vee", fontsize=16];
           
           {
             rank=same;
@@ -257,14 +257,14 @@ There are four agents: Alice, Bob, Charles and Eve (the evil outsider). A coin i
         ```dot
         digraph G {
           node [shape=square, style=rounded, fontsize=16, fixedsize=true, width=0.8, height=0.8];
-          edge [arrowhead="plain", arrowtail="plain", fontsize=16];
+          edge [arrowhead="vee", arrowtail="vee", fontsize=16];
 
           {
             rank=same;
             T; H [label="H *"];
           }
 
-          T -> H [label="b,c,e"];
+          T -> H [label="b,c,e", dir=both];
           T -> T [label="a,b,c,e", arrowport="w", tailport="w"];
           H -> H [label="a,b,c,e"]
         }
@@ -279,7 +279,7 @@ There are four agents: Alice, Bob, Charles and Eve (the evil outsider). A coin i
         ```dot
         digraph G {
           node [shape=circle, fontsize=16, fixedsize=true, width=0.8, height=0.8];
-          edge [arrowhead="plain", arrowtail="plain", fontsize=16];
+          edge [arrowhead="vee", arrowtail="vee", fontsize=16];
           rankdir=LR;
 
           {
@@ -310,7 +310,7 @@ There are four agents: Alice, Bob, Charles and Eve (the evil outsider). A coin i
         ```dot
         digraph G {
           node [shape=square, style=rounded, fontsize=16, fixedsize=true, width=0.8, height=0.8];
-          edge [arrowhead="plain", arrowtail="plain", fontsize=16];
+          edge [arrowhead="vee", arrowtail="vee", fontsize=16];
           rankdir=LR;
 
           Ht [label="H e_(s k i p)"];
@@ -343,7 +343,7 @@ There are four agents: Alice, Bob, Charles and Eve (the evil outsider). A coin i
         ```dot
         digraph G {
           node [shape=circle, fontsize=16, fixedsize=true, width=0.8, height=0.8];
-          edge [arrowhead="plain", arrowtail="plain", fontsize=16];
+          edge [arrowhead="vee", arrowtail="vee", fontsize=16];
           rankdir=LR;
 
           {
@@ -379,7 +379,7 @@ There are four agents: Alice, Bob, Charles and Eve (the evil outsider). A coin i
         ```dot
         digraph G {
           node [shape=square, style=rounded, fontsize=16, fixedsize=true, width=0.8, height=0.8];
-          edge [arrowhead="plain", arrowtail="plain", fontsize=16];
+          edge [arrowhead="vee", arrowtail="vee", fontsize=16];
           rankdir=LR;
 
           Ht [label="H e_(s k i p)"];
@@ -422,7 +422,7 @@ There are four agents: Alice, Bob, Charles and Eve (the evil outsider). A coin i
         ```dot
         digraph G {
           node [shape=circle, fontsize=16, fixedsize=true, width=0.8, height=0.8];
-          edge [arrowhead="plain", arrowtail="plain", fontsize=16];
+          edge [arrowhead="vee", arrowtail="vee", fontsize=16];
           rankdir=LR;
 
           {
@@ -458,7 +458,7 @@ There are four agents: Alice, Bob, Charles and Eve (the evil outsider). A coin i
         ```dot
         digraph G {
           node [shape=square, style=rounded, fontsize=16, fixedsize=true, width=0.8, height=0.8];
-          edge [arrowhead="plain", arrowtail="plain", fontsize=16];
+          edge [arrowhead="vee", arrowtail="vee", fontsize=16];
           rankdir=LR;
 
           {
@@ -509,7 +509,7 @@ There are four agents: Alice, Bob, Charles and Eve (the evil outsider). A coin i
 We say that a property $P$ is preserved by product update iff: for every initial Kripke model M having property $P$ and every event model $Sigma$ having property $P$, their product update $M times.o Sigma$ also has property $P$. For each of the properties below, specify whether or not they are preserved by product update. If your answer is "yes", give a brief semantic argument (proof). If your answer is "no", give a counterexample.
 
 #enum(numbering: "1.",
-  [_(9 points)_ symmetry: if $v R_a s$ then $s R_a w$.
+  [_(9 points)_ symmetry: if $w R_a s$ then $s R_a w$.
   ],
   [_(9 points)_ transitivity: if $w R_a s$ and $s R_a t$ then $w R_a t$.
   ],
@@ -520,16 +520,99 @@ We say that a property $P$ is preserved by product update iff: for every initial
 )
 
 #callout(title: [Answer to Exercise 3])[
+  #let model = $bold(M)$
+  #let eventmodel = $bold(Sigma)$
+  #let productmodel = $model times.o eventmodel$
+  #let mR = $R^model_a$
+  #let eR = $R^eventmodel_a$
+  #let pR = $R^productmodel_a$
+  For all of the following exercises, denote the initial Kripke model with $cal(A)={a}$ as $model = (W, {mR}, interpretation(dot))$ and the initial event model as $eventmodel = (E, {eR}, "pre")$. We will assume $mR$ and $eR$ to satisfy $P$, where $P$ is the property named in the exercise description. The resulting product model $productmodel$ is denoted as: $productmodel = (W^prime, {pR}, interpretation(dot)^prime)$.
   #enum(numbering: "1.",
     [
-      I don't think so.
-    ],
-    [
+      Let $P$ be symmetry. Take arbitrary symmetric Kripke and event models $model$ and $eventmodel$. 
+
+      Take arbitrary $w, s in model$. If $w mR s$, then by $P$ we get $s mR w$.
+
+      #let ew = $(w, e_1)$
+      #let es = $(s, e_2)$
+
+      Now take arbitrary nodes $ew, es in productmodel$. If $ew pR es$, then we need to show $es pR ew$ to establish $productmodel models P$.
+
+      By definition of the product model $ew pR es arrow.r.l.double w mR s and e_1 eR e_2$. Since $e_1 eR e_2$ and $eR$ satisfies $P$, we get $e_2 eR e_1$.
+
+      From $s mR w$ and $e_2 eR e_1$ we conclude $es pR ew$. Thus $productmodel models P$. As the choices were arbitrary, symmetry is preserved by the product update.
       
     ],
-    [Answer here.
+    [
+      Let $P$ be transitivity. Take arbitrary Kripke model $model$ and event model $eventmodel$ such that both fulfill $P$. Assume $(w, e_1) pR (s, e_2) pR (t, e_3)$. This can, by definition, only happen iff $w mR s mR t$ and $e_1 eR e_2 eR e_3$. These fulfill the premise for $P$, thus $w mR t$ and $e_1 eR e_3$. This gives us $(w,e_1) pR (t,e_3)$. We conclude $productmodel models P$ and $P$ is preserved under the product update, as the choices of models and worlds were arbitrary.
     ],
-    [Answer here.
+    [
+      Let $P$ be Euclideaness. Take arbitrary Kripke model $model$ and event model $eventmodel$ such that both fulfill $P$. Assume $(w,e_1) pR (s,e_2) and (w,e_1) pR (t, e_3)$, to show $P$, we need to demonstrate $(s,e_2) pR (t,e_3)$.
+
+      By definition of the product model, $(w,e_1) pR (s,e_2) and (w,e_1) pR (t, e_3) arrow.r.l.double (w mR s and w mR t) and (e_1 eR e_2 and e_1 eR e_3)$. As $model models P$ and $eventmodel models P$, we conclude $s mR t$ and $e_2 eR e_3$. From this we get $(s,e_2) pR (t, e_3)$. This fulfills $P$. Because the choices of model and worlds were arbitrary Euclideaness is preserved under the product update.
+    ],
+    [
+      The following Kripke model $M$ and event model $Sigma$ are a counterexample for the preservation of the diamond property under the product update.
+
+      $"pre"(e) = cases(p "if" e = e_1, q "if" e = e_2, r "if" e = e_3, o "if" e = e_4,); e in Sigma$
+      #graph-figure(
+        ```dot
+        digraph G {
+          nodesep=0.5;
+          ranksep=0.5;
+
+          subgraph cluster_M {
+            label="M";
+            margin=50;
+            node [shape=square, style=rounded, fontsize=16, fixedsize=true, width=0.5, height=0.5];
+            edge [arrowhead="vee", arrowtail="vee", fontsize=16];
+            rankdir=LR;
+            w [xlabel="w:
+            p, ¬q, 
+            ¬r, ¬o"];
+            s [xlabel="s:
+            ¬p, q,
+            ¬r, ¬o"];
+            t [xlabel="t:
+            ¬p, ¬q,
+            r, ¬o
+            "];
+            v [xlabel="v:
+            ¬p, ¬q, 
+            ¬r, ¬o"];
+
+            w -> s; w -> t; s -> v; t -> v;
+          };
+
+          subgraph cluster_Sigma {
+            label="Σ";
+            margin=50;
+            node [shape=circle, fontsize=16, fixedsize=true, width=0.5, height=0.5];
+            edge [arrowhead="vee", arrowtail="vee", fontsize=16];
+            rankdir=LR;
+            e_1; 
+            e_2; 
+            e_3;
+            e_4;
+
+            e_1 -> e_2; e_1 -> e_3; e_2 -> e_4; e_3 -> e_4;
+          };
+
+          subgraph cluster_M1 {
+            label="M × Σ";
+            margin=50;
+            node [shape=square, style=rounded, fontsize=16, fixedsize=true, width=0.5, height=0.5];
+            edge [arrowhead="vee", arrowtail="vee", fontsize=16];
+            rankdir=LR;
+            we1 [label="w e_1"];
+            se2 [label="s e_2"];
+            te3 [label="t e_3"];
+
+            we1 -> se2, te3;
+          };
+        }
+        ```
+      )
     ],
   )
 ]
