@@ -6,7 +6,7 @@
 #show: doc => paper(
   // Metadata
   journal: "Dynamic Epistemic Logic",
-  title: "Homework set 3",
+  title: "Homework 2",
   subtitle: [Due March 17, 2026, at 23:30 \
   via #link("https://canvas.uva.nl/courses/56624/assignments/661481").],
   // date: datetime(year: 2024, month: 10, day: 24), // Or remove to use today's date
