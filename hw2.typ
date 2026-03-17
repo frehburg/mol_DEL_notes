@@ -5,7 +5,7 @@
 
 #show: doc => paper(
   // Metadata
-  journal: "Computational Complexity",
+  journal: "Dynamic Epistemic Logic",
   title: "Homework set 3",
   subtitle: [Due March 17, 2026, at 23:30 \
   via #link("https://canvas.uva.nl/courses/56624/assignments/661481").],
@@ -327,11 +327,11 @@ There are four agents: Alice, Bob, Charles and Eve (the evil outsider). A coin i
           Hb -> Ht [label="c,e"];
           Hb -> Tt [label="c,e"];
 
-          Ht -> Ht [label="a"];
+          Ht -> Ht [label="a,b,c,e"];
 
           Ht -> Tt [label="b,c,e", dir="both"];
 
-          Tt -> Tt [label="a"];
+          Tt -> Tt [label="a,b,c,e"];
         }
         ```
       )
@@ -401,11 +401,11 @@ There are four agents: Alice, Bob, Charles and Eve (the evil outsider). A coin i
           Hb -> Ht [label="c,e"];
           Hb -> Tt [label="c,e"];
 
-          Ht -> Ht [label="a"];
+          Ht -> Ht [label="a,b,c,e"];
 
           Ht -> Tt [label="b,c,e", dir="both"];
 
-          Tt -> Tt [label="a"];
+          Tt -> Tt [label="a,b,c,e"];
         }
         ```
       )
@@ -491,11 +491,11 @@ There are four agents: Alice, Bob, Charles and Eve (the evil outsider). A coin i
           Hb -> Ht [label="c,e"];
           Hb -> Tt [label="c,e"];
 
-          Ht -> Ht [label="a"];
+          Ht -> Ht [label="a,b,c,e"];
 
           Ht -> Tt [label="b,c,e", dir="both"];
 
-          Tt -> Tt [label="a", arrowport="w",tailport="s"];
+          Tt -> Tt [label="a,b,c,e", arrowport="w",tailport="s"];
         }
         ```
       )
